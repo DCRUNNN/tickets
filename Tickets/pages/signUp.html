@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>注册</title>
+    <link rel='stylesheet' href='../dist/css/style.css' />
+    <link rel='stylesheet' href='../dist/css/bootstrap.min.css' />
+
+</head>
+
+<body>
+
+<div id="container">
+    <div class="panel panel-primary">
+        <div class="panel-body">
+
+            <ul id="myTab" class="nav nav-tabs">
+                <li class="active"><a href="#userSignUp" data-toggle="tab">用户注册</a></li>
+                <li><a href="#venueSignUp" data-toggle="tab">场馆注册</a></li>
+            </ul>
+
+            <div id="myTabContent" class="tab-content">
+
+                <div class="tab-pane fade in active" id="userSignUp">
+                    <form class="col-sm-offset-4 col-sm-4 form-horizontal" style="top: 130px" id="userSignUpForm" role="form" method="post">
+                        <fieldset>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="username">用户名</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" v-model="user.username" class="form-control" id="username" name="username" placeholder="用户名" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="password">密码</label>
+                                    <div class="col-sm-9">
+                                        <input type="password" v-model="user.password" class="form-control" id="password" name="password" placeholder="密码" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="username">电子邮箱</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" v-model="user.email" class="form-control" id="email" name="email" placeholder="电子邮箱" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="username">联系电话</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" v-model="user.phoneNumber" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="联系电话" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <button type="submit" style="opacity: 0.5;" class="btn btn-default btn-lg btn-block" @click.prevent="signUp()">注册</button>
+                                        <a href="index.html"><button type="button" style="opacity: 0.5;" class="btn btn-default btn-lg btn-block">返回</button></a>
+                                    </div>
+                                </div>
+                            </fieldset>
+                    </form>
+                </div>
+
+                <div class="tab-pane fade" id="venueSignUp">
+                    <form class="col-sm-offset-4 col-sm-4 form-horizontal" style="top: 130px" id="venueSignUpForm" role="form" method="post">
+                            <fieldset>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="venueName">场馆名称</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" v-model="venue.venueName" class="form-control" id="venueName" name="venueName" placeholder="场馆名称" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="city">所在城市</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" v-model="venue.city" class="form-control" id="city" name="city" placeholder="所在城市" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="venueAddress">详细地址</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" v-model="venue.venueAddress" class="form-control" id="venueAddress" name="venueAddress" placeholder="详细地址" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="area">场馆区域</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" v-model="venue.area" class="form-control" id="area" name="area" placeholder="场馆区域" required>
+                                        <span class="help-block">
+                                            提示：如有A、B、C三个区域，每个区域各自有3,3,4,排，请填写A-3/B-3/C-4
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="row">最大排数</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" v-model="venue.row" class="form-control" id="row" name="phoneNumber" placeholder="最大排数" required>
+                                        <span class="help-block">
+                                            提示：一共有多少排，请填写数字
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="seat">每排各有多少个座位</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" v-model="venue.seat" class="form-control" id="seat" name="phoneNumber" placeholder="每排座位数，以/隔开" required>
+                                        <span class="help-block">
+                                            提示：如共3排，从低到高每排各有10,20,30个座位，请填写10/20/30
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="venueInfo">场馆描述</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" v-model="venue.venueInfo" class="form-control" id="venueInfo" name="venueInfo" placeholder="场馆描述" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <button type="submit" style="opacity: 0.5;" class="btn btn-default btn-lg btn-block" @click.prevent="venueSignUp()">注册</button>
+                                        <a href="index.html"><button type="button" style="opacity: 0.5;" class="btn btn-default btn-lg btn-block">返回</button></a>
+                                    </div>
+                                </div>
+                            </fieldset>
+                    </form>
+                </div>
+
+            </div>
+
+            <div class="modal fade" id="activeUserModal" tabindex="1" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3>请前往您填写的邮箱地址激活！</h3>
+                            <h4 id="activeEmailAddress"></h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <button type="button" class="btn btn-default col-md-6" @click.prevent="confirmActive()" >激活</button>
+                                <button type="button" class="btn btn-default col-md-6" data-dismiss="modal">取消</button>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal -->
+            </div>
+
+            <div class="modal fade" id="activeVenueModal" tabindex="1" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3>场馆注册申请已提交！请牢记您的登录ID</h3>
+                            <h4 id="activeVenueID"></h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <button type="button" class="btn btn-default col-md-12" data-dismiss="modal" onclick="window.location.href='../pages/index.html     '">已记住</button>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal -->
+            </div>
+
+        </div>
+    </div>
+
+</div>
+</body>
+
+
+
+
+
+<script src="../resources/vue/vue.js"></script>
+<script src="../resources/vue-resource/vue-resource.js"></script>
+
+
+<script src="../dist/js/jquery-1.10.2.js"></script>
+<script src="../dist/js/bootstrap.min.js"></script>
+
+<script src="../dist/js/pages/signUp.js"></script>
+
+
+</body>
+</html>
