@@ -3014,13 +3014,13 @@ ul.privacy-start {
 /*-- //Privacy-page --*/
 
 /*-- breadcrumb --*/
-.breadcrumb {
-    background-color: #FFFFFF;
-    border: 1px solid #F3F3F3;
-    padding: 10px 15px;
-}
-.breadcrumb>li+li:before {
-    color: #D1E0EE;
+/*.breadcrumb {*/
+    /*background-color: #FFFFFF;*/
+    /*border: 1px solid #F3F3F3;*/
+    /*padding: 10px 15px;*/
+/*}*/
+/*.breadcrumb>li+li:before {*/
+    /*color: #D1E0EE;*/
 }
 /*-- //breadcrumb --*/
 
@@ -4578,15 +4578,15 @@ label {
 	.ads-list select, #custom-search-input {
 		width: 95.5%;
 	}
-	.breadcrumb {
-		padding: 8px 10px;
-	}
-	.breadcrumb>li {
-		font-size: 12px;
-	}
-	.breadcrumb>li+li:before {
-		padding: 0 3px;
-	}
+	/*.breadcrumb {*/
+		/*padding: 8px 10px;*/
+	/*}*/
+	/*.breadcrumb>li {*/
+		/*font-size: 12px;*/
+	/*}*/
+	/*.breadcrumb>li+li:before {*/
+		/*padding: 0 3px;*/
+	/*}*/
 	.sitemap-region-grid {
 		width: 100%;
 	}

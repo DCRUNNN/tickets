@@ -15,8 +15,12 @@ var vm=new Vue({
             state:'',
             activeCode:''
         }
-        ]
-
+        ],
+        guessYouLikes:[],
+        todayRecommends:[],
+        cityConcerts:[],
+        citySports:[],
+        cityDramaOperas:[],
     },
     methods:{
         login:function () {
@@ -45,6 +49,66 @@ var vm=new Vue({
 
         logout:function () {
             this.deleteCookie('username');
+        },
+
+        changeFirstPanel:function (event) {
+            var category=event.target.text;
+            if(category=="猜您喜欢"){
+                this.$http.get("http://localhost:8080/show/guessYouLike").then(function (response) {
+                    if(response.data.errorCode==0) {
+                        this.guessYouLikes = response.data.data;
+                    }else{
+                        alert("get guess you like show wrong!");
+                    }
+                }).catch(function (error) {
+                    alert("获取信息失败，请刷新重试！");
+                });
+
+            }else if(category=="今日推荐"){
+                this.$http.get("http://localhost:8080/show/todayRecommend").then(function (response) {
+                    if(response.data.errorCode==0) {
+                        this.todayRecommends = response.data.data;
+                    }else{
+                        alert("get guess you like show wrong!");
+                    }
+                }).catch(function (error) {
+                    alert("获取信息失败，请刷新重试！");
+                });
+            }else if(category=="即将开售"){
+
+            }
+
+
+        },
+
+        changeCityShowPanel:function (event) {
+            var category=event.target.text;
+            this.$http.get("http://localhost:8080/show/getShowPOByCategory", {
+                params: {
+                    category: category
+                }
+            }).then(function (response) {
+
+                if(response.data.errorCode==0) {
+                    if(category=="演唱会"){
+                        this.cityConcerts = response.data.data;
+                    }else if(category=="体育赛事"){
+                        this.citySports = response.data.data;
+                    }else if(category=="话剧歌剧") {
+                        this.cityDramaOperas = response.data.data;
+                    }
+                }else{
+                    alert("get city show wrong!");
+                }
+
+            }).catch(function (error) {
+                alert("获取信息失败，请刷新重试！");
+            });
+        },
+
+        showConcreteShowInfo:function (showID) {
+            this.setCookie('concreteShowInfoID', showID, 1);
+            window.location.href = "../pages/showInfo.html";
         },
 
         setCookie:function (cname,cvalue,exdays) {
@@ -83,6 +147,34 @@ var vm=new Vue({
             document.getElementById("signUpBT").style.display = "block";
             document.getElementById("logOutBT").style.display = "none";
         }
+
+        this.$http.get("http://localhost:8080/show/guessYouLike").then(function (response) {
+            if(response.data.errorCode==0) {
+                this.guessYouLikes = response.data.data;
+            }else{
+                alert("get guess you like show wrong!");
+            }
+        }).catch(function (error) {
+            alert("获取信息失败，请刷新重试！");
+        });
+
+
+        this.$http.get("http://localhost:8080/show/getShowPOByCategory", {
+            params: {
+                category: "演唱会"
+            }
+        }).then(function (response) {
+            if(response.data.errorCode==0) {
+                this.cityConcerts = response.data.data;
+            }else{
+                alert("mount error")
+            }
+        }).catch(function (error) {
+            alert("获取演唱会信息失败，请刷新重试！");
+        });
+
+
+
 
     }
 

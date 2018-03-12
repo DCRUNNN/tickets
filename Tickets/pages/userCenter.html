@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tickets</title>
+    <link rel="stylesheet" href="../dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../dist/css/bootstrap-select.css">
+    <link href="../dist/css/style.css" rel="stylesheet" type="text/css" media="all" />
+
+    <link href="../dist/css/memenu.css" rel="stylesheet" type="text/css"  />
+
+    <link rel="stylesheet" type="text/css" href="../dist/css/nav.css" />
+
+    <link rel="stylesheet" href="../dist/css/font-awesome.min.css" />
+
+    <link href="../dist/css/jquery.uls.css" rel="stylesheet"/>
+
+    <!-- for-mobile-apps -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="Resale Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template,
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony Ericsson, Motorola web design" />
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <!-- //for-mobile-apps -->
+    <!--fonts-->
+    <!--//fonts-->
+    <!-- js -->
+    <script type="text/javascript" src="../dist/js/jquery.min.js"></script>
+    <script type="text/javascript">
+
+        function AutoSize(Img, maxWidth, maxHeight) {
+            var image = new Image();
+            //原图片原始地址（用于获取原图片的真实宽高，当<img>标签指定了宽、高时不受影响）
+            image.src = Img.src;
+            // 当图片比图片框小时不做任何改变
+            if (image.width < maxWidth&& image.height < maxHeight) {
+                Img.width = image.width;
+                Img.height = image.height;
+            }
+            else //原图片宽高比例 大于 图片框宽高比例,则以框的宽为标准缩放，反之以框的高为标准缩放
+            {
+                if (maxWidth/ maxHeight  <= image.width / image.height) //原图片宽高比例 大于 图片框宽高比例
+                {
+                    Img.width = maxWidth;   //以框的宽度为标准
+                    Img.height = maxWidth* (image.height / image.width);
+                }
+                else {   //原图片宽高比例 小于 图片框宽高比例
+                    Img.width = maxHeight  * (image.width / image.height);
+                    Img.height = maxHeight  ;   //以框的高度为标准
+                }
+            }
+        }
+
+
+        function DrawImage(ImgD,width_s,height_s){
+            /*var width_s=139;
+            var height_s=104;
+            */
+            var image=new Image();
+            image.src=ImgD.src;
+            if(image.width>0 && image.height>0){
+                flag=true;
+                if(image.width/image.height>=width_s/height_s){
+                    if(image.width>width_s){
+                        ImgD.width=width_s;
+                        ImgD.height=(image.height*width_s)/image.width;
+                    }else{
+                        ImgD.width=image.width;
+                        ImgD.height=image.height;
+                    }
+                }
+                else{
+                    if(image.height>height_s){
+                        ImgD.height=height_s;
+                        ImgD.width=(image.width*height_s)/image.height;
+                    }else{
+                        ImgD.width=image.width;
+                        ImgD.height=image.height;
+                    }
+                }
+            }
+            /*else{
+            ImgD.src="";
+            ImgD.alt=""
+            }*/
+        }
+
+    </script>
+
+
+</head>
+<body>
+
+<div id="container">
+
+    <!--<HR style="color:#000000;size:1px" width="100%" >-->
+
+    <div class="header">
+        <div class="container">
+            <div class="logo">
+                <a href="index.html"><span>My</span>Tickets</a>
+            </div>
+
+            <div class="pull-right" style="margin-top: 3%">
+                <ul class="nav nav-pills">
+                    <li class="active">
+                        <a id="loginBT" href="login.html" >登录</a>
+                    </li>
+                    <li>
+                        <a id="signUpBT" href="signUp.html">注册</a>
+                    </li>
+                    <li>
+                        <a id="logOutBT"  @click="logout()">退出</a>
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            服务中心 <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">个人中心</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">场馆中心</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a v-text="welcomeWord" style="color: blueviolet"></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="h_menu4">
+        <ul class="memenu skyblue">
+            <li><a class="color1" href="#">戏剧</a>
+            </li>
+            <li><a class="color2" href="#">体育</a>
+            </li>
+            <li><a class="color8" href="#">亲子</a></li>
+            <li><a class="color8" href="#">摇滚</a></li>
+            <li><a class="color8" href="#">舞蹈古典</a></li>
+        </ul>
+    </div>
+
+    <br><br><br>
+
+
+    <div class="ads-grid">
+        <div class="side-bar col-md-3">
+
+
+            <div class="">
+
+                <ul class="sidebar-menu" id="nav-accordion">
+
+                    <li class="sub-menu">
+                        <a href="#" >
+                            <i class="fa fa-book" aria-hidden="true"></i>
+                            <span>我的笔记本</span>
+                        </a>
+
+                        <ul class="sub" id="notebook_ul" role="menu">
+                            <li class="sub-menu"  role="presentation" id="context" data-toggle="context" data-target="#context-menu" onmousedown="right('<%=note2.notebookID%>','<%=note2.title%>')">
+                                <a href="/index/showPageMenu/<%=note2.notebookID%>">
+                                    <i class="fa fa-book" aria-hidden="true"></i>
+                                    <span id="<%=note2.notebookID%>"><%=note2.title%></span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
+
+                    <li class="sub-menu">
+                        <a href="#" class="" >
+                            <i class="fa fa-envelope"></i>
+                            <span>好友圈</span>
+                        </a>
+                        <ul class="sub">
+                            <li>
+                                <a href="/index/myFriends">
+                                    <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+                                    <span>我的好友</span>
+                                </a>
+                            </li>
+                            <li><a href="/index/sharedPage">
+                                <i class="fa fa-share-alt" aria-hidden="true"></i>
+                                <span>分享笔记</span>
+                            </a></li>
+                        </ul>
+                    </li>
+
+
+                    <li>
+                        <a href="/index/tagManage">
+                            <i class="fa fa-tags" aria-hidden="true"></i>
+                            <span>标签管理</span>
+                            <span class="label label-danger pull-right mail-info">2</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/index/userManage">
+                            <i class="fa fa-cog" aria-hidden="true"></i>
+                            <span >我的信息</span>
+                            <span class="label label-danger pull-right mail-info">2</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="active" href="/index/userManage">
+                            <i class="fa fa-qq" aria-hidden="true"></i>
+                            <span >账户管理</span>
+                            <span class="label label-danger pull-right mail-info">2</span>
+                        </a>
+                    </li>
+
+                </ul>
+
+
+            </div>
+        </div>
+
+        <div class="ads-display col-md-9">
+            <div class="wrapper">
+                <div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
+                    <ul id="myTab" class="nav nav-tabs nav-tabs-responsive" role="tablist">
+                        <li role="presentation" class="active">
+                            <a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">
+                                <span class="text">All Ads</span>
+                            </a>
+                        </li>
+                        <li role="presentation" class="next">
+                            <a href="#profile" role="tab" id="profile-tab" data-toggle="tab" aria-controls="profile">
+                                <span class="text">Ads with Photos</span>
+                            </a>
+                        </li>
+                        <li role="presentation">
+                            <a href="#samsa" role="tab" id="samsa-tab" data-toggle="tab" aria-controls="samsa">
+                                <span class="text">Company</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <div id="myTabContent" class="tab-content">
+                        <div role="tabpanel" class="tab-pane fade in active" id="home" aria-labelledby="home-tab">
+                            <div>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+</body>
+
+
+
+<script>
+    $(document).ready(function () {
+        var mySelect = $('#first-disabled2');
+
+        $('#special').on('click', function () {
+            mySelect.find('option:selected').prop('disabled', true);
+            mySelect.selectpicker('refresh');
+        });
+
+        $('#special2').on('click', function () {
+            mySelect.find('option:disabled').prop('disabled', false);
+            mySelect.selectpicker('refresh');
+        });
+
+        $('#basic2').selectpicker({
+            liveSearch: true,
+            maxOptions: 1
+        });
+    });
+</script>
+
+
+<script src="../resources/vue/vue.js"></script>
+<script src="../resources/vue-resource/vue-resource.js"></script>
+
+<script src="../dist/js/pages/userCenter.js"></script>
+
+<script type="text/javascript" src="../dist/js/wwwnet.js"></script>
+<script type="text/javascript" src="../dist/js/memenu.js"></script>
+<!-- js -->
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="../dist/js/bootstrap.min.js"></script>
+<script src="../dist/js/bootstrap-select.js"></script>
+
+
+</html>
