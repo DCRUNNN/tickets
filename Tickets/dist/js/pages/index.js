@@ -2,20 +2,7 @@ var vm=new Vue({
     el:'#container',
     data:{
         welcomeWord:'',
-        user:[{
-            username:'',
-            password:'',
-            email:'',
-            phoneNumber:'',
-            userID:'',
-            isVIP:1,
-            vipLevel:1,
-            balance:0,
-            totalConsumption:0,
-            state:'',
-            activeCode:''
-        }
-        ],
+        user:[],
         guessYouLikes:[],
         todayRecommends:[],
         cityConcerts:[],
@@ -33,6 +20,7 @@ var vm=new Vue({
                     self.user = response.data.data;
                     var username = response.data.data.username;
                     this.setCookie('username', self.user.username, 1);
+                    this.setCookie('userID', self.user.userID, 1);
                     this.setCookie('welcomeWord', "欢迎您！"+self.user.username, 1);
                     self.welcomeWord = "欢迎您！" + username;
                     window.location.href = "../pages/index.html";
@@ -49,6 +37,8 @@ var vm=new Vue({
 
         logout:function () {
             this.deleteCookie('username');
+            this.deleteCookie('welcomeWord');
+
         },
 
         changeFirstPanel:function (event) {
@@ -129,8 +119,7 @@ var vm=new Vue({
         },
 
         deleteCookie:function (cname) {
-            this.setCookie("username","",-1);
-            this.setCookie("welcomeWord","",-1);
+            this.setCookie(cname,"",-1);
             window.location.href="../pages/index.html"
         },
     },

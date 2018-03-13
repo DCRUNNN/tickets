@@ -2,24 +2,79 @@ var vm=new Vue({
     el:'#container',
     data:{
         welcomeWord:'',
-        user:[{
-            username:'',
-            password:'',
-            email:'',
-            phoneNumber:'',
-            userID:'',
-            isVIP:1,
-            vipLevel:1,
-            balance:0,
-            totalConsumption:0,
-            state:'',
-            activeCode:''
-        }
-        ],
+
+        user:[],
+        recentOrders:[],
+        userOrders:[],
+
     },
     methods:{
 
 
+        getMenuItem(event){
+            var selectedItem = event.currentTarget.innerText;
+            $("#userCenterIndexPanel1").slideUp("slow");
+            $("#userCenterIndexPanel2").slideUp("slow");
+
+            document.getElementById("breadcrumbItem").innerText = selectedItem;
+
+            if(selectedItem=="订单管理"){
+                this.allPanelUp();
+                $("#orderManage").slideDown("slow");
+            }else if(selectedItem=="我的优惠券"){
+                this.allPanelUp();
+                $("#myCoupon").show();
+                $("#myCoupon").slideDown("slow");
+            }else if(selectedItem=="我的积分"){
+                this.allPanelUp();
+                $("#memberPoint").show();
+                $("#memberPoint").slideDown("slow");
+
+            }else if(selectedItem=="统计信息"){
+                this.allPanelUp();
+                $("#myStatistics").show();
+                $("#myStatistics").slideDown("slow");
+            }else if(selectedItem=="收货地址"){
+                this.allPanelUp();
+
+                $("#receivingAddress").show();
+                $("#receivingAddress").slideDown("slow");
+
+            }else if(selectedItem=="账号设置"){
+
+                this.allPanelUp();
+                $("#accountSetting").show();
+                $("#accountSetting").slideDown("slow");
+
+            }else if(selectedItem=="安全中心"){
+
+                this.allPanelUp();
+                $("#safeSetting").show();
+                $("#safeSetting").slideDown("slow");
+
+            }else if(selectedItem=="个人信息"){
+
+                this.allPanelUp();
+                $("#personalInfo").show();
+                $("#personalInfo").slideDown("slow");
+
+            }
+        },
+
+        getUserOrders:function () {
+
+        },
+
+        allPanelUp:function () {
+            $("#orderManage").slideUp("fast");
+            $("#myCoupon").slideUp("fast");
+            $("#memberPoint").slideUp("fast");
+            $("#myStatistics").slideUp("fast");
+            $("#receivingAddress").slideUp("fast");
+            $("#accountSetting").slideUp("fast");
+            $("#safeSetting").slideUp("fast");
+            $("#personalInfo").slideUp("fast");
+        },
 
         setCookie:function (cname,cvalue,exdays) {
             var d = new Date();
@@ -47,7 +102,9 @@ var vm=new Vue({
 
     mounted(){
         this.welcomeWord = this.getCookieValue("welcomeWord");
-        this.showID = this.getCookieValue("concreteShowInfoID");
+
+        var userID = this.getCookieValue("userID");
+        console.log(userID);
 
         if(this.getCookieValue('username')!=""){
             document.getElementById("loginBT").style.display = "none";
@@ -59,7 +116,33 @@ var vm=new Vue({
             document.getElementById("logOutBT").style.display = "none";
         }
 
+        this.$http.get("http://localhost:8080/user/getUserPOByUserID",{
+            params:{
+                userID:userID
+            }
+        }).then(function (response) {
+            if(response.data.errorCode==0) {
+                this.user = response.data.data;
+            }else{
+                alert("get user info wrong");
+            }
+        }).catch(function (error) {
+            alert("获取信息失败，请刷新重试！");
+        });
 
+        this.$http.get("http://localhost:8080/order/getRecentOrders",{
+            params:{
+                userID:userID
+            }
+        }).then(function (response) {
+            if(response.data.errorCode==0) {
+                this.recentOrders = response.data.data;
+            }else{
+                alert("get recent orders wrong");
+            }
+        }).catch(function (error) {
+            alert("获取信息失败，请刷新重试！");
+        });
 
     }
 
