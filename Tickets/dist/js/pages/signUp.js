@@ -19,6 +19,7 @@ var vm=new Vue({
             venueID:'',
             venueName:'',
             city:'',
+            password:'',
             venueAddress:'',
             area:'',
             row:'',
@@ -77,10 +78,18 @@ var vm=new Vue({
         },
 
         venueSignUp:function () {
+
+            var password=  $('#venuePassword').val();
+            var confirmPassword = $('#confirmVenuePassword').val();
+            if(password!=confirmPassword) {
+                alert("密码输入不一致！");
+                return;
+            }
             const self = this;
             this.$http.post("http://localhost:8080/venue/regVenue",{
                 venueName:this.venue.venueName,
                 venueID:'',
+                password:this.venue.password,
                 city:this.venue.city,
                 venueAddress:this.venue.venueAddress,
                 area:this.venue.area,

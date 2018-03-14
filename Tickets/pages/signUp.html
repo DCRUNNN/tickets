@@ -73,6 +73,20 @@
                                 </div>
 
                                 <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="venuePassword">登录密码</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="venuePassword" name="venuePassword" placeholder="登录密码" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="confirmVenuePassword">重复密码</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" v-model="venue.password" class="form-control" id="confirmVenuePassword" name="confirmVenuePassword" placeholder="重复登录密码" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
                                     <label class="col-sm-3 control-label" for="city">所在城市</label>
                                     <div class="col-sm-9">
                                         <input type="text" v-model="venue.city" class="form-control" id="city" name="city" placeholder="所在城市" required>

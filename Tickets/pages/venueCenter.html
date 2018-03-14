@@ -126,9 +126,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             服务中心 <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="userCenter.html">个人中心</a></li>
+                            <li><a href="#">个人中心</a></li>
                             <li class="divider"></li>
-                            <li><a href="venueCenter.html">场馆中心</a></li>
+                            <li><a href="#">场馆中心</a></li>
                         </ul>
                     </li>
                     <li>
@@ -156,13 +156,13 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <div class="row">
         <div class="col-md-offset-1 col-md-2">
             <div class="panel-group table-responsive" role="tablist">
-                <h3 class="col-md-offset-2"><a href="userCenter.html">My Center</a></h3>
+                <h3 class="col-md-offset-2"><a href="venueCenter.html">My Center</a></h3>
                 <div class="panel panel-primary leftMenu">
                     <!-- 利用data-target指定要折叠的分组列表 -->
                     <div class="panel-heading" id="collapseListGroupHeading1" data-toggle="collapse" data-target="#collapseListGroup1" role="tab" >
                         <h4 class="">
                             <!--panel-title-->
-                            交易中心
+                            场馆服务
                             <span class="glyphicon glyphicon-chevron-up right"></span>
                         </h4>
                     </div>
@@ -171,18 +171,23 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <ul class="list-group" id="bussinessCenterUL" >
                             <li class="list-group-item" @click="getMenuItem($event)">
                                 <!-- 利用data-target指定URL -->
-                                <button class="menu-item-left" data-target="test2.html">
-                                    <span class="glyphicon glyphicon-triangle-right"></span>订单管理
+                                <button class="menu-item-left" data-target="">
+                                    <span class="glyphicon glyphicon-triangle-right"></span>发布计划
                                 </button>
                             </li>
                             <li class="list-group-item" @click="getMenuItem($event)">
                                 <button class="menu-item-left">
-                                    <span class="glyphicon glyphicon-triangle-right"></span>我的优惠券
+                                    <span class="glyphicon glyphicon-triangle-right"></span>场馆信息
                                 </button>
                             </li>
                             <li class="list-group-item" @click="getMenuItem($event)">
                                 <button class="menu-item-left">
-                                    <span class="glyphicon glyphicon-triangle-right"></span>我的积分
+                                    <span class="glyphicon glyphicon-triangle-right"></span>现场购票
+                                </button>
+                            </li>
+                            <li class="list-group-item" @click="getMenuItem($event)">
+                                <button class="menu-item-left">
+                                    <span class="glyphicon glyphicon-triangle-right"></span>检票登记
                                 </button>
                             </li>
                             <li class="list-group-item" @click="getMenuItem($event)">
@@ -206,12 +211,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <ul class="list-group" id="accountCenterUL">
                             <li class="list-group-item" @click="getMenuItem($event)">
                                 <button class="menu-item-left">
-                                    <span class="glyphicon glyphicon-triangle-right"></span>收货地址
+                                    <span class="glyphicon glyphicon-triangle-right"></span>修改信息
                                 </button>
                             </li>
                             <li class="list-group-item" @click="getMenuItem($event)">
                                 <button class="menu-item-left">
-                                    <span class="glyphicon glyphicon-triangle-right"></span>账号设置
+                                    <span class="glyphicon glyphicon-triangle-right"></span>操作统计
                                 </button>
                             </li>
                             <li class="list-group-item" @click="getMenuItem($event)">
@@ -233,37 +238,30 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
             <div class="content">
 
-                <div class="panel panel-success" id="userCenterIndexPanel1">
+                <div class="panel panel-success" id="venueCenterIndexPanel1">
                     <div class="panel-body">
 
                         <div class="row">
                             <div class="col-md-offset-1 col-md-3">
-                                <img src="../dist/images/client_3.jpg" class="img-rounded img-thumbnail	" alt="Cinque Terre">
+                                <img src="../dist/images/client_2.jpg" class="img-rounded img-thumbnail	" alt="Cinque Terre">
                             </div>
 
                             <div class="col-md-8">
-                                <br>
+                                <br><br>
                                 <div class="row">
                                     <span>您好！</span>
-                                    <label v-text="user.username"></label>
+                                    <label v-text="venue.venueName"></label>
                                 </div>
                                 <br>
                                 <div class="row">
-                                    <span >钱包：</span>
-                                    <label v-text="user.balance" ></label>
+                                    <span >地址：</span>
+                                    <label v-text="venue.address" ></label>
                                 </div>
                                 <br>
                                 <div class="row">
-                                    <span>积分：</span>
-                                    <label v-text="user.memberPoints"></label>
+                                    <span>简介：</span>
+                                    <label v-text="venue.venueInfo"></label>
                                 </div>
-                                <br>
-                                <div class="row">
-                                    <span>邮箱：</span>
-                                    <label v-text="user.email"></label>
-                                </div>
-
-
                             </div>
                         </div>
 
@@ -272,14 +270,14 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
                 <HR style="color:#000000;size:1px" width="100%" >
 
-                <div class="panel panel-success" id="userCenterIndexPanel2">
+                <div class="panel panel-success" id="venueCenterIndexPanel2">
                     <div class="panel-body">
                         <table class="table table-bordered" style="text-align:center;font-size: 16px;color: #3c3d41">
                             <caption>近期订单列表</caption>
                             <thead>
                             <tr>
                                 <th style="text-align:center;font-size: 16px;color: #3c3d41">项目名称</th>
-                                <th style="text-align:center;font-size: 16px;color: #3c3d41">票价</th>
+                                <th style="text-align:center;font-size: 16px;color: #3c3d41">购买者用户名</th>
                                 <th style="text-align:center;font-size: 16px;color: #3c3d41">数量</th>
                                 <th style="text-align:center;font-size: 16px;color: #3c3d41">订单金额</th>
                                 <th style="text-align:center;font-size: 16px;color: #3c3d41">交易状态</th>
@@ -289,7 +287,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             <tbody>
                             <tr v-for="recentOrder in recentOrders">
                                 <td v-text="recentOrder.showName"></td>
-                                <td v-text="recentOrder.unitPrice"></td>
+                                <td v-text="recentOrder.username"></td>
                                 <td v-text="recentOrder.ticketsAmount"></td>
                                 <td v-text="recentOrder.totalPrice"></td>
                                 <td v-text="recentOrder.orderState"></td>
@@ -303,275 +301,229 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 </div>
 
 
-                <div id="orderManage" class="" style="display: none;">
+                <div id="releasePlan" class="" style="display: none;">
+                    <form class="col-sm-offset-3 col-sm-4 form-horizontal" id="showReleaseForm" role="form">
+                        <fieldset>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="releaseShowCategory">项目类型</label>
+                                <div class="col-sm-9">
+                                    <input type="text" v-model="releaseShow.category" class="form-control" id="releaseShowCategory" name="releaseShowCategory" placeholder="项目类型" required>
+                                </div>
+                            </div>
 
-                    <div class="row">
-                        <select>
-                            <option value ="volvo">全部订单</option>
-                            <option value ="saab">待支付</option>
-                            <option value="opel">已支付</option>
-                            <option value="audi">已完成</option>
-                        </select>
-                        <select>
-                            <option value ="volvo">近三个月订单</option>
-                            <option value ="saab">全部订单</option>
-                        </select>
-                    </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="releaseShowName">项目名称</label>
+                                <div class="col-sm-9">
+                                    <input type="text" v-model="releaseShow.showName" class="form-control" id="releaseShowName" name="releaseShowName" placeholder="项目名称" required>
+                                </div>
+                            </div>
 
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="releaseShowPerformer">演出者</label>
+                                <div class="col-sm-9">
+                                    <input type="text" v-model="releaseShow.performer" class="form-control" id="releaseShowPerformer" name="releaseShowPerformer" placeholder="演出者" required>
+                                </div>
+                            </div>
 
-                    <table class="table table-bordered" style="text-align:center;font-size: 16px;color: #3c3d41">
-                        <caption>我的订单</caption>
-                        <thead>
-                        <tr>
-                            <th style="text-align:center;font-size: 16px;color: #3c3d41">项目名称</th>
-                            <th style="text-align:center;font-size: 16px;color: #3c3d41">票价</th>
-                            <th style="text-align:center;font-size: 16px;color: #3c3d41">数量</th>
-                            <th style="text-align:center;font-size: 16px;color: #3c3d41">订单金额</th>
-                            <th style="text-align:center;font-size: 16px;color: #3c3d41">交易状态</th>
-                            <th style="text-align:center;font-size: 16px;color: #3c3d41">订单日期</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr v-for="recentOrder in recentOrders">
-                            <td v-text="recentOrder.showName"></td>
-                            <td v-text="recentOrder.unitPrice"></td>
-                            <td v-text="recentOrder.ticketsAmount"></td>
-                            <td v-text="recentOrder.totalPrice"></td>
-                            <td v-text="recentOrder.orderState"></td>
-                            <td v-text="recentOrder.orderDate"></td>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="releaseShowPhoto" >项目图片</label>
+                                <div class="col-sm-9">
+                                    <input type="text" v-model="releaseShow.photoSrc" class="form-control" id="releaseShowPhoto" name="releaseShowPhoto" placeholder="项目图片" required>
+                                    <!--<input type="file" class="form-control" id="releaseShowPhoto" name="releaseShowPhoto" placeholder="项目图片" required>-->
+                                </div>
+                            </div>
 
-                        </tr>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="releaseShowDate">项目日期</label>
+                                <div class="col-sm-9">
+                                    <input type="text" v-model="releaseShow.showDate" class="form-control" id="releaseShowDate" name="releaseShowDate" placeholder="项目日期" required>
+                                </div>
+                            </div>
 
-                        </tbody>
-                    </table>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="releaseShowPrice">项目价格</label>
+                                <div class="col-sm-9">
+                                    <input type="text" v-model="releaseShow.price" class="form-control" id="releaseShowPrice" name="releaseShowPrice" placeholder="项目价格" required>
+                                    <span class="help-block">
+                                            提示：如票价有380,580,880三种，请填写380/580/880
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="releaseShowDescription">项目描述</label>
+                                <div class="col-sm-9">
+                                    <input type="text" v-model="releaseShow.description" class="form-control" id="releaseShowDescription" name="releaseShowDescription" placeholder="项目描述" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="releaseShowArea">场馆区域</label>
+                                <div class="col-sm-9">
+                                    <input type="text" v-model="releaseShowArea" class="form-control" id="releaseShowArea" name="releaseShowArea" placeholder="场馆区域" required>
+                                    <span class="help-block">
+                                            提示：如有A、B、C三个区域，每个区域各自有3,3,4,排，请填写A-3/B-3/C-4
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="releaseShowRow">最大排数</label>
+                                <div class="col-sm-9">
+                                    <input type="text" v-model="releaseShowRow" class="form-control" id="releaseShowRow" name="releaseShowRow" placeholder="最大排数" required>
+                                    <span class="help-block">
+                                            提示：一共有多少排，请填写数字
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="releaseShowSeat">每排各有多少个座位</label>
+                                <div class="col-sm-9">
+                                    <input type="text" v-model="releaseShowSeat" class="form-control" id="releaseShowSeat" name="releaseShowSeat" placeholder="每排座位数，以/隔开" required>
+                                    <span class="help-block">
+                                            提示：如共3排，从低到高每排各有10,20,30个座位，请填写10/20/30
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <button type="button" class="btn btn-default btn-lg btn-block" @click="useDefaultSeat()">使用场馆默认座位设定</button>
+                                    <button type="button" class="btn btn-default btn-lg btn-block" @click="releaseShowPlan()">发布计划</button>
+                                    <!--<a href="index.html"><button type="button" style="opacity: 0.5;" class="btn btn-default btn-lg btn-block">返回</button></a>-->
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+
 
 
                 </div>
 
-                <div id="myCoupon" class="" style="display: none">
+                <div id="venueInfo" class="" style="display: none">
 
-                    <ul id="myTab" class="nav nav-tabs">
-                        <li class="active">
-                            <a href="#nonUseCoupon" data-toggle="tab">
-                                未使用优惠券
-                            </a>
-                        </li>
-                        <li><a href="#ExpiredCoupon" data-toggle="tab">已过期优惠券</a></li>
-                        <li>
-                            <a href="#couponConsumptionRecord"
-                               data-toggle="tab">优惠券消费记录
-                            </a>
-                        </li>
-                    </ul>
-                    <div id="myTabContent" class="tab-content">
-                        <div class="tab-pane fade in active" id="nonUseCoupon">
-                            <table class="table table-bordered" style="text-align:center;font-size: 16px;color: #3c3d41">
-                                <thead>
-                                <tr>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">优惠券号码</th>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">名称</th>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">优惠说明</th>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">适用范围</th>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">有效期</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr v-for="recentOrder in recentOrders">
-                                    <td v-text="recentOrder.showName"></td>
-                                    <td v-text="recentOrder.unitPrice"></td>
-                                    <td v-text="recentOrder.ticketsAmount"></td>
-                                    <td v-text="recentOrder.totalPrice"></td>
-                                    <td v-text="recentOrder.orderState"></td>
-                                </tr>
+                    <div class="panel panel-success">
+                        <div class="panel-body">
 
-                                </tbody>
-                            </table>
+                            <div class="row">
+
+                                <div class="col-md-8">
+                                    <br>
+                                    <div class="row">
+                                        <span>场馆名称</span>
+                                        <label v-text="venue.venueName"></label>
+                                    </div>
+                                    <br>
+                                    <div class="row">
+                                        <span >所在城市</span>
+                                        <label v-text="venue.city" ></label>
+                                    </div>
+                                    <br>
+                                    <div class="row">
+                                        <span>场馆地址</span>
+                                        <label v-text="venue.address"></label>
+                                    </div>
+                                    <br>
+                                    <div class="row">
+                                        <span>场馆区域</span>
+                                        <label v-text="venue.area"></label>
+                                    </div>
+                                    <br>
+                                    <div class="row">
+                                        <span>最大排数</span>
+                                        <label v-text="venue.row"></label>
+                                    </div>
+                                    <br>
+
+                                    <div class="row">
+                                        <span>座位分布</span>
+                                        <label v-text="venue.seat"></label>
+                                    </div>
+                                    <br>
+
+                                    <div class="row">
+                                        <span>场馆介绍</span>
+                                        <label v-text="venue.venueInfo"></label>
+                                    </div>
+                                    <br>
+
+                                    <div class="row">
+                                        <span>注册日期</span>
+                                        <label v-text="venue.regDate"></label>
+                                    </div>
+                                    <br>
+
+                                    <div class="row">
+                                        <span>盈利情况</span>
+                                        <label v-text="venue.income"></label>
+                                    </div>
+
+
+                                </div>
+                            </div>
 
                         </div>
-                        <div class="tab-pane fade" id="ExpiredCoupon">
-                            <table class="table table-bordered" style="text-align:center;font-size: 16px;color: #3c3d41">
-                                <thead>
-                                <tr>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">优惠券号码</th>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">名称</th>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">优惠说明</th>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">适用范围</th>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">有效期</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr v-for="recentOrder in recentOrders">
-                                    <td v-text="recentOrder.showName"></td>
-                                    <td v-text="recentOrder.unitPrice"></td>
-                                    <td v-text="recentOrder.ticketsAmount"></td>
-                                    <td v-text="recentOrder.totalPrice"></td>
-                                    <td v-text="recentOrder.orderState"></td>
-                                </tr>
-
-                                </tbody>
-                            </table>
-
-                        </div>
-                        <div class="tab-pane fade" id="couponConsumptionRecord">
-                            <table class="table table-bordered" style="text-align:center;font-size: 16px;color: #3c3d41">
-                                <thead>
-                                <tr>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">优惠券号码</th>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">名称</th>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">优惠说明</th>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">适用范围</th>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">有效期</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr v-for="recentOrder in recentOrders">
-                                    <td v-text="recentOrder.showName"></td>
-                                    <td v-text="recentOrder.unitPrice"></td>
-                                    <td v-text="recentOrder.ticketsAmount"></td>
-                                    <td v-text="recentOrder.totalPrice"></td>
-                                    <td v-text="recentOrder.orderState"></td>
-                                </tr>
-
-                                </tbody>
-                            </table>
-                        </div>
-
                     </div>
+
+
                 </div>
 
-                <div id="memberPoint" class="" style="display: none">
+                <div id="spotPurchase" class="" style="display: none">
 
-                    <div class="well">
-                       <span class="label label-info" style="font-size: 12px">积分总计:</span> <samp style="font-size: 20px;color: red"  v-text="user.memberPoints"></samp>
-                    </div>
-
-                    <ul id="myMemberPointsTab" class="nav nav-tabs">
-                        <li class="active">
-                            <a href="#getCouponRecord" data-toggle="tab">
-                                获取记录
-                            </a>
-                        </li>
-                        <li><a href="#useCouponRecord" data-toggle="tab">消耗记录</a></li>
-
-                    </ul>
-                    <div id="myMemberPointsTabContent" class="tab-content">
-                        <div class="tab-pane fade in active" id="getCouponRecord">
-                            <table class="table table-bordered" style="text-align:center;font-size: 16px;color: #3c3d41">
-                                <thead>
-                                <tr>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">交易号</th>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">日期</th>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">项目</th>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">来源</th>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">积分数</th>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">状态</th>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">过期日</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr v-for="recentOrder in recentOrders">
-                                    <td v-text="recentOrder.showName"></td>
-                                    <td v-text="recentOrder.unitPrice"></td>
-                                    <td v-text="recentOrder.ticketsAmount"></td>
-                                    <td v-text="recentOrder.totalPrice"></td>
-                                    <td v-text="recentOrder.orderState"></td>
-                                    <td v-text="recentOrder.totalPrice"></td>
-                                    <td v-text="recentOrder.orderState"></td>
-                                </tr>
-
-                                </tbody>
-                            </table>
-
-                        </div>
-                        <div class="tab-pane fade" id="useCouponRecord">
-                            <table class="table table-bordered" style="text-align:center;font-size: 16px;color: #3c3d41">
-                                <thead>
-                                <tr>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">交易号</th>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">日期</th>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">项目</th>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">类型</th>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">积分数</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr v-for="recentOrder in recentOrders">
-                                    <td v-text="recentOrder.showName"></td>
-                                    <td v-text="recentOrder.unitPrice"></td>
-                                    <td v-text="recentOrder.ticketsAmount"></td>
-                                    <td v-text="recentOrder.totalPrice"></td>
-                                    <td v-text="recentOrder.orderState"></td>
-                                </tr>
-                                </tbody>
-                            </table>
-
-                        </div>
-
-
-                    </div>
                 </div>
 
-                <div id="myStatistics" class="" style="display: none">
+                <div id="checkAndRegister" class="" style="display: none">
+
+                    <p>这里是检票登记</p>
+                </div>
+
+                <div id="venueStatistics" class="" style="display: none">
 
                     <p>这里是统计信息</p>
                 </div>
 
-                <div id="receivingAddress" class="" style="display: none">
-
-                    <div class="panel panel-success">
-                        <div class="panel-body">
-                            <div class="row">
-                                <span v-text="user.username"></span>
-                            </div>
-                            <br>
-                            <div class="row">
-                                <span v-text="user.phoneNumber"></span>
-                            </div>
-                            <br>
-                            <div class="row">
-                                <span v-text="user.address"></span>
-                                <span v-text="user.email"></span>
-                            </div>
-                            <br>
-                            <div class="row">
-                                <button type="button" class="btn btn-default btn-sm">修改</button>
-                                <button type="button" class="btn btn-default btn-sm">删除</button>
-                            </div>
-
-                        </div>
-                    </div>
-
-                </div>
-
-                <div id="accountSetting" class="" style="display: none">
+                <div id="modifyVenueInfo" class="" style="display: none">
 
                     <section class="panel" id="editInfoSection">
 
                         <div class="panel-body bio-graph-info">
-                            <h2>修改个人信息</h2> <br>
+                            <h2>修改场馆信息</h2> <br>
                             <form class="form-horizontal" role="form">
                                 <div class="form-group">
-                                    <label  class="col-lg-2 control-label">用户名</label>
+                                    <label  class="col-lg-2 control-label">场馆名称</label>
                                     <div class="col-lg-6">
-                                        <input type="text" class="form-control" id="modify_username" placeholder="" required>
+                                        <input type="text" v-model="modifyVenueName" class="form-control" id="modify_venueName" placeholder="" required>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label  class="col-lg-2 control-label">电话</label>
+                                    <label  class="col-lg-2 control-label">地址</label>
                                     <div class="col-lg-6">
-                                        <input type="text" class="form-control" id="modify_phoneNumber" placeholder="" required>
+                                        <input type="text"  v-model="modifyVenueAddress" class="form-control" id="modify_venueAddress" placeholder="" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label  class="col-lg-2 control-label">场馆简介</label>
+                                    <div class="col-lg-6">
+                                        <input type="text"  v-model="modifyUserDescription" class="form-control" id="modify_venueInfo" placeholder="" required>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="col-lg-offset-2 col-lg-10">
-                                        <button type="button" class="btn btn-success" @click.prevent="modifyUserInfo(user.userID)">保存</button>
+                                        <button type="button" class="btn btn-success" @click.prevent="modifyVenueInfo(venue.venueID)">提交</button>
                                         <button type="button" class="btn btn-default">取消</button>
                                     </div>
                                 </div>
                             </form>
                         </div>
                     </section>
+
+                </div>
+
+                <div id="operationStatistics" class="" style="display: none">
+
 
                 </div>
 
@@ -600,7 +552,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 </div>
                                 <div class="form-group">
                                     <div class="col-lg-offset-3 col-lg-9">
-                                        <button type="button" class="btn btn-success" @click="modifyUserPassword(user.userID)">保存</button>
+                                        <button type="button" class="btn btn-success" @click="modifyVenuePassword(venue.venueID)">保存</button>
                                         <button type="button" class="btn btn-default">取消</button>
                                     </div>
                                 </div>
@@ -649,7 +601,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script src="../resources/vue/vue.js"></script>
 <script src="../resources/vue-resource/vue-resource.js"></script>
 
-<script src="../dist/js/pages/userCenter.js"></script>
+<script src="../dist/js/pages/venueCenter.js"></script>
 
 
 <script type="text/javascript" src="../dist/js/wwwnet.js"></script>
@@ -668,13 +620,13 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         });
     });
 
-//    $("ul#bussinessCenterUL").on("click","li",function(){      //只需要找到你点击的是哪个ul里面的就行
-//        alert($(this).text());
-//    });
-//
-//    $("ul#accountCenterUL").on("click","li",function(){      //只需要找到你点击的是哪个ul里面的就行
-//        alert($(this).text());
-//    });
+    //    $("ul#bussinessCenterUL").on("click","li",function(){      //只需要找到你点击的是哪个ul里面的就行
+    //        alert($(this).text());
+    //    });
+    //
+    //    $("ul#accountCenterUL").on("click","li",function(){      //只需要找到你点击的是哪个ul里面的就行
+    //        alert($(this).text());
+    //    });
 </script>
 
 

@@ -3,6 +3,7 @@ var vm=new Vue({
     data:{
         welcomeWord:'',
         user:[],
+        venue:[],
         guessYouLikes:[],
         todayRecommends:[],
         cityConcerts:[],
@@ -35,10 +36,36 @@ var vm=new Vue({
             });
         },
 
+        venueLogin:function () {
+            const self = this;
+            this.$http.post("http://localhost:8080/venue/login", {
+                venueID: $('#loginVenueID').val(),
+                password: $('#loginVenuePassword').val()
+            }).then(function (response) {
+                console.log(response);
+                if (response.data.errorCode == 0) {
+                    self.venue = response.data.data;
+                    var venueName = response.data.data.venueName;
+                    this.setCookie('venueName', self.venue.venueName, 1);
+                    this.setCookie('venueID', self.venue.venueID, 1);
+                    this.setCookie('welcomeWord', "欢迎您！"+self.venue.venueName, 1);
+                    self.welcomeWord = "欢迎您！" + venueName;
+                    window.location.href = "../pages/index.html";
+                } else if(response.data.errorCode==-1) {
+                    alert("账户不存在！");
+                }else if(response.data.errorCode == 2){
+                    alert("账号密码不匹配！");
+                }
+            }).catch(function (error) {
+                console.log(error);
+                alert("发生了未知错误");
+            });
+        },
+
         logout:function () {
             this.deleteCookie('username');
+            this.deleteCookie('venueName');
             this.deleteCookie('welcomeWord');
-
         },
 
         changeFirstPanel:function (event) {
@@ -126,7 +153,7 @@ var vm=new Vue({
 
     mounted(){
         this.welcomeWord = this.getCookieValue("welcomeWord");
-        if(this.getCookieValue('username')!=""){
+        if(this.getCookieValue('username')!=""||this.getCookieValue("venueName")!=""){
             document.getElementById("loginBT").style.display = "none";
             document.getElementById("signUpBT").style.display = "none";
             document.getElementById("logOutBT").style.display = "";
