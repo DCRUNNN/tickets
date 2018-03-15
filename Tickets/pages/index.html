@@ -24,7 +24,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <!--fonts-->
 <!--//fonts-->
 <!-- js -->
-<script type="text/javascript" src="../dist/js/jquery.min.js"></script>
+	<script type="text/javascript" src="../dist/js/jquery-3.2.1.min.js"></script>
 <script type="text/javascript">
 
         function AutoSize(Img, maxWidth, maxHeight) {
@@ -87,6 +87,13 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	</script>
 
 
+	<style>
+		.disabled {
+			pointer-events:none; //This makes it not clickable
+		opacity:0.6;         //This grays it out to look disabled
+		}
+	</style>
+
 </head>
 <body>
 
@@ -117,10 +124,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 						<a class="dropdown-toggle" data-toggle="dropdown" href="#">
 							服务中心 <span class="caret"></span>
 						</a>
-						<ul class="dropdown-menu">
-							<li><a href="userCenter.html">个人中心</a></li>
+						<ul class="dropdown-menu" id="serviceCenter">
+							<li id="userCenter"><a href="userCenter.html">个人中心</a></li>
 							<li class="divider"></li>
-							<li><a href="venueCenter.html">场馆中心</a></li>
+							<li id="venueCenter"><a href="venueCenter.html">场馆中心</a></li>
+							<li class="divider"></li>
+							<li id="managerCenter"><a href="managerCenter.html">经理中心</a></li>
 						</ul>
 					</li>
 					<li>
@@ -411,6 +420,14 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	<!--演唱会/体育赛事/话剧歌剧-->
 	<div class="panel panel-success">
 		<div class="panel-body">
+			<br>
+			<h4>我的城市
+				<select id="citySelect" @change="getCityShow">
+					<option v-for="city in allCities" v-text="city" ></option>
+				</select>
+			</h4>
+			<br>
+
 			<ul id="myCityTab" class="nav nav-tabs" @click="changeCityShowPanel($event)">
 				<li class="active"><a href="#cityConcert" data-toggle="tab">演唱会</a></li>
 				<li><a href="#citySports" data-toggle="tab">体育赛事</a></li>
@@ -453,7 +470,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 					</div>
 
 
-
 				</div>
 
 				<div class="tab-pane fade" id="cityDramaOpera">
@@ -482,7 +498,19 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 					<h3 class="panel-title">1F 体育赛事</h3>
 				</div>
 				<div class="panel-body">
-					这里是体育赛事
+					<div class="row">
+						<ul v-for="allSport in allSports">
+							<li>
+								<div class="col-md-3">
+									<a href="showInfo.html" class="thumbnail" @click="showConcreteShowInfo(allSport.showID)">
+										<img v-bind:src="allSport.photoSrc" class="img-rounded" alt="图片路径" align="center" onload="DrawImage(this,200,200)">
+										<p style="font-size:15px;font-weight:bold;text-align: center;color: black">{{allSport.showName}}</p>
+										<p style="font-size:14px">票价：{{allSport.price}}</p>
+									</a>
+								</div>
+							</li>
+						</ul>
+					</div>
 				</div>
 			</div>
 			<!--</div>-->
@@ -493,7 +521,19 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 					<span class="panel-title">2F 歌手演出</span>
 				</div>
 				<div class="panel-body">
-					这里是歌手演出
+					<div class="row">
+						<ul v-for="allConcert in allConcerts">
+							<li>
+								<div class="col-md-3">
+									<a href="showInfo.html" class="thumbnail" @click="showConcreteShowInfo(allConcert.showID)">
+										<img v-bind:src="allConcert.photoSrc" class="img-rounded" alt="图片路径" align="center" onload="DrawImage(this,200,200)">
+										<p style="font-size:15px;font-weight:bold;text-align: center;color: black">{{allConcert.showName}}</p>
+										<p style="font-size:14px">票价：{{allConcert.price}}</p>
+									</a>
+								</div>
+							</li>
+						</ul>
+					</div>
 				</div>
 			</div>
 			<!--</div>-->
@@ -504,7 +544,19 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 					<span class="panel-title">3F 戏剧达人</span>
 				</div>
 				<div class="panel-body">
-					这里是戏剧达人
+					<div class="row">
+						<ul v-for="allDramaOpera in allDramaOperas">
+							<li>
+								<div class="col-md-3">
+									<a href="showInfo.html" class="thumbnail" @click="showConcreteShowInfo(allDramaOpera.showID)">
+										<img v-bind:src="allDramaOpera.photoSrc" class="img-rounded" alt="图片路径" align="center" onload="DrawImage(this,200,200)">
+										<p style="font-size:15px;font-weight:bold;text-align: center;color: black">{{allDramaOpera.showName}}</p>
+										<p style="font-size:14px">票价：{{allDramaOpera.price}}</p>
+									</a>
+								</div>
+							</li>
+						</ul>
+					</div>
 				</div>
 			</div>
 			<!--</div>-->
@@ -515,7 +567,19 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 					<a class="panel-title">4F 古典舞蹈</a>
 				</div>
 				<div class="panel-body">
-					这里是古典舞蹈
+					<div class="row">
+						<ul v-for="allDance in allDances">
+							<li>
+								<div class="col-md-3">
+									<a href="showInfo.html" class="thumbnail" @click="showConcreteShowInfo(allDance.showID)">
+										<img v-bind:src="allDance.photoSrc" class="img-rounded" alt="图片路径" align="center" onload="DrawImage(this,200,200)">
+										<p style="font-size:15px;font-weight:bold;text-align: center;color: black">{{allDance.showName}}</p>
+										<p style="font-size:14px">票价：{{allDance.price}}</p>
+									</a>
+								</div>
+							</li>
+						</ul>
+					</div>
 				</div>
 			</div>
 			<!--</div>-->

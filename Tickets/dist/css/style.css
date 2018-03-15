@@ -263,20 +263,7 @@ span.active.uls-trigger {
 .selectregion {
     float: left;
 }
-.btn-primary {
-    color: #6D6D6D;
-    background-color: #FDFDFD;
-    border-color: #FDFDFD;
-    padding: 0 0 0 30px;
-    margin-top: 26px;
-	font-size: 14px;
-}
-.btn-primary.active, .btn-primary.focus, .btn-primary:active, .btn-primary:focus, .btn-primary:hover, .open>.dropdown-toggle.btn-primary {
-    color: #6D6D6D;
-    background-color: #FDFDFD;
-    border-color: #FDFDFD;
-	outline: none;
-}
+
 /*-- focus --*/
 .categories {
     padding: 40px 0;
@@ -3263,12 +3250,13 @@ a#myTabDrop1,a#profile-tab,a#home-tab {
 div#home {
     padding: 1em 0 0;
 }
-.table td, .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
-    padding: 15px !important;
-    font-size: 0.85em;
-    color: #999;
-    border-top: none !important;
-}
+/*.table td, .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {*/
+    /*padding: 15px !important;*/
+    /*font-size: 0.85em;*/
+    /*color: #999;*/
+    /*border-top: none !important;*/
+/*}*/
+
 .btn {
     border-radius: 0px;
     -webkit-border-radius: 0px;
@@ -3301,26 +3289,14 @@ div#home {
 .control3{
 	margin:0 0 1em 0;
 }
-.btn-warning {
-  color: #fff;
-  background-color:rgb(6, 217, 149);
-  border-color:rgb(6, 217, 149);
-  padding:8.5px 12px;
-}
+
 .tag_01{
   margin-right:5px;
 }
 .tag_02{
   margin-right:3px;
 }
-.btn-warning:hover{
-  background-color:rgb(3, 197, 135);
-  border-color:rgb(3, 197, 135);
-}
-.btn-success:hover{
-    border-color: #8BC34A !important;
-    background: #8BC34A !important;
-}
+
 .control2{
   height:253px;
 }
@@ -3371,6 +3347,7 @@ button.note-color-btn {
 label {
     font-weight: 500;
 }
+
 .badge-primary {
   background-color: #03a9f4;
 }
@@ -4060,6 +4037,7 @@ label {
 	}
 	/*--typo--*/
 }
+
 @media (max-width: 480px){
 	.main-banner,.banner {
 		min-height: 180px;
@@ -4817,7 +4795,7 @@ label {
 	}
 	.panel-body p {
 		padding: 0;
-		margin-left: 5px;
+		margin-left: 0;
 	}
 	input[type=file] {
 		width: 100%;

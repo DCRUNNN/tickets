@@ -146,6 +146,11 @@ var vm=new Vue({
 
     mounted(){
         this.welcomeWord = this.getCookieValue("welcomeWord");
+        if(this.welcomeWord==""){
+            alert("请先登录！");
+            window.location.href = "../pages/login.html";
+        }
+
 
         var userID = this.getCookieValue("userID");
         console.log(userID);

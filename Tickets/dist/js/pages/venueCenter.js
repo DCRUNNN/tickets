@@ -47,6 +47,7 @@ var vm=new Vue({
         },
 
         modifyVenueInfo:function (venueID) {
+
             var preVenue={
                 venueName:this.venue.venueName,
                 venueID:venueID,
@@ -67,6 +68,7 @@ var vm=new Vue({
                 preVenuePO:preVenue,
                 state:'待审核'
             }).then(function (response) {
+                console.log(response.data);
                 if(response.data.errorCode==0) {
                     alert("已提交修改申请！待经理审核！");
                 }else{
@@ -134,7 +136,12 @@ var vm=new Vue({
 
                 this.allPanelUp();
                 $("#modifyVenueInfo").show();
+                this.modifyVenueName = this.venue.venueName;
+                this.modifyVenueAddress = this.venue.address;
+                this.modifyUserDescription = this.venue.venueInfo;
+
                 $("#modifyVenueInfo").slideDown("slow");
+
             }else if(selectedItem=="操作统计"){
                 this.allPanelUp();
                 $("#operationStatistics").show();
@@ -182,6 +189,10 @@ var vm=new Vue({
 
     mounted(){
         this.welcomeWord = this.getCookieValue("welcomeWord");
+        if(this.welcomeWord==""){
+            alert("请先登录！");
+            window.location.href = "../pages/login.html";
+        }
 
         var venueID = this.getCookieValue("venueID");
 

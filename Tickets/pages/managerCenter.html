@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tickets</title>
+    <link rel="stylesheet" href="../dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../dist/css/bootstrap-select.css">
+    <link href="../dist/css/style.css" rel="stylesheet" type="text/css" media="all" />
+
+    <link href="../dist/css/memenu.css" rel="stylesheet" type="text/css"  />
+
+    <link rel="stylesheet" type="text/css" href="../dist/css/nav.css" />
+
+    <link rel="stylesheet" href="../dist/css/font-awesome.min.css" />
+
+    <link href="../dist/css/jquery.uls.css" rel="stylesheet"/>
+    <!--<link href="../dist/css/demo_table.css" rel="stylesheet"/>-->
+
+    <!-- for-mobile-apps -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="Resale Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template,
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony Ericsson, Motorola web design" />
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <!-- //for-mobile-apps -->
+    <!--fonts-->
+    <!--//fonts-->
+    <!-- js -->
+
+
+
+    <style>
+        .panel-group{max-height:770px;overflow: auto;}
+        .leftMenu{margin:10px;margin-top:5px;}
+        .leftMenu .panel-heading{font-size:14px;padding-left:20px;height:36px;line-height:36px;color:white;position:relative;cursor:pointer;}/*转成手形图标*/
+        .leftMenu .panel-heading span{position:absolute;right:10px;top:12px;}
+        .leftMenu .menu-item-left{padding: 2px; background: transparent; border:1px solid transparent;border-radius: 6px;}
+        .leftMenu .menu-item-left:hover{background:#C4E3F3;border:1px solid #1E90FF;}
+    </style>
+
+
+</head>
+<body>
+
+<div id="container">
+
+    <!--<HR style="color:#000000;size:1px" width="100%" >-->
+
+    <div class="header">
+        <div class="container">
+            <div class="logo">
+                <a href="index.html"><span>My</span>Tickets</a>
+            </div>
+
+            <div class="pull-right" style="margin-top: 3%">
+                <ul class="nav nav-pills">
+                    <li class="active">
+                        <a id="loginBT" href="login.html" >登录</a>
+                    </li>
+                    <li>
+                        <a id="signUpBT" href="signUp.html">注册</a>
+                    </li>
+                    <li>
+                        <a id="logOutBT"  @click="logout()">退出</a>
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            服务中心 <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="userCenter.html">个人中心</a></li>
+                            <li class="divider"></li>
+                            <li><a href="venueCenter.html">场馆中心</a></li>
+                            <li class="divider"></li>
+                            <li><a href="managerCenter.html">经理中心</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a v-text="welcomeWord" style="color: blueviolet"></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="h_menu4">
+        <ul class="memenu skyblue">
+            <li><a class="color1" href="#">戏剧</a>
+            </li>
+            <li><a class="color2" href="#">体育</a>
+            </li>
+            <li><a class="color8" href="#">亲子</a></li>
+            <li><a class="color8" href="#">摇滚</a></li>
+            <li><a class="color8" href="#">舞蹈古典</a></li>
+        </ul>
+    </div>
+
+    <br><br><br>
+
+    <div class="row">
+        <div class="col-md-offset-1 col-md-2">
+            <div class="panel-group table-responsive" role="tablist">
+                <h3 class="col-md-offset-2"><a href="venueCenter.html">My Center</a></h3>
+                <div class="panel panel-primary leftMenu">
+                    <!-- 利用data-target指定要折叠的分组列表 -->
+                    <div class="panel-heading" id="collapseListGroupHeading1" data-toggle="collapse" data-target="#collapseListGroup1" role="tab" >
+                        <h4 class="">
+                            <!--panel-title-->
+                            经理服务
+                            <span class="glyphicon glyphicon-chevron-up right"></span>
+                        </h4>
+                    </div>
+                    <!-- .panel-collapse和.collapse标明折叠元素 .in表示要显示出来 -->
+                    <div id="collapseListGroup1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="collapseListGroupHeading1">
+                        <ul class="list-group" id="bussinessCenterUL" >
+                            <li class="list-group-item" @click="getMenuItem($event)">
+                                <!-- 利用data-target指定URL -->
+                                <button class="menu-item-left" data-target="">
+                                    <span class="glyphicon glyphicon-triangle-right"></span>场馆注册申请
+                                </button>
+                            </li>
+                            <li class="list-group-item" @click="getMenuItem($event)">
+                                <button class="menu-item-left">
+                                    <span class="glyphicon glyphicon-triangle-right"></span>场馆修改信息申请
+                                </button>
+                            </li>
+                            <li class="list-group-item" @click="getMenuItem($event)">
+                                <button class="menu-item-left">
+                                    <span class="glyphicon glyphicon-triangle-right"></span>场馆结算
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div><!--panel end-->
+
+                <div class="panel panel-primary leftMenu">
+                    <div class="panel-heading" id="collapseListGroupHeading2" data-toggle="collapse" data-target="#collapseListGroup2" role="tab" >
+                        <h4 class="">
+                            <!--panel-title-->
+                            统计信息
+                            <span class="glyphicon glyphicon-chevron-up right"></span>
+                        </h4>
+                    </div>
+                    <div id="collapseListGroup2" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="collapseListGroupHeading2">
+                        <ul class="list-group" id="accountCenterUL">
+                            <li class="list-group-item" @click="getMenuItem($event)">
+                                <button class="menu-item-left">
+                                    <span class="glyphicon glyphicon-triangle-right"></span>场馆信息统计
+                                </button>
+                            </li>
+                            <li class="list-group-item" @click="getMenuItem($event)">
+                                <button class="menu-item-left">
+                                    <span class="glyphicon glyphicon-triangle-right"></span>会员信息统计
+                                </button>
+                            </li>
+                            <li class="list-group-item" @click="getMenuItem($event)">
+                                <button class="menu-item-left">
+                                    <span class="glyphicon glyphicon-triangle-right"></span>Tickets财务情况
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+
+            <ol class="breadcrumb" >
+                <li><a href="index.html">MyTickets</a></li>
+                <li class="active" id="breadcrumbItem">My Center</li>
+            </ol>
+
+            <div class="content">
+
+                <div class="panel panel-success" style="margin-top: 60px" id="mangerCenterIndexPanel1">
+                    <div class="panel-body">
+
+                        <div class="row">
+                            <div class="col-md-offset-1 col-md-3">
+                                <img src="../dist/images/client_2.jpg" class="img-rounded img-thumbnail	" alt="Cinque Terre">
+                            </div>
+
+                            <div class="col-md-8">
+                                <br><br>
+                                <div class="row">
+                                    <span>您好！</span>
+                                    <label v-text="manager.name"></label>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <span >邮箱：</span>
+                                    <label v-text="manager.email" ></label>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <span>支付比率：</span>
+                                    <label v-text="manager.paymentRatio"></label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <HR style="color:#000000;size:1px" width="100%" >
+
+                <div id="venueRegApplication" class="" style="display: none;">
+                    <div class="panel">
+                        <div class="panel-body">
+                            <table class="table table-bordered table-striped" id="example" style="text-align:center">
+                                <thead>
+                                <tr>
+                                    <th style="text-align:center">场馆名称</th>
+                                    <th style="text-align:center">所在城市</th>
+                                    <th style="text-align:center">地址</th>
+                                    <th style="text-align:center">区域划分</th>
+                                    <th style="text-align:center">状态</th>
+                                    <th style="text-align:center">申请日期</th>
+                                    <th style="text-align:center">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="regApplication in regApplications">
+                                    <td v-text="regApplication.venueName"></td>
+                                    <td v-text="regApplication.city"></td>
+                                    <td v-text="regApplication.venueAddress"></td>
+                                    <td v-text="regApplication.area"></td>
+                                    <td v-text="regApplication.state"></td>
+                                    <td v-text="regApplication.applicationTime"></td>
+                                    <td><button class="btn btn-success" @click.prevent="setDataToRegAppDialog(regApplication.venueID,regApplication.venueName, regApplication.venueAddress , regApplication.area, regApplication.row, regApplication.seat, regApplication.venueInfo)" data-toggle="modal" href="#showRegConcreteInfoModal"><i class="fa fa-edit">查看详情</i></button></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="venueModifyApplication" class="" style="display: none">
+                    <div class="panel">
+                        <div class="panel-body">
+                            <table class="table table-bordered table-striped" id="example2" style="text-align:center">
+                                <thead>
+                                <tr>
+                                    <th style="text-align:center">场馆识别号</th>
+                                    <th style="text-align:center">场馆原名称</th>
+                                    <th style="text-align:center">场馆更改后名称</th>
+                                    <th style="text-align:center">场馆原地址</th>
+                                    <th style="text-align:center">场馆更改后地址</th>
+                                    <th style="text-align:center">场馆原简介</th>
+                                    <th style="text-align:center">场馆更改后简介</th>
+                                    <th style="text-align:center">申请日期</th>
+                                    <th style="text-align:center">状态</th>
+                                    <th style="text-align:center">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="modifyApplication in modifyApplications">
+                                    <td v-text="modifyApplication.venueID"></td>
+                                    <td v-text="modifyApplication.preVenuePO.venueName"></td>
+                                    <td v-text="modifyApplication.postVenuePO.venueName"></td>
+                                    <td v-text="modifyApplication.preVenuePO.address"></td>
+                                    <td v-text="modifyApplication.postVenuePO.address"></td>
+                                    <td v-text="modifyApplication.preVenuePO.venueInfo"></td>
+                                    <td v-text="modifyApplication.postVenuePO.venueInfo"></td>
+                                    <td v-text="modifyApplication.applicationTime"></td>
+                                    <td v-text="modifyApplication.state"></td>
+                                    <td><button class="btn btn-success" @click.prevent="setDataToModifyAppDialog(modifyApplication.venueID,modifyApplication.preVenuePO.venueName,modifyApplication.postVenuePO.venueName,modifyApplication.preVenuePO.address,modifyApplication.postVenuePO.address,modifyApplication.preVenuePO.venueInfo,modifyApplication.postVenuePO.venueInfo)" data-toggle="modal" href="#showModifyConcreteInfoModal"><i class="fa fa-edit">查看详情</i></button></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div id="venuePayment" class="" style="display: none">
+
+                </div>
+
+
+                <div id="venueInfoStatistics" class="" style="display: none">
+
+                    <p>这里是统计信息</p>
+                </div>
+
+                <div id="vipInfoStatistics" class="" style="display: none">
+
+
+                </div>
+
+                <div id="ticketsFinancial" class="" style="display: none">
+
+
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal fade" id="showRegConcreteInfoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h6 class="modal-title">查看详情</h6>
+                </div>
+                <div class="modal-body">
+                    <div class="panel">
+                        <div class="panel-body">
+                            <form class="form-horizontal" role="form">
+                                <div class="form-group">
+                                    <label  class="col-lg-2 control-label">场馆名称</label>
+                                    <div class="col-lg-10">
+                                        <input type="text" class="form-control" id="venueName" name="venueName" placeholder="" readonly="readonly">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label  class="col-lg-2 control-label">场馆地址</label>
+                                    <div class="col-lg-10">
+                                        <input type="text" class="form-control" id="venueAddress" name="venueAddress" placeholder="" readonly="readonly">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label  class="col-lg-2 control-label">场馆区域</label>
+                                    <div class="col-lg-10">
+                                        <input type="text" class="form-control" id="venueArea" name="venueAddress" placeholder="" readonly="readonly">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label  class="col-lg-2 control-label">场馆最大排数</label>
+                                    <div class="col-lg-10">
+                                        <input type="text" class="form-control" id="venueRow" name="venueAddress" placeholder="" readonly="readonly">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label  class="col-lg-2 control-label">场馆座位</label>
+                                    <div class="col-lg-10">
+                                        <input type="text" class="form-control" id="venueSeat" name="venueAddress" placeholder="" readonly="readonly">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label  class="col-lg-2 control-label">场馆简介</label>
+                                    <div class="col-lg-10">
+                                        <div class="well" id="venueInfo">
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <label style="display:none" id="venueIDLabel"></label>
+                                <div class="form-group">
+                                    <div class="col-lg-12">
+                                        <button type="button" class="btn btn-primary btn-lg btn-block" @click="confirmVenueReg()">通过</button>
+                                        <button type="button" class="btn btn-default btn-lg btn-block" @click="rejectVenueReg()">拒绝</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div class="modal fade" id="showModifyConcreteInfoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h6 class="modal-title">查看详情</h6>
+                </div>
+                <div class="modal-body">
+                    <div class="panel">
+                        <div class="panel-body">
+                            <form class="form-horizontal" role="form">
+                                <div class="form-group">
+                                    <label  class="col-lg-2 control-label">场馆识别号</label>
+                                    <div class="col-lg-10">
+                                        <input type="text" class="form-control" id="venueIDLabel2" name="venueIDLabel2" placeholder="" readonly="readonly">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label  class="col-lg-2 control-label">场馆原名称</label>
+                                    <div class="col-lg-10">
+                                        <input type="text" class="form-control" id="preVenueName" name="preVenueName" placeholder="" readonly="readonly">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label  class="col-lg-2 control-label">场馆现名称</label>
+                                    <div class="col-lg-10">
+                                        <input type="text" class="form-control" id="postVenueName" name="postVenueName" placeholder="" readonly="readonly">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label  class="col-lg-2 control-label">场馆原地址</label>
+                                    <div class="col-lg-10">
+                                        <input type="text" class="form-control" id="preVenueAddress" name="preVenueAddress" placeholder="" readonly="readonly">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label  class="col-lg-2 control-label">场馆现地址</label>
+                                    <div class="col-lg-10">
+                                        <input type="text" class="form-control" id="postVenueAddress" name="postVenueAddress" placeholder="" readonly="readonly">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label  class="col-lg-2 control-label">场馆原简介</label>
+                                    <div class="col-lg-10">
+                                        <div class="well" id="preVenueInfo">
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label  class="col-lg-2 control-label">场馆现简介</label>
+                                    <div class="col-lg-10">
+                                        <div class="well" id="postVenueInfo">
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-lg-12">
+                                        <button type="button" class="btn btn-primary btn-lg btn-block" @click="confirmVenueModify()">通过</button>
+                                        <button type="button" class="btn btn-default btn-lg btn-block" @click="rejectVenueModify()">拒绝</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+</div>
+
+
+
+
+</body>
+
+<script type="text/javascript" src="../dist/js/jquery-3.2.1.min.js"></script>
+<!--<script src="../dist/js/jquery.dataTables.js"></script>-->
+
+<script src="../resources/vue/vue.js"></script>
+<script src="../resources/vue-resource/vue-resource.js"></script>
+
+
+
+<script src="../dist/js/pages/managerCenter.js"></script>
+
+
+<script type="text/javascript" src="../dist/js/wwwnet.js"></script>
+<script type="text/javascript" src="../dist/js/memenu.js"></script>
+<!-- js -->
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="../dist/js/bootstrap.min.js"></script>
+<script src="../dist/js/bootstrap-select.js"></script>
+
+
+<script>
+    $(document).ready(function () {
+        var mySelect = $('#first-disabled2');
+
+        $('#special').on('click', function () {
+            mySelect.find('option:selected').prop('disabled', true);
+            mySelect.selectpicker('refresh');
+        });
+
+        $('#special2').on('click', function () {
+            mySelect.find('option:disabled').prop('disabled', false);
+            mySelect.selectpicker('refresh');
+        });
+
+        $('#basic2').selectpicker({
+            liveSearch: true,
+            maxOptions: 1
+        });
+    });
+</script>
+
+<!--<script type="text/javascript" charset="utf-8">-->
+    <!--window.setTimeout(function () {-->
+        <!--$(document).ready(function() {-->
+            <!--$('#example').dataTable( {-->
+                <!--"aaSorting": [[ 4, "desc" ]]-->
+            <!--} );-->
+        <!--} );-->
+    <!--},1500);-->
+
+<!--</script>-->
+
+<script>
+    $(function(){
+        $(".panel-heading").click(function(e){
+            /*切换折叠指示图标*/
+            $(this).find("span").toggleClass("glyphicon-chevron-down");
+            $(this).find("span").toggleClass("glyphicon-chevron-up");
+        });
+    });
+
+</script>
+
+
+
+</html>
