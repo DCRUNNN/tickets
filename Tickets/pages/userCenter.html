@@ -352,11 +352,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
                     <ul id="myTab" class="nav nav-tabs">
                         <li class="active">
-                            <a href="#nonUseCoupon" data-toggle="tab">
-                                未使用优惠券
+                            <a href="#myAllCoupons" data-toggle="tab">
+                                我的优惠券
                             </a>
                         </li>
-                        <li><a href="#ExpiredCoupon" data-toggle="tab">已过期优惠券</a></li>
                         <li>
                             <a href="#couponConsumptionRecord"
                                data-toggle="tab">优惠券消费记录
@@ -364,54 +363,32 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         </li>
                     </ul>
                     <div id="myTabContent" class="tab-content">
-                        <div class="tab-pane fade in active" id="nonUseCoupon">
+                        <div class="tab-pane fade in active" id="myAllCoupons">
                             <table class="table table-bordered" style="text-align:center;font-size: 16px;color: #3c3d41">
                                 <thead>
                                 <tr>
                                     <th style="text-align:center;font-size: 16px;color: #3c3d41">优惠券号码</th>
                                     <th style="text-align:center;font-size: 16px;color: #3c3d41">名称</th>
                                     <th style="text-align:center;font-size: 16px;color: #3c3d41">优惠说明</th>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">适用范围</th>
+                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">消耗积分</th>
+                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">优惠券状态</th>
                                     <th style="text-align:center;font-size: 16px;color: #3c3d41">有效期</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr v-for="recentOrder in recentOrders">
-                                    <td v-text="recentOrder.showName"></td>
-                                    <td v-text="recentOrder.unitPrice"></td>
-                                    <td v-text="recentOrder.ticketsAmount"></td>
-                                    <td v-text="recentOrder.totalPrice"></td>
-                                    <td v-text="recentOrder.orderState"></td>
+                                <tr v-for="coupon in allCoupons">
+                                    <td v-text="coupon.couponID"></td>
+                                    <td v-text="coupon.couponName"></td>
+                                    <td v-text="coupon.description"></td>
+                                    <td v-text="coupon.usedMemberPoint"></td>
+                                    <td v-text="coupon.state"></td>
+                                    <td v-text="coupon.lastTerm"></td>
                                 </tr>
 
                                 </tbody>
                             </table>
-
                         </div>
-                        <div class="tab-pane fade" id="ExpiredCoupon">
-                            <table class="table table-bordered" style="text-align:center;font-size: 16px;color: #3c3d41">
-                                <thead>
-                                <tr>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">优惠券号码</th>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">名称</th>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">优惠说明</th>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">适用范围</th>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">有效期</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr v-for="recentOrder in recentOrders">
-                                    <td v-text="recentOrder.showName"></td>
-                                    <td v-text="recentOrder.unitPrice"></td>
-                                    <td v-text="recentOrder.ticketsAmount"></td>
-                                    <td v-text="recentOrder.totalPrice"></td>
-                                    <td v-text="recentOrder.orderState"></td>
-                                </tr>
 
-                                </tbody>
-                            </table>
-
-                        </div>
                         <div class="tab-pane fade" id="couponConsumptionRecord">
                             <table class="table table-bordered" style="text-align:center;font-size: 16px;color: #3c3d41">
                                 <thead>
@@ -419,23 +396,23 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                     <th style="text-align:center;font-size: 16px;color: #3c3d41">优惠券号码</th>
                                     <th style="text-align:center;font-size: 16px;color: #3c3d41">名称</th>
                                     <th style="text-align:center;font-size: 16px;color: #3c3d41">优惠说明</th>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">适用范围</th>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">有效期</th>
+                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">订单号码</th>
+                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">优惠券状态</th>
+                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">消费时间</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr v-for="recentOrder in recentOrders">
-                                    <td v-text="recentOrder.showName"></td>
-                                    <td v-text="recentOrder.unitPrice"></td>
-                                    <td v-text="recentOrder.ticketsAmount"></td>
-                                    <td v-text="recentOrder.totalPrice"></td>
-                                    <td v-text="recentOrder.orderState"></td>
+                                <tr v-for="couponRecord in couponRecords">
+                                    <td v-text="couponRecord.couponID"></td>
+                                    <td v-text="couponRecord.couponName"></td>
+                                    <td v-text="couponRecord.description"></td>
+                                    <td v-text="couponRecord.orderID"></td>
+                                    <td v-text="couponRecord.state"></td>
+                                    <td v-text="couponRecord.usedTime"></td>
                                 </tr>
-
                                 </tbody>
                             </table>
                         </div>
-
                     </div>
                 </div>
 

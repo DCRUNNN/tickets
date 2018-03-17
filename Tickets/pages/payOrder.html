@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tickets</title>
+    <link rel="stylesheet" href="../dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../dist/css/bootstrap-select.css">
+    <link href="../dist/css/style.css" rel="stylesheet" type="text/css" media="all" />
+
+    <link href="../dist/css/memenu.css" rel="stylesheet" type="text/css"  />
+
+    <link rel="stylesheet" type="text/css" href="../dist/css/nav.css" />
+
+    <link rel="stylesheet" href="../dist/css/font-awesome.min.css" />
+
+    <link href="../dist/css/jquery.uls.css" rel="stylesheet"/>
+
+    <!-- for-mobile-apps -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="Resale Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template,
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony Ericsson, Motorola web design" />
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <!-- //for-mobile-apps -->
+    <!--fonts-->
+    <!--//fonts-->
+    <!-- js -->
+    <script type="text/javascript" src="../dist/js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript">
+
+        function AutoSize(Img, maxWidth, maxHeight) {
+            var image = new Image();
+            //原图片原始地址（用于获取原图片的真实宽高，当<img>标签指定了宽、高时不受影响）
+            image.src = Img.src;
+            // 当图片比图片框小时不做任何改变
+            if (image.width < maxWidth&& image.height < maxHeight) {
+                Img.width = image.width;
+                Img.height = image.height;
+            }
+            else //原图片宽高比例 大于 图片框宽高比例,则以框的宽为标准缩放，反之以框的高为标准缩放
+            {
+                if (maxWidth/ maxHeight  <= image.width / image.height) //原图片宽高比例 大于 图片框宽高比例
+                {
+                    Img.width = maxWidth;   //以框的宽度为标准
+                    Img.height = maxWidth* (image.height / image.width);
+                }
+                else {   //原图片宽高比例 小于 图片框宽高比例
+                    Img.width = maxHeight  * (image.width / image.height);
+                    Img.height = maxHeight  ;   //以框的高度为标准
+                }
+            }
+        }
+
+
+        function DrawImage(ImgD,width_s,height_s){
+            /*var width_s=139;
+            var height_s=104;
+            */
+            var image=new Image();
+            image.src=ImgD.src;
+            if(image.width>0 && image.height>0){
+                flag=true;
+                if(image.width/image.height>=width_s/height_s){
+                    if(image.width>width_s){
+                        ImgD.width=width_s;
+                        ImgD.height=(image.height*width_s)/image.width;
+                    }else{
+                        ImgD.width=image.width;
+                        ImgD.height=image.height;
+                    }
+                }
+                else{
+                    if(image.height>height_s){
+                        ImgD.height=height_s;
+                        ImgD.width=(image.width*height_s)/image.height;
+                    }else{
+                        ImgD.width=image.width;
+                        ImgD.height=image.height;
+                    }
+                }
+            }
+            /*else{
+            ImgD.src="";
+            ImgD.alt=""
+            }*/
+        }
+
+    </script>
+
+
+</head>
+<body>
+
+<div id="container">
+
+    <!--<HR style="color:#000000;size:1px" width="100%" >-->
+
+    <div class="header">
+        <div class="container">
+            <div class="logo">
+                <a href="index.html"><span>My</span>Tickets</a>
+            </div>
+
+            <div class="pull-right" style="margin-top: 3%">
+                <ul class="nav nav-pills">
+                    <li class="active">
+                        <a id="loginBT" href="login.html" >登录</a>
+                    </li>
+                    <li>
+                        <a id="signUpBT" href="signUp.html">注册</a>
+                    </li>
+                    <li>
+                        <a id="logOutBT"  @click="logout()">退出</a>
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            服务中心 <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="userCenter.html">个人中心</a></li>
+                            <li class="divider"></li>
+                            <li><a href="venueCenter.html">场馆中心</a></li>
+                            <li class="divider"></li>
+                            <li><a href="managerCenter.html">经理中心</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a v-text="welcomeWord" style="color: blueviolet"></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="h_menu4">
+        <ul class="memenu skyblue">
+            <li><a class="color1" href="#">戏剧</a>
+            </li>
+            <li><a class="color2" href="#">体育</a>
+            </li>
+            <li><a class="color8" href="#">亲子</a></li>
+            <li><a class="color8" href="#">摇滚</a></li>
+            <li><a class="color8" href="#">舞蹈古典</a></li>
+        </ul>
+    </div>
+
+    <br><br><br>
+    <!--<div class="">-->
+    <!--<ol class="breadcrumb" >-->
+    <!--<li><a href="#">MyTickets</a></li>-->
+    <!--<li><a href="#">{{show.city}}</a></li>-->
+    <!--<li><a href="#">{{show.category}}</a></li>-->
+    <!--<li class="active">{{show.showName}}</li>-->
+    <!--</ol>-->
+    <!--</div>-->
+
+    <div class="panel panel-primay">
+
+        <div class="panel-heading">
+            <ol class="breadcrumb" >
+                <li><a href="index.html">MyTickets</a></li>
+                <li><a href="#">{{show.city}}</a></li>
+                <li><a href="#">{{show.category}}</a></li>
+                <li class="active">{{show.showName}}</li>
+            </ol>
+        </div>
+
+        <div class="panel-body">
+            <div class="">
+                <div class="row">
+
+                    <div class="col-md-offset-1 col-md-4">
+                        <img v-bind:src="show.photoSrc" class="img-rounded" alt="Cinque Terre">
+                    </div>
+
+                    <div class="col-md-7">
+                        <br><br>
+                        <h3 v-text="show.showName"></h3>
+                        <blockquote class="lead" v-text="show.description"></blockquote>
+
+                        <form class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">项目状态</label>
+                                <div class="col-sm-10">
+                                    <h4 v-text="show.state" ></h4>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">演员</label>
+                                <div class="col-sm-10">
+                                    <h4 v-text="show.performer"></h4>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">演出时间</label>
+                                <div class="col-sm-10">
+                                    <h4 v-text="show.showDate"></h4>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">演出场馆</label>
+                                <div class="col-sm-10">
+                                    <h4 v-text="show.venueName"></h4>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">演出票价</label>
+                                <div class="col-sm-10">
+                                    <label class="radio-inline" v-for="price in showPrice">
+                                        <input type="radio" name="optionsRadiosinline" id="optionsRadios3" value="option1">{{price}}
+                                    </label>
+
+                                </div>
+                            </div>
+
+                            <br><br>
+
+                            <div class="form-group">
+                                <div class="col-md-8">
+                                    <button type="button" class="btn btn-danger btn-large btn-block" onclick="window.location.href='chooseSeatPurchase.html'">选座购买</button>
+                                </div>
+                            </div>
+
+
+                        </form>
+
+
+
+                    </div>
+
+                    <div class="col-md-3">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+</div>
+
+
+</body>
+
+
+
+<script>
+    $(document).ready(function () {
+        var mySelect = $('#first-disabled2');
+
+        $('#special').on('click', function () {
+            mySelect.find('option:selected').prop('disabled', true);
+            mySelect.selectpicker('refresh');
+        });
+
+        $('#special2').on('click', function () {
+            mySelect.find('option:disabled').prop('disabled', false);
+            mySelect.selectpicker('refresh');
+        });
+
+        $('#basic2').selectpicker({
+            liveSearch: true,
+            maxOptions: 1
+        });
+    });
+</script>
+
+
+<script src="../resources/vue/vue.js"></script>
+<script src="../resources/vue-resource/vue-resource.js"></script>
+
+<script src="../dist/js/pages/payOrder.js"></script>
+
+<script type="text/javascript" src="../dist/js/wwwnet.js"></script>
+<script type="text/javascript" src="../dist/js/memenu.js"></script>
+<!-- js -->
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="../dist/js/bootstrap.min.js"></script>
+<script src="../dist/js/bootstrap-select.js"></script>
+
+
+
+</html>

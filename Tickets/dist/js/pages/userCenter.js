@@ -4,6 +4,8 @@ var vm=new Vue({
         welcomeWord:'',
 
         user:[],
+        allCoupons:[],
+        couponRecords:[],
         recentOrders:[],
         userOrders:[],
 
@@ -23,6 +25,7 @@ var vm=new Vue({
                 $("#orderManage").slideDown("slow");
             }else if(selectedItem=="我的优惠券"){
                 this.allPanelUp();
+                this.getUserCoupons();
                 $("#myCoupon").show();
                 $("#myCoupon").slideDown("slow");
             }else if(selectedItem=="我的积分"){
@@ -55,6 +58,50 @@ var vm=new Vue({
 
         getUserOrders:function () {
 
+        },
+
+        getUserCoupons:function () {
+            this.$http.get("http://localhost:8080/coupon/getAllCoupons",{
+                params:{
+                    userID:this.getCookieValue("userID")
+                }
+            }).then(function (response) {
+                if(response.data.errorCode==0) {
+                    this.allCoupons = response.data.data;
+                }else{
+                    alert("get user coupons wrong");
+                }
+            }).catch(function (error) {
+                alert("获取信息失败，请刷新重试！");
+            });
+        },
+
+        getCouponRecords:function () {
+            this.$http.get("http://localhost:8080/coupon/getCouponPOByState",{
+                params:{
+                    userID:this.getCookieValue("userID"),
+                    state:"已使用"
+                }
+            }).then(function (response) {
+                if(response.data.errorCode==0) {
+                    this.couponRecords = response.data.data;
+                }else{
+                    alert("get user coupon records wrong");
+                }
+            }).catch(function (error) {
+                alert("获取信息失败，请刷新重试！");
+            });
+        },
+
+        changeCouponTypePanel:function (event) {
+            var title=event.target.text;
+            if(title=="我的优惠券"){
+                alert("666");
+                this.getUserCoupons();
+            }else if(title=="优惠券消费记录"){
+                alert("888")
+                this.getCouponRecords();
+            }
         },
 
         modifyUserInfo:function (userID) {
@@ -120,12 +167,22 @@ var vm=new Vue({
             $("#safeSetting").slideUp("fast");
         },
 
+        logout:function () {
+            this.deleteCookie('username');
+            this.deleteCookie('venueName');
+            this.deleteCookie('managerName')
+            this.deleteCookie('managerEmail');
+            this.deleteCookie('welcomeWord');
+        },
+
+
         setCookie:function (cname,cvalue,exdays) {
             var d = new Date();
             d.setTime(d.getTime() + (exdays*24*60*1000));
             var expires = "expires="+d.toUTCString();
             document.cookie = cname + "=" + cvalue + "; " + expires;
         },
+
         getCookieValue:function (cname) {
             var name = cname + "=";
             var ca = document.cookie.split(';');
@@ -153,7 +210,6 @@ var vm=new Vue({
 
 
         var userID = this.getCookieValue("userID");
-        console.log(userID);
 
         if(this.getCookieValue('username')!=""||this.getCookieValue("venueName")!=""){
             document.getElementById("loginBT").style.display = "none";

@@ -33,6 +33,10 @@ var vm=new Vue({
                     city:this.venue.city,
                     venueID:this.venue.venueID,
                     venueName:this.venue.venueName,
+
+                    area:this.releaseShowArea,
+                    allRow:this.releaseShowRow,
+                    seat:this.releaseShowSeat,
                 }
             }).then(function (response) {
                 if(response.data.errorCode==0) {
