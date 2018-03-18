@@ -96,6 +96,13 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         .leftMenu .menu-item-left:hover{background:#C4E3F3;border:1px solid #1E90FF;}
     </style>
 
+    <style>
+        .disabled {
+            pointer-events:none; //This makes it not clickable
+        opacity:0.6;         //This grays it out to look disabled
+        }
+    </style>
+
 
 </head>
 <body>
@@ -126,9 +133,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             服务中心 <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="userCenter.html">个人中心</a></li>
+                            <li id="userCenter"><a href="userCenter.html">个人中心</a></li>
                             <li class="divider"></li>
-                            <li><a href="venueCenter.html">场馆中心</a></li>
+                            <li id="venueCenter"><a href="venueCenter.html">场馆中心</a></li>
+                            <li class="divider"></li>
+                            <li id="managerCenter"><a href="managerCenter.html">经理中心</a></li>
                         </ul>
                     </li>
                     <li>
@@ -284,6 +293,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 <th style="text-align:center;font-size: 16px;color: #3c3d41">订单金额</th>
                                 <th style="text-align:center;font-size: 16px;color: #3c3d41">交易状态</th>
                                 <th style="text-align:center;font-size: 16px;color: #3c3d41">订单日期</th>
+                                <th style="text-align:center;font-size: 16px;color: #3c3d41">操作</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -294,6 +304,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 <td v-text="recentOrder.totalPrice"></td>
                                 <td v-text="recentOrder.orderState"></td>
                                 <td v-text="recentOrder.orderDate"></td>
+                                <td><button class="btn btn-success" @click.prevent="setDataToOrderInfoModal(recentOrder)" data-toggle="modal" href="#showConcreteOrderInfoModal"><i class="fa fa-edit">详细信息</i></button></td>
 
                             </tr>
 
@@ -329,6 +340,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             <th style="text-align:center;font-size: 16px;color: #3c3d41">订单金额</th>
                             <th style="text-align:center;font-size: 16px;color: #3c3d41">交易状态</th>
                             <th style="text-align:center;font-size: 16px;color: #3c3d41">订单日期</th>
+                            <th style="text-align:center;font-size: 16px;color: #3c3d41">操作</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -339,6 +351,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             <td v-text="recentOrder.totalPrice"></td>
                             <td v-text="recentOrder.orderState"></td>
                             <td v-text="recentOrder.orderDate"></td>
+                            <td><button class="btn btn-success" @click.prevent="setDataToOrderInfoModal(recentOrder)" data-toggle="modal" href="#showConcreteOrderInfoModal"><i class="fa fa-edit">详细信息</i></button></td>
 
                         </tr>
 
@@ -419,7 +432,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 <div id="memberPoint" class="" style="display: none">
 
                     <div class="well">
-                       <span class="label label-info" style="font-size: 12px">积分总计:</span> <samp style="font-size: 20px;color: red"  v-text="user.memberPoints"></samp>
+                        <span class="label label-info" style="font-size: 12px">积分总计:</span> <samp style="font-size: 20px;color: red"  v-text="user.memberPoints"></samp>
+                        <button type="button" class="btn btn-primary" @click="setDataToGetCouponModal(user.memberPoints)" data-toggle="modal" href="#getCouponModal">兑换优惠券</button>
                     </div>
 
                     <ul id="myMemberPointsTab" class="nav nav-tabs">
@@ -594,6 +608,144 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         </div>
     </div>
 
+    <div class="modal fade" id="getCouponModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h6 class="modal-title">兑换优惠券</h6>
+                </div>
+                <div class="modal-body">
+                    <div class="panel">
+                        <div class="panel-body">
+                            <form class="form-horizontal" role="form">
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">请输入要兑换的积分数
+                                        <br>
+                                        <span style="color: #1E90FF">您可兑换的积分数</span>
+                                        <span id="nowMemberPoints" style="color: #1E90FF"></span>
+                                    </label>
+
+                                    <div class="col-lg-8">
+                                        <input type="text" class="form-control" id="usedMemberPoints" name="usedMemberPoints" placeholder="" oninput="checkInputMemberPoints()" onporpertychange="checkInputMemberPoints()">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label  class="col-lg-4 control-label">可兑换优惠券金额</label>
+                                    <div class="col-lg-8">
+                                        <input type="text" class="form-control" id="couponValue" name="couponValue" placeholder="" readonly="readonly">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-lg-12">
+                                        <button type="button" class="btn btn-primary btn-lg btn-block" @click="confirmGetCoupon()">确认兑换</button>
+                                        <button type="button" class="btn btn-default btn-lg btn-block" data-dismiss="modal">取消</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
+    <div class="modal fade" id="showConcreteOrderInfoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h6 class="modal-title">订单详情</h6>
+                </div>
+                <div class="modal-body">
+                    <div class="panel">
+                        <div class="panel-body">
+                            <form class="form-horizontal" role="form">
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">订单编号</label>
+                                    <div class="col-lg-8">
+                                        <input type="text" class="form-control" id="orderID" name="orderID" placeholder="" readonly="readonly">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">项目编号</label>
+                                    <div class="col-lg-8">
+                                        <input type="text" class="form-control" id="showID" name="showID" placeholder="" readonly="readonly">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label  class="col-lg-4 control-label">项目名称</label>
+                                    <div class="col-lg-8">
+                                        <input type="text" class="form-control" id="showName" name="showName" placeholder="" readonly="readonly">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label  class="col-lg-4 control-label">演出场馆</label>
+                                    <div class="col-lg-8">
+                                        <input type="text" class="form-control" id="venueName" name="venueName" placeholder="" readonly="readonly">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label  class="col-lg-4 control-label">场馆地址</label>
+                                    <div class="col-lg-8">
+                                        <input type="text" class="form-control" id="venueAddress" name="venueAddress" placeholder="" readonly="readonly">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label  class="col-lg-4 control-label">购买座位</label>
+                                    <div class="col-lg-8">
+                                        <input type="text" class="form-control" id="seat" name="seat" placeholder="" readonly="readonly">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label  class="col-lg-4 control-label">购买方式</label>
+                                    <div class="col-lg-8">
+                                        <input type="text" class="form-control" id="purchaseMethod" name="purchaseMethod" placeholder="" readonly="readonly">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label  class="col-lg-4 control-label">购买票数</label>
+                                    <div class="col-lg-8">
+                                        <input type="text" class="form-control" id="ticketsAmount" name="ticketsAmount" placeholder="" readonly="readonly">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label  class="col-lg-4 control-label">订单总价</label>
+                                    <div class="col-lg-8">
+                                        <input type="text" class="form-control" id="totalPrice" name="totalPrice" placeholder="" readonly="readonly">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label  class="col-lg-4 control-label">会员优惠</label>
+                                    <div class="col-lg-8">
+                                        <input type="text" class="form-control" id="vipDiscount" name="vipDiscount" placeholder="" readonly="readonly">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label  class="col-lg-4 control-label">订单状态</label>
+                                    <div class="col-lg-8">
+                                        <input type="text" class="form-control" id="orderState" name="orderState" placeholder="" readonly="readonly">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-lg-12">
+                                        <button type="button" id="payOrderBT" class="btn btn-primary btn-lg btn-block" @click="payOrder()" style="display: none;">支付</button>
+                                        <button type="button" class="btn btn-default btn-lg btn-block" data-dismiss="modal">关闭</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
 </div>
 
 
@@ -644,6 +796,16 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             $(this).find("span").toggleClass("glyphicon-chevron-up");
         });
     });
+
+    function checkInputMemberPoints(){
+        var inputMemberPoints = $('#usedMemberPoints').val();
+        if(parseFloat(inputMemberPoints)>parseFloat($('#nowMemberPoints').text())){
+            alert("您最多只可兑换" + $('#nowMemberPoints').text() + "积分");
+            return;
+        }
+        $('#couponValue').val(parseFloat(inputMemberPoints)*0.01)
+    }
+
 
 //    $("ul#bussinessCenterUL").on("click","li",function(){      //只需要找到你点击的是哪个ul里面的就行
 //        alert($(this).text());

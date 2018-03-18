@@ -37,6 +37,13 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         .leftMenu .menu-item-left:hover{background:#C4E3F3;border:1px solid #1E90FF;}
     </style>
 
+    <style>
+        .disabled {
+            pointer-events:none; //This makes it not clickable
+        opacity:0.6;         //This grays it out to look disabled
+        }
+    </style>
+
 
 </head>
 <body>
@@ -67,11 +74,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             服务中心 <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="userCenter.html">个人中心</a></li>
+                            <li id="userCenter"><a href="userCenter.html">个人中心</a></li>
                             <li class="divider"></li>
-                            <li><a href="venueCenter.html">场馆中心</a></li>
+                            <li id="venueCenter"><a href="venueCenter.html">场馆中心</a></li>
                             <li class="divider"></li>
-                            <li><a href="managerCenter.html">经理中心</a></li>
+                            <li id="managerCenter"><a href="managerCenter.html">经理中心</a></li>
                         </ul>
                     </li>
                     <li>

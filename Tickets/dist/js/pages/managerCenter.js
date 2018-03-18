@@ -103,9 +103,7 @@ var vm=new Vue({
             $('#venueRow').val(row);
             $('#venueSeat').val(seat);
             document.getElementById('venueInfo').innerText = venueInfo;
-
             document.getElementById("venueIDLabel").innerText = venueID;
-
             $('#showRegConcreteInfoModal').modal('show');
         },
 
@@ -172,7 +170,7 @@ var vm=new Vue({
 
         setCookie:function (cname,cvalue,exdays) {
             var d = new Date();
-            d.setTime(d.getTime() + (exdays*24*60*1000));
+            d.setTime(d.getTime() + (exdays*24*60*60*1000));
             var expires = "expires="+d.toUTCString();
             document.cookie = cname + "=" + cvalue + "; " + expires;
         },
@@ -211,6 +209,17 @@ var vm=new Vue({
             document.getElementById("loginBT").style.display = "block";
             document.getElementById("signUpBT").style.display = "block";
             document.getElementById("logOutBT").style.display = "none";
+        }
+
+        if(this.getCookieValue('username')!=""){
+            $("#venueCenter").addClass("disabled");
+            $("#managerCenter").addClass("disabled");
+        }else if(this.getCookieValue("venueName")!=""){
+            $("#userCenter").addClass("disabled");
+            $("#managerCenter").addClass("disabled");
+        }else if(this.getCookieValue("managerName")!=""){
+            $("#userCenter").addClass("disabled");
+            $("#venueCenter").addClass("disabled");
         }
 
         this.$http.get("http://localhost:8080/manager/getManagerPO",{

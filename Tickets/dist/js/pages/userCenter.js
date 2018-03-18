@@ -8,6 +8,7 @@ var vm=new Vue({
         couponRecords:[],
         recentOrders:[],
         userOrders:[],
+        venue:[],
 
     },
     methods:{
@@ -167,6 +168,75 @@ var vm=new Vue({
             $("#safeSetting").slideUp("fast");
         },
 
+        setDataToGetCouponModal:function(memberPoints) {
+            $("#nowMemberPoints").text(memberPoints);
+            $("#getCouponModal").show();
+        },
+
+        confirmGetCoupon:function() {
+            this.$http.post("http://localhost:8080/coupon/addCoupon",{
+                couponID: '',
+                couponName: '积分优惠券',
+                description: "积分兑换的优惠券",
+                lastTerm: '',
+                orderID: '',
+                state: '待使用',
+                usedMemberPoint: parseInt($('#usedMemberPoints').val()),
+                usedTime: '',
+                userID: this.user.userID,
+                value: parseFloat($('#couponValue').val())
+            }).then(function (response) {
+                if(response.data.errorCode==0) {
+                    alert("兑换优惠券成功！");
+                    window.location.href = "userCenter.html";
+                }else{
+                    alert("兑换优惠券失败！");
+                }
+            }).catch(function (error) {
+                alert("获取信息失败，请刷新重试！");
+            });
+        },
+
+        setDataToOrderInfoModal:function(order) {
+
+            this.$http.get("http://localhost:8080/venue/getVenuePO",{
+                params:{
+                    venueID:order.venueID
+                }
+            }).then(function (response) {
+                if(response.data.errorCode==0) {
+                    this.venue = response.data.data;
+
+                    $('#orderID').val(order.orderID);
+                    $('#showID').val(order.showID);
+                    $('#showName').val(order.showName);
+                    $('#seat').val(order.seat);
+                    $('#purchaseMethod').val(order.purchaseMethod);
+                    $('#totalPrice').val(order.totalPrice);
+                    $('#vipDiscount').val(order.discount);
+                    $('#ticketsAmount').val(order.ticketsAmount);
+                    $('#orderState').val(order.orderState);
+                    $('#venueName').val(this.venue.venueName);
+                    $('#venueAddress').val(this.venue.address);
+
+                    if(order.orderState=="待支付"){
+                        $('#payOrderBT').show();
+                    }
+
+                }else{
+                    alert("get venue info wrong");
+                }
+            }).catch(function (error) {
+                alert("获取信息失败，请刷新重试！");
+            });
+
+        },
+
+        payOrder:function (showID) {
+            this.setCookie('concreteShowInfoID', $('#showID').val());
+            window.location.href = "payOrder.html";
+        },
+
         logout:function () {
             this.deleteCookie('username');
             this.deleteCookie('venueName');
@@ -178,7 +248,7 @@ var vm=new Vue({
 
         setCookie:function (cname,cvalue,exdays) {
             var d = new Date();
-            d.setTime(d.getTime() + (exdays*24*60*1000));
+            d.setTime(d.getTime() + (exdays*24*60*60*1000));
             var expires = "expires="+d.toUTCString();
             document.cookie = cname + "=" + cvalue + "; " + expires;
         },
@@ -211,7 +281,7 @@ var vm=new Vue({
 
         var userID = this.getCookieValue("userID");
 
-        if(this.getCookieValue('username')!=""||this.getCookieValue("venueName")!=""){
+        if(this.getCookieValue('username')!=""||this.getCookieValue("venueName")!="" || this.getCookieValue("managerName")!=""){
             document.getElementById("loginBT").style.display = "none";
             document.getElementById("signUpBT").style.display = "none";
             document.getElementById("logOutBT").style.display = "";
@@ -219,6 +289,17 @@ var vm=new Vue({
             document.getElementById("loginBT").style.display = "block";
             document.getElementById("signUpBT").style.display = "block";
             document.getElementById("logOutBT").style.display = "none";
+        }
+
+        if(this.getCookieValue('username')!=""){
+            $("#venueCenter").addClass("disabled");
+            $("#managerCenter").addClass("disabled");
+        }else if(this.getCookieValue("venueName")!=""){
+            $("#userCenter").addClass("disabled");
+            $("#managerCenter").addClass("disabled");
+        }else if(this.getCookieValue("managerName")!=""){
+            $("#userCenter").addClass("disabled");
+            $("#venueCenter").addClass("disabled");
         }
 
         this.$http.get("http://localhost:8080/user/getUserPOByUserID",{

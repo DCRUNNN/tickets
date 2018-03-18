@@ -26,7 +26,7 @@ var vm=new Vue({
 
         setCookie:function (cname,cvalue,exdays) {
             var d = new Date();
-            d.setTime(d.getTime() + (exdays*24*60*1000));
+            d.setTime(d.getTime() + (exdays*24*60*60*1000));
             var expires = "expires="+d.toUTCString();
             document.cookie = cname + "=" + cvalue + "; " + expires;
         },
@@ -52,7 +52,7 @@ var vm=new Vue({
         this.welcomeWord = this.getCookieValue("welcomeWord");
         this.showID = this.getCookieValue("concreteShowInfoID");
 
-        if(this.getCookieValue('username')!=""){
+        if(this.getCookieValue('username')!=""||this.getCookieValue("venueName")!="" || this.getCookieValue("managerName")!=""){
             document.getElementById("loginBT").style.display = "none";
             document.getElementById("signUpBT").style.display = "none";
             document.getElementById("logOutBT").style.display = "";
@@ -60,6 +60,17 @@ var vm=new Vue({
             document.getElementById("loginBT").style.display = "block";
             document.getElementById("signUpBT").style.display = "block";
             document.getElementById("logOutBT").style.display = "none";
+        }
+
+        if(this.getCookieValue('username')!=""){
+            $("#venueCenter").addClass("disabled");
+            $("#managerCenter").addClass("disabled");
+        }else if(this.getCookieValue("venueName")!=""){
+            $("#userCenter").addClass("disabled");
+            $("#managerCenter").addClass("disabled");
+        }else if(this.getCookieValue("managerName")!=""){
+            $("#userCenter").addClass("disabled");
+            $("#venueCenter").addClass("disabled");
         }
 
         this.$http.get("http://localhost:8080/show/getShowPO",{

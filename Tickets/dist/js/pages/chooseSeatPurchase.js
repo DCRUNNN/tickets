@@ -9,7 +9,7 @@ var vm=new Vue({
         showArea:'',
         showRow:0,
         showSeat:'',
-
+        soldSeat:[],
         totalPrice:0,
         ticketAmount:0,
 
@@ -61,8 +61,28 @@ var vm=new Vue({
                 }
             }
             $('#seat_area' + index).show();
-            initMap(price,row,seat.join("/"),"seat_area"+index);
 
+
+            this.$http.get("http://localhost:8080/seat/getSoldSeat",{
+                params:{
+                    showID:this.showID,
+                    price:price
+                }
+            }).then(function (response) {
+                if(response.data.errorCode==0) {
+                    this.soldSeat = response.data.data;
+                    var soldSeatInfo = [];
+                    for(var i=0;i<this.soldSeat.length;i++) {
+                        soldSeatInfo.push(this.soldSeat[i].row + '_' + this.soldSeat[i].seat);
+                    }
+                    initMap(price,row,seat.join("/"),"seat_area"+index,soldSeatInfo);
+
+                }else{
+                    alert("get sold seat wrong");
+                }
+            }).catch(function (error) {
+                alert("获取信息失败，请刷新重试！");
+            });
 
         },
 
@@ -91,6 +111,7 @@ var vm=new Vue({
             }).then(function (response) {
                 if(response.data.errorCode==0) {
                     alert("创建订单成功！请在15分钟之内完成支付！");
+                    window.location.href = "payOrder.html";
                 }else{
                     alert(response.data.data);
                 }
@@ -101,9 +122,17 @@ var vm=new Vue({
 
         },
 
+        logout:function () {
+            this.deleteCookie('username');
+            this.deleteCookie('venueName');
+            this.deleteCookie('managerName')
+            this.deleteCookie('managerEmail');
+            this.deleteCookie('welcomeWord');
+        },
+
         setCookie:function (cname,cvalue,exdays) {
             var d = new Date();
-            d.setTime(d.getTime() + (exdays*24*60*1000));
+            d.setTime(d.getTime() + (exdays*24*60*60*1000));
             var expires = "expires="+d.toUTCString();
             document.cookie = cname + "=" + cvalue + "; " + expires;
         },
@@ -131,7 +160,7 @@ var vm=new Vue({
         this.showID = this.getCookieValue("concreteShowInfoID");
         var userID = this.getCookieValue("userID");
 
-        if(this.getCookieValue('username')!=""){
+        if(this.getCookieValue('username')!=""||this.getCookieValue("venueName")!="" || this.getCookieValue("managerName")!=""){
             document.getElementById("loginBT").style.display = "none";
             document.getElementById("signUpBT").style.display = "none";
             document.getElementById("logOutBT").style.display = "";
@@ -139,6 +168,17 @@ var vm=new Vue({
             document.getElementById("loginBT").style.display = "block";
             document.getElementById("signUpBT").style.display = "block";
             document.getElementById("logOutBT").style.display = "none";
+        }
+
+        if(this.getCookieValue('username')!=""){
+            $("#venueCenter").addClass("disabled");
+            $("#managerCenter").addClass("disabled");
+        }else if(this.getCookieValue("venueName")!=""){
+            $("#userCenter").addClass("disabled");
+            $("#managerCenter").addClass("disabled");
+        }else if(this.getCookieValue("managerName")!=""){
+            $("#userCenter").addClass("disabled");
+            $("#venueCenter").addClass("disabled");
         }
 
         this.$http.get("http://localhost:8080/show/getShowPO",{
@@ -165,7 +205,25 @@ var vm=new Vue({
                     }
                 }
 
-                initMap(firstPrice,firstRow,this.showSeat.substr(0, index),"seat_area0");
+                this.$http.get("http://localhost:8080/seat/getSoldSeat",{
+                    params:{
+                        showID:this.showID,
+                        price:firstPrice
+                    }
+                }).then(function (response) {
+                    if(response.data.errorCode==0) {
+                        this.soldSeat = response.data.data;
+                        var soldSeatInfo = [];
+                        for(var i=0;i<this.soldSeat.length;i++) {
+                            soldSeatInfo.push(this.soldSeat[i].row + '_' + this.soldSeat[i].seat);
+                        }
+                        initMap(firstPrice,firstRow,this.showSeat.substr(0, index),"seat_area0",soldSeatInfo);
+                    }else{
+                        alert("get sold seat wrong");
+                    }
+                }).catch(function (error) {
+                    alert("获取信息失败，请刷新重试！");
+                });
             }else{
                 alert("get show info wrong");
             }

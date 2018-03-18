@@ -87,6 +87,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     </script>
 
 
+
 </head>
 <body>
 
@@ -165,81 +166,164 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         </div>
 
         <div class="panel-body">
-            <div class="">
-                <div class="row">
+            <div id="row">
 
-                    <div class="col-md-offset-1 col-md-4">
-                        <img v-bind:src="show.photoSrc" class="img-rounded" alt="Cinque Terre">
+                <div class="col-md-4">
+
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 style="font-size: 26px;">距离支付时间还有</h3>
+                        </div>
+
+                        <div class="panel-body" id="leftTimePanel" style="text-align: center">
+
+                            <h4 id="leftTimeMsg" style="font-size:30px;font-weight: bold;"></h4>
+                        </div>
                     </div>
 
-                    <div class="col-md-7">
-                        <br><br>
-                        <h3 v-text="show.showName"></h3>
-                        <blockquote class="lead" v-text="show.description"></blockquote>
-
-                        <form class="form-horizontal" role="form">
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">项目状态</label>
-                                <div class="col-sm-10">
-                                    <h4 v-text="show.state" ></h4>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">演员</label>
-                                <div class="col-sm-10">
-                                    <h4 v-text="show.performer"></h4>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">演出时间</label>
-                                <div class="col-sm-10">
-                                    <h4 v-text="show.showDate"></h4>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">演出场馆</label>
-                                <div class="col-sm-10">
-                                    <h4 v-text="show.venueName"></h4>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">演出票价</label>
-                                <div class="col-sm-10">
-                                    <label class="radio-inline" v-for="price in showPrice">
-                                        <input type="radio" name="optionsRadiosinline" id="optionsRadios3" value="option1">{{price}}
-                                    </label>
-
-                                </div>
-                            </div>
-
-                            <br><br>
-
-                            <div class="form-group">
-                                <div class="col-md-8">
-                                    <button type="button" class="btn btn-danger btn-large btn-block" onclick="window.location.href='chooseSeatPurchase.html'">选座购买</button>
-                                </div>
-                            </div>
-
-
-                        </form>
-
-
-
-                    </div>
-
-                    <div class="col-md-3">
-
-                    </div>
                 </div>
+
+                <div class="col-md-8">
+
+                    <div class="panel panel-success">
+
+                        <div class="panel-heading">
+                            <h3 >订单信息</h3>
+                        </div>
+
+                        <div class="panel-body">
+                            <table class="table table-bordered table-striped" id="example" style="text-align:center">
+                                <thead>
+                                <tr>
+                                    <th style="text-align:center">订单编号</th>
+                                    <th style="text-align:center">项目名称</th>
+                                    <th style="text-align:center">演出场馆</th>
+                                    <th style="text-align:center">场馆地址</th>
+                                    <th style="text-align:center">演出人员</th>
+                                    <th style="text-align:center">演出时间</th>
+                                    <th style="text-align:center">购买座位</th>
+                                    <th style="text-align:center">购买方式</th>
+                                    <th style="text-align:center">订单总价</th>
+                                    <th style="text-align:center">会员优惠</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="unpayOrder in unpayOrders">
+                                    <td v-text="unpayOrder.orderID"></td>
+                                    <td v-text="unpayOrder.showName"></td>
+                                    <td v-text="venue.venueName"></td>
+                                    <td v-text="venue.address"></td>
+                                    <td v-text="show.performer"></td>
+                                    <td v-text="show.showDate"></td>
+                                    <td v-text="unpayOrder.seat"></td>
+                                    <td v-text="unpayOrder.purchaseMethod"></td>
+                                    <td v-text="unpayOrder.totalPrice"></td>
+                                    <td v-text="unpayOrder.discount"></td>
+                                    <td><button class="btn btn-success" @click.prevent="setDataToCouponDialog(unpayOrder.orderID,unpayOrder.totalPrice,unpayOrder.discount)" data-toggle="modal" href="#showCouponDialog"><i class="fa fa-edit">确认支付</i></button></td>
+                                    <!--<td><button class="btn btn-success" @click.prevent="confirmPayOrder(unpayOrder.orderID)"><i class="fa fa-edit">确认支付</i></button></td>-->
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
             </div>
         </div>
 
 
     </div>
+
+
+    <div class="modal fade" id="showCouponDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h6 class="modal-title">我的优惠券</h6>
+                </div>
+                <div class="modal-body">
+                    <div class="panel">
+                        <div class="panel-body">
+                            <form class="form-horizontal" role="form">
+                                <div class="form-group">
+                                    <label  class="col-lg-3 control-label">订单编号</label>
+                                    <div class="col-lg-9">
+                                        <input type="text" class="form-control" id="orderID" name="orderID" placeholder="" readonly="readonly">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label  class="col-lg-3 control-label">订单总金额</label>
+                                    <div class="col-lg-9">
+                                        <input type="text" class="form-control" id="totalPrice" name="totalPrice" placeholder="" readonly="readonly">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label  class="col-lg-3 control-label">会员优惠</label>
+                                    <div class="col-lg-9">
+                                        <input type="text" class="form-control" id="vipDiscount" name="vipDiscount" placeholder="" readonly="readonly">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label  class="col-lg-3 control-label">优惠后金额</label>
+                                    <div class="col-lg-9">
+                                        <input type="text" class="form-control" id="afterDiscount" name="afterDiscount" placeholder="" readonly="readonly">
+                                    </div>
+
+                                    <label style="display: none" id="getCouponIDLabel"></label>
+                                </div>
+                                <div class="form-group">
+                                    <div class="panel panel-primary">
+                                        <div class="panel-heading">我的优惠券</div>
+                                        <div class="panel-body">
+                                            <table class="table table-bordered table-striped" id="couponTable"  style="text-align:center">
+                                                <thead>
+                                                <tr>
+                                                    <th style="text-align:center">优惠券编号</th>
+                                                    <th style="text-align:center">优惠券名称</th>
+                                                    <th style="text-align:center">最晚使用日期</th>
+                                                    <th style="text-align:center">状态</th>
+                                                    <th style="text-align:center">可兑换金额</th>
+                                                    <th style="text-align:center">是否使用</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr v-for="coupon in coupons">
+                                                    <td v-text="coupon.couponID"></td>
+                                                    <td v-text="coupon.couponName"></td>
+                                                    <td v-text="coupon.lastTerm"></td>
+                                                    <td v-text="coupon.state"></td>
+                                                    <td v-text="coupon.value"></td>
+                                                    <td>
+                                                        <input type="radio" name="optionsRadios" value="" onclick="getCouponID(this)">使用
+                                                    </td>
+                                                    <!--<td><button class="btn btn-success" @click.prevent="confirmPayOrder(unpayOrder.orderID)"><i class="fa fa-edit">确认支付</i></button></td>-->
+                                                </tr>
+                                                </tbody>
+                                            </table>
+
+                                            <p id="noCouponWarning">您没有可使用的优惠券！</p>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-lg-12">
+                                        <button type="button" class="btn btn-primary btn-lg btn-block" @click="confirmPayOrder()">确认支付</button>
+                                        <button type="button" class="btn btn-default btn-lg btn-block" >取消订单</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
 
 </div>
 
@@ -273,6 +357,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script src="../resources/vue/vue.js"></script>
 <script src="../resources/vue-resource/vue-resource.js"></script>
 
+
 <script src="../dist/js/pages/payOrder.js"></script>
 
 <script type="text/javascript" src="../dist/js/wwwnet.js"></script>
@@ -281,6 +366,52 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="../dist/js/bootstrap.min.js"></script>
 <script src="../dist/js/bootstrap-select.js"></script>
+
+<script>
+//    $(document).ready(function () {
+//        CountDown();
+//    })
+    var maxtime = 15 * 60;
+
+    function CountDown() {
+        if(maxtime>=0)
+        {
+            minutes = Math.floor(maxtime/60);
+            seconds = Math.floor(maxtime%60);
+            var msg =minutes+" 分 "+seconds+" 秒";
+            $('#leftTimeMsg').text(msg);
+            if(maxtime == 5*60) alert('注意，还有5分钟!');
+            --maxtime;
+        }
+        else
+        {
+            clearInterval(timer);
+            alert("时间到，结束!");
+        }
+    }
+    timer = setInterval("CountDown()",1000);
+
+
+    function getCouponID(event){
+        $('#getCouponIDLabel').val($(event).parents().siblings('td').first().text());
+    }
+
+
+    $(document).ready(function(){
+        (function(){
+            setInterval(function(){
+                var len = document.getElementById("example").rows.length;
+                if(len==1) {
+                    window.location.href = "userCenter.html";
+                }
+            }, 1000)
+        })();
+
+    });
+
+
+</script>
+
 
 
 
