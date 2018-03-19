@@ -8,10 +8,56 @@ var vm=new Vue({
         recentOrders:[],
         regApplications:[],
         modifyApplications:[],
+        unpayShows:[],
 
     },
     methods:{
 
+        getUnpayOrders:function() {
+            this.$http.get("http://localhost:8080/manager/getNeedToPayShows").then(function (response) {
+                if(response.data.errorCode==0) {
+                    this.unpayShows = response.data.data;
+                }else{
+                    alert("get unpay shows info wrong");
+                }
+            }).catch(function (error) {
+                alert("获取信息失败，请刷新重试！");
+            });
+        },
+
+        setDataToGiveVenueMoneyModal:function(show) {
+            $('#payShowID').val(show.showID);
+            $('#payVenueName').val(show.venueName);
+            $('#showGiveMoneyToVenueModal').modal('show');
+        },
+
+        giveMoneyToVenue:function() {
+            this.$http.get("http://localhost:8080/manager/giveMoneyToVenue",{
+                params:{
+                    showID:$('#payShowID').val(),
+                    paymentRatio: parseFloat($('#paymentRatio').val())
+                }
+            }).then(function (response) {
+                if(response.data.errorCode==0) {
+                    alert("支付成功！");
+                    $('#showGiveMoneyToVenueModal').modal('hide');
+                    for(var i=0;i<this.unpayShows.length;i++) {
+                        if(this.unpayShows[i].showID==$('#payShowID').val()) {
+                            this.unpayShows.splice(i, 1);
+                        }
+                    }
+                    if(this.unpayShows.length==0) {
+                        alert("您已没有需要支付的订单！");
+                    }
+
+                    // window.location.href = "managerCenter.html";
+                }else{
+                    alert("请在演出结束后再结算！");
+                }
+            }).catch(function (error) {
+                alert("获取信息失败，请刷新重试！");
+            });
+        },
 
         logout:function () {
             this.deleteCookie('username');
@@ -38,6 +84,7 @@ var vm=new Vue({
                 $("#venueModifyApplication").slideDown("slow");
             }else if(selectedItem=="场馆结算"){
                 this.allPanelUp();
+                this.getUnpayOrders();
                 $("#venuePayment").show();
                 $("#venuePayment").slideDown("slow");
 
@@ -174,6 +221,7 @@ var vm=new Vue({
             var expires = "expires="+d.toUTCString();
             document.cookie = cname + "=" + cvalue + "; " + expires;
         },
+
         getCookieValue:function (cname) {
             var name = cname + "=";
             var ca = document.cookie.split(';');

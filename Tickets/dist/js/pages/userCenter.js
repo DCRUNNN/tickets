@@ -9,6 +9,7 @@ var vm=new Vue({
         recentOrders:[],
         userOrders:[],
         venue:[],
+        show:[],
 
     },
     methods:{
@@ -23,6 +24,8 @@ var vm=new Vue({
 
             if(selectedItem=="订单管理"){
                 this.allPanelUp();
+                document.getElementById("orderType").value = "全部订单";
+                this.getUserOrders();
                 $("#orderManage").slideDown("slow");
             }else if(selectedItem=="我的优惠券"){
                 this.allPanelUp();
@@ -58,7 +61,67 @@ var vm=new Vue({
         },
 
         getUserOrders:function () {
+            this.$http.get("http://localhost:8080/order/getAllOrders",{
+                params:{
+                    userID:this.getCookieValue("userID")
+                }
+            }).then(function (response) {
+                if(response.data.errorCode==0) {
+                    this.userOrders = response.data.data;
+                }else{
+                    alert("get user all orders wrong");
+                }
+            }).catch(function (error) {
+                alert("获取信息失败，请刷新重试！");
+            });
+        },
 
+        getOrderType:function (ele) {
+            // var category = $('#myCityTab li:active').text();
+            var orderState = ele.target.value;
+
+            if(orderState=="全部订单") {
+                this.getUserOrders();
+            }else{
+                this.$http.get("http://localhost:8080/order/getOrdersByState", {
+                    params: {
+                        userID : this.getCookieValue("userID"),
+                        state: orderState
+                    }
+                }).then(function (response) {
+                    if(response.data.errorCode==0) {
+                        this.userOrders = response.data.data;
+                    }else{
+                        alert("get order by state wrong!");
+                    }
+
+                }).catch(function (error) {
+                    alert("获取信息失败，请刷新重试！");
+                });
+            }
+        },
+
+
+        changeCouponInfoPanel:function(event) {
+            var choose = event.target.text.trim();
+            if(choose=="优惠券消费记录"){
+                this.$http.get("http://localhost:8080/coupon/getCouponPOByState",{
+                    params:{
+                        userID:this.getCookieValue("userID"),
+                        state:"已使用"
+                    }
+                }).then(function (response) {
+                    if(response.data.errorCode==0) {
+                        this.couponRecords = response.data.data;
+                    }else{
+                        alert("get user coupon records wrong");
+                    }
+                }).catch(function (error) {
+                    alert("获取信息失败，请刷新重试！");
+                });
+            }else if(choose=="我的优惠券"){
+                this.getUserCoupons();
+            }
         },
 
         getUserCoupons:function () {
@@ -198,7 +261,6 @@ var vm=new Vue({
         },
 
         setDataToOrderInfoModal:function(order) {
-
             this.$http.get("http://localhost:8080/venue/getVenuePO",{
                 params:{
                     venueID:order.venueID
@@ -207,21 +269,47 @@ var vm=new Vue({
                 if(response.data.errorCode==0) {
                     this.venue = response.data.data;
 
-                    $('#orderID').val(order.orderID);
-                    $('#showID').val(order.showID);
-                    $('#showName').val(order.showName);
-                    $('#seat').val(order.seat);
-                    $('#purchaseMethod').val(order.purchaseMethod);
-                    $('#totalPrice').val(order.totalPrice);
-                    $('#vipDiscount').val(order.discount);
-                    $('#ticketsAmount').val(order.ticketsAmount);
-                    $('#orderState').val(order.orderState);
-                    $('#venueName').val(this.venue.venueName);
-                    $('#venueAddress').val(this.venue.address);
+                    this.$http.get("http://localhost:8080/show/getShowPO",{
+                        params:{
+                            showID:order.showID
+                        }
+                    }).then(function (response) {
+                        if(response.data.errorCode==0) {
+                            this.show = response.data.data;
 
-                    if(order.orderState=="待支付"){
-                        $('#payOrderBT').show();
-                    }
+                            $('#orderID').val(order.orderID);
+                            $('#showID').val(order.showID);
+                            $('#showName').val(order.showName);
+                            $('#seat').val(order.seat);
+                            $('#purchaseMethod').val(order.purchaseMethod);
+                            $('#totalPrice').val(order.totalPrice);
+                            $('#vipDiscount').val(order.discount);
+                            $('#ticketsAmount').val(order.ticketsAmount);
+                            $('#orderState').val(order.orderState);
+                            $('#venueName').val(this.venue.venueName);
+                            $('#venueAddress').val(this.venue.address);
+                            $('#showDate').val(this.show.showDate);
+
+                            if(order.orderState=="待支付"){
+                                $('#refundOrderBT').hide();
+                                $('#payOrderBT').show();
+                                $('#cancelOrderBT').show();
+                            }else if(order.orderState=="已支付"){
+                                $('#refundOrderBT').show();
+                                $('#payOrderBT').hide();
+                                $('#cancelOrderBT').hide();
+                            }else {
+                                $('#refundOrderBT').hide();
+                                $('#payOrderBT').hide();
+                                $('#cancelOrderBT').hide();
+                            }
+
+                        }else{
+                            alert("get show info wrong");
+                        }
+                    }).catch(function (error) {
+                        alert("获取信息失败，请刷新重试！");
+                    });
 
                 }else{
                     alert("get venue info wrong");
@@ -232,9 +320,37 @@ var vm=new Vue({
 
         },
 
-        payOrder:function (showID) {
-            this.setCookie('concreteShowInfoID', $('#showID').val());
+        payOrder:function () {
+            this.setCookie('unpayOrderID', $('#orderID').val());
             window.location.href = "payOrder.html";
+        },
+
+        cancelOrder:function () {
+            this.$http.get("http://localhost:8080/order/cancelOrder",{
+                params:{
+                    orderID:$('#orderID').val()
+                }
+            }).then(function (response) {
+                if(response.data.errorCode==0) {
+                    alert("取消订单成功！");
+                    $('#showConcreteOrderInfoModal').modal('hide');
+                    for(var i=0;i<this.userOrders.length;i++) {
+                        if(this.userOrders[i].orderID==$('#orderID').val()) {
+                            this.userOrders.splice(i, 1);
+                        }
+                    }
+                }else{
+                    alert("取消订单失败！");
+                }
+            }).catch(function (error) {
+                alert("获取信息失败，请刷新重试！");
+            });
+        },
+
+        refundOrder:function(){
+
+            var orderID = $('#orderID').val();
+
         },
 
         logout:function () {

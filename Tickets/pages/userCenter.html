@@ -317,18 +317,14 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 <div id="orderManage" class="" style="display: none;">
 
                     <div class="row">
-                        <select>
-                            <option value ="volvo">全部订单</option>
-                            <option value ="saab">待支付</option>
-                            <option value="opel">已支付</option>
-                            <option value="audi">已完成</option>
-                        </select>
-                        <select>
-                            <option value ="volvo">近三个月订单</option>
-                            <option value ="saab">全部订单</option>
+                        <select id="orderType" @change="getOrderType">
+                            <option>全部订单</option>
+                            <option>待支付</option>
+                            <option>已支付</option>
+                            <option>已完成</option>
+                            <option>已失效</option>
                         </select>
                     </div>
-
 
                     <table class="table table-bordered" style="text-align:center;font-size: 16px;color: #3c3d41">
                         <caption>我的订单</caption>
@@ -338,21 +334,24 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             <th style="text-align:center;font-size: 16px;color: #3c3d41">票价</th>
                             <th style="text-align:center;font-size: 16px;color: #3c3d41">数量</th>
                             <th style="text-align:center;font-size: 16px;color: #3c3d41">订单金额</th>
+                            <th style="text-align:center;font-size: 16px;color: #3c3d41">会员优惠</th>
                             <th style="text-align:center;font-size: 16px;color: #3c3d41">交易状态</th>
+                            <th style="text-align:center;font-size: 16px;color: #3c3d41">购买方式</th>
                             <th style="text-align:center;font-size: 16px;color: #3c3d41">订单日期</th>
                             <th style="text-align:center;font-size: 16px;color: #3c3d41">操作</th>
                         </tr>
                         </thead>
-                        <tbody>
-                        <tr v-for="recentOrder in recentOrders">
-                            <td v-text="recentOrder.showName"></td>
-                            <td v-text="recentOrder.unitPrice"></td>
-                            <td v-text="recentOrder.ticketsAmount"></td>
-                            <td v-text="recentOrder.totalPrice"></td>
-                            <td v-text="recentOrder.orderState"></td>
-                            <td v-text="recentOrder.orderDate"></td>
-                            <td><button class="btn btn-success" @click.prevent="setDataToOrderInfoModal(recentOrder)" data-toggle="modal" href="#showConcreteOrderInfoModal"><i class="fa fa-edit">详细信息</i></button></td>
-
+                        <tbody id="myOrderPanelBody">
+                        <tr v-for="order in userOrders">
+                            <td v-text="order.showName"></td>
+                            <td v-text="order.unitPrice"></td>
+                            <td v-text="order.ticketsAmount"></td>
+                            <td v-text="order.totalPrice"></td>
+                            <td v-text="order.discount"></td>
+                            <td v-text="order.orderState"></td>
+                            <td v-text="order.purchaseMethod"></td>
+                            <td v-text="order.orderDate"></td>
+                            <td><button class="btn btn-success" @click.prevent="setDataToOrderInfoModal(order)" data-toggle="modal" href="#showConcreteOrderInfoModal"><i class="fa fa-edit">详细信息</i></button></td>
                         </tr>
 
                         </tbody>
@@ -363,7 +362,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
                 <div id="myCoupon" class="" style="display: none">
 
-                    <ul id="myTab" class="nav nav-tabs">
+                    <ul id="myTab" class="nav nav-tabs" @click="changeCouponInfoPanel($event)">
                         <li class="active">
                             <a href="#myAllCoupons" data-toggle="tab">
                                 我的优惠券
@@ -397,7 +396,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                     <td v-text="coupon.state"></td>
                                     <td v-text="coupon.lastTerm"></td>
                                 </tr>
-
                                 </tbody>
                             </table>
                         </div>
@@ -408,9 +406,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 <tr>
                                     <th style="text-align:center;font-size: 16px;color: #3c3d41">优惠券号码</th>
                                     <th style="text-align:center;font-size: 16px;color: #3c3d41">名称</th>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">优惠说明</th>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">订单号码</th>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">优惠券状态</th>
+                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">兑换时间</th>
+                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">使用时间</th>
+                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">订单编号</th>
                                     <th style="text-align:center;font-size: 16px;color: #3c3d41">消费时间</th>
                                 </tr>
                                 </thead>
@@ -438,9 +436,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
                     <ul id="myMemberPointsTab" class="nav nav-tabs">
                         <li class="active">
-                            <a href="#getCouponRecord" data-toggle="tab">
-                                获取记录
-                            </a>
+                            <a href="#getCouponRecord" data-toggle="tab">获取记录</a>
                         </li>
                         <li><a href="#useCouponRecord" data-toggle="tab">消耗记录</a></li>
 
@@ -450,13 +446,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             <table class="table table-bordered" style="text-align:center;font-size: 16px;color: #3c3d41">
                                 <thead>
                                 <tr>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">交易号</th>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">日期</th>
+                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">购买项目</th>
+                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">购买日期</th>
                                     <th style="text-align:center;font-size: 16px;color: #3c3d41">项目</th>
                                     <th style="text-align:center;font-size: 16px;color: #3c3d41">来源</th>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">积分数</th>
+                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">获取积分数</th>
                                     <th style="text-align:center;font-size: 16px;color: #3c3d41">状态</th>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">过期日</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -694,6 +689,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <label  class="col-lg-4 control-label">演出时间</label>
+                                    <div class="col-lg-8">
+                                        <input type="text" class="form-control" id="showDate" name="showDate" placeholder="" readonly="readonly">
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <label  class="col-lg-4 control-label">购买座位</label>
                                     <div class="col-lg-8">
                                         <input type="text" class="form-control" id="seat" name="seat" placeholder="" readonly="readonly">
@@ -734,7 +735,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
                                 <div class="form-group">
                                     <div class="col-lg-12">
-                                        <button type="button" id="payOrderBT" class="btn btn-primary btn-lg btn-block" @click="payOrder()" style="display: none;">支付</button>
+                                        <button type="button" id="payOrderBT" class="btn btn-primary btn-lg btn-block" @click="payOrder()" style="display: none;">支付订单</button>
+                                        <button type="button" id="cancelOrderBT" class="btn btn-primary btn-lg btn-block" @click="cancelOrder()" style="display: none;">取消订单</button>
+                                        <button type="button" id="refundOrderBT" class="btn btn-primary btn-lg btn-block" @click="refundOrder()" style="display: none;">申请退款</button>
                                         <button type="button" class="btn btn-default btn-lg btn-block" data-dismiss="modal">关闭</button>
                                     </div>
                                 </div>

@@ -111,6 +111,9 @@ var vm=new Vue({
             }).then(function (response) {
                 if(response.data.errorCode==0) {
                     alert("创建订单成功！请在15分钟之内完成支付！");
+
+                    this.setCookie("unpayOrderID", response.data.data, 1);
+
                     window.location.href = "payOrder.html";
                 }else{
                     alert(response.data.data);

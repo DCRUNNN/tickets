@@ -17,7 +17,6 @@ var vm=new Vue({
             var orderID = $("#orderID").val();
 
             var couponID = $('#getCouponIDLabel').val();
-            alert(couponID);
 
             this.$http.get("http://localhost:8080/user/confirmPayOrder",{
                 params:{
@@ -28,12 +27,13 @@ var vm=new Vue({
             }).then(function (response) {
                 if(response.data.errorCode==0) {
                     alert(response.data.data);
-                    for(var i=0;i<this.unpayOrders.length;i++) {
-                        if(this.unpayOrders[i].orderID==orderID) {
-                            this.unpayOrders.splice(i, 1);
-                        }
-                    }
+                    // for(var i=0;i<this.unpayOrders.length;i++) {
+                    //     if(this.unpayOrders[i].orderID==orderID) {
+                    //         this.unpayOrders.splice(i, 1);
+                    //     }
+                    // }
                     $('#showCouponDialog').modal('hide');
+                    window.location.href = "userCenter.html";
 
                 }else{
                     alert(response.data.data);
@@ -42,6 +42,25 @@ var vm=new Vue({
                 alert("获取信息失败，请刷新重试！");
             });
 
+        },
+
+
+        cancelOrder:function () {
+            this.$http.get("http://localhost:8080/order/cancelOrder",{
+                params:{
+                    orderID:$("#orderID").val()
+                }
+            }).then(function (response) {
+                if(response.data.errorCode==0) {
+                    alert("取消订单成功！");
+                    $('#showCouponDialog').modal('hide');
+                    window.location.href = "userCenter.html";
+                }else{
+                    alert("取消订单失败！");
+                }
+            }).catch(function (error) {
+                alert("获取信息失败，请刷新重试！");
+            });
         },
 
         setDataToCouponDialog:function (orderID,totalPrice,discount) {
@@ -105,8 +124,8 @@ var vm=new Vue({
 
     mounted(){
         this.welcomeWord = this.getCookieValue("welcomeWord");
-        this.showID = this.getCookieValue("concreteShowInfoID");
         var userID = this.getCookieValue("userID");
+        var unpayOrderID = this.getCookieValue("unpayOrderID");
 
         if(this.getCookieValue('username')!=""||this.getCookieValue("venueName")!="" || this.getCookieValue("managerName")!=""){
             document.getElementById("loginBT").style.display = "none";
@@ -129,50 +148,60 @@ var vm=new Vue({
             $("#venueCenter").addClass("disabled");
         }
 
-        this.$http.get("http://localhost:8080/show/getShowPO",{
+        this.$http.get("http://localhost:8080/order/getUnpayOrder",{
             params:{
-                showID:this.showID
-            }
-        }).then(function (response) {
-            if(response.data.errorCode==0) {
-                this.show = response.data.data;
-                this.showPrice = this.show.price.split('/');
-            }else{
-                alert("get show info wrong");
-            }
-        }).catch(function (error) {
-            alert("获取信息失败，请刷新重试！");
-        });
-
-        this.$http.get("http://localhost:8080/order/getUnpayOrders",{
-            params:{
-                userID:userID,
-                showID:this.showID
+                orderID:unpayOrderID,
             }
         }).then(function (response) {
             if(response.data.errorCode==0) {
                 this.unpayOrders = response.data.data;
-
-                // var orderCreateDate = this.unpayOrders;
-
-                // this.setCookie('orderCreateDate', orderCreateDate, 1);
-
-                if(this.unpayOrders.length==0) {
-                    alert("恭喜您！没有待支付的订单！")
+                if(this.unpayOrders.orderState=="已支付") {
+                    alert("恭喜您！没有待支付的订单！");
+                    // window.location.href = "userCenter.html";
                 }else{
+                    this.$http.get("http://localhost:8080/show/getShowPO",{
+                        params:{
+                            showID:this.unpayOrders.showID
+                        }
+                    }).then(function (response) {
+                        if(response.data.errorCode==0) {
+                            this.show = response.data.data;
+                            this.showPrice = this.show.price.split('/');
+                        }else{
+                            alert("get show info wrong");
+                        }
+                    }).catch(function (error) {
+                        console.log(error);
+                        alert("获取信息失败，请刷新重试！");
+                    });
 
                     this.$http.get("http://localhost:8080/venue/getVenuePO",{
                         params:{
-                            venueID:this.unpayOrders[0].venueID
+                            venueID:this.unpayOrders.venueID
                         }
                     }).then(function (response) {
                         if(response.data.errorCode==0) {
                             this.venue = response.data.data;
-
                         }else{
                             alert("get venue info wrong");
                         }
                     }).catch(function (error) {
+                        console.log(error);
+                        alert("获取信息失败，请刷新重试！");
+                    });
+
+                    this.$http.get("http://localhost:8080/order/getPayLeftTime",{
+                        params:{
+                            orderID:this.unpayOrders.orderID
+                        }
+                    }).then(function (response) {
+                        if(response.data.errorCode==0) {
+                            this.setCookie("payLeftTime", response.data.data, 1);
+                        }else{
+                            alert("get pay left time wrong");
+                        }
+                    }).catch(function (error) {
+                        console.log(error);
                         alert("获取信息失败，请刷新重试！");
                     });
                 }
@@ -181,8 +210,10 @@ var vm=new Vue({
                 alert("get order info wrong");
             }
         }).catch(function (error) {
+            console.log(error);
             alert("获取信息失败，请刷新重试！");
         });
+
 
     }
 

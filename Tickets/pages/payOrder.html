@@ -159,9 +159,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         <div class="panel-heading">
             <ol class="breadcrumb" >
                 <li><a href="index.html">MyTickets</a></li>
-                <li><a href="#">{{show.city}}</a></li>
-                <li><a href="#">{{show.category}}</a></li>
-                <li class="active">{{show.showName}}</li>
+                <li><a href="#">支付订单</a></li>
+                <li class="active">{{unpayOrders.showName}}</li>
             </ol>
         </div>
 
@@ -195,7 +194,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             <table class="table table-bordered table-striped" id="example" style="text-align:center">
                                 <thead>
                                 <tr>
-                                    <th style="text-align:center">订单编号</th>
+                                    <th style="text-align:center;display: none">订单编号</th>
                                     <th style="text-align:center">项目名称</th>
                                     <th style="text-align:center">演出场馆</th>
                                     <th style="text-align:center">场馆地址</th>
@@ -208,18 +207,18 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr v-for="unpayOrder in unpayOrders">
-                                    <td v-text="unpayOrder.orderID"></td>
-                                    <td v-text="unpayOrder.showName"></td>
+                                <tr>
+                                    <td id="getOrderIDTD" v-text="unpayOrders.orderID" style="display: none"></td>
+                                    <td v-text="unpayOrders.showName"></td>
                                     <td v-text="venue.venueName"></td>
                                     <td v-text="venue.address"></td>
                                     <td v-text="show.performer"></td>
                                     <td v-text="show.showDate"></td>
-                                    <td v-text="unpayOrder.seat"></td>
-                                    <td v-text="unpayOrder.purchaseMethod"></td>
-                                    <td v-text="unpayOrder.totalPrice"></td>
-                                    <td v-text="unpayOrder.discount"></td>
-                                    <td><button class="btn btn-success" @click.prevent="setDataToCouponDialog(unpayOrder.orderID,unpayOrder.totalPrice,unpayOrder.discount)" data-toggle="modal" href="#showCouponDialog"><i class="fa fa-edit">确认支付</i></button></td>
+                                    <td v-text="unpayOrders.seat"></td>
+                                    <td v-text="unpayOrders.purchaseMethod"></td>
+                                    <td v-text="unpayOrders.totalPrice"></td>
+                                    <td v-text="unpayOrders.discount"></td>
+                                    <td><button class="btn btn-success" @click.prevent="setDataToCouponDialog(unpayOrders.orderID,unpayOrders.totalPrice,unpayOrders.discount)" data-toggle="modal" href="#showCouponDialog"><i class="fa fa-edit">确认支付</i></button></td>
                                     <!--<td><button class="btn btn-success" @click.prevent="confirmPayOrder(unpayOrder.orderID)"><i class="fa fa-edit">确认支付</i></button></td>-->
                                 </tr>
                                 </tbody>
@@ -313,7 +312,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 <div class="form-group">
                                     <div class="col-lg-12">
                                         <button type="button" class="btn btn-primary btn-lg btn-block" @click="confirmPayOrder()">确认支付</button>
-                                        <button type="button" class="btn btn-default btn-lg btn-block" >取消订单</button>
+                                        <button type="button" class="btn btn-default btn-lg btn-block" @click="cancelOrder()">取消订单</button>
                                     </div>
                                 </div>
                             </form>
@@ -368,10 +367,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script src="../dist/js/bootstrap-select.js"></script>
 
 <script>
-//    $(document).ready(function () {
-//        CountDown();
-//    })
-    var maxtime = 15 * 60;
+
+    $(document).ready(function () {
+        CountDown();
+    })
+    var maxtime = parseInt(getCookieValue("payLeftTime"));
 
     function CountDown() {
         if(maxtime>=0)
@@ -386,28 +386,58 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         else
         {
             clearInterval(timer);
-            alert("时间到，结束!");
+            console.log($('#getOrderIDTD').text());
+            $.ajax({
+                data: {orderID:$('#getOrderIDTD').text()},
+                url: "http://localhost:8080/order/cancelOrder",
+                dataType: 'json',
+//                        async: false,
+                contentType: 'application/json;charset=UTF-8',
+                cache: false,
+                timeout: 0,
+                type: 'get',    // 如果要使用GET方式，则将此处改为'get'
+                headers: {
+                    'Access-Control-Allow-Origin': '*'
+                },
+                success: function (response) {
+                    alert("取消订单成功！");
+                    window.location.href = "userCenter.html";
+                },
+                error: function (error) {
+                    console.log(error);
+                    alert("取消订单失败！");
+                }
+            });
         }
     }
     timer = setInterval("CountDown()",1000);
-
 
     function getCouponID(event){
         $('#getCouponIDLabel').val($(event).parents().siblings('td').first().text());
     }
 
+    function getCookieValue (cname) {
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0; i<ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0)==' ') c = c.substring(1);
+            if (c.indexOf(name) != -1) return c.substring(name.length, c.length);
+        }
+        return "";
+    }
 
-    $(document).ready(function(){
-        (function(){
-            setInterval(function(){
-                var len = document.getElementById("example").rows.length;
-                if(len==1) {
-                    window.location.href = "userCenter.html";
-                }
-            }, 1000)
-        })();
 
-    });
+//    $(document).ready(function(){
+//        (function(){
+//            setInterval(function(){
+//                var len = document.getElementById("example").rows.length;
+//                if(len==1) {
+//                    window.location.href = "userCenter.html";
+//                }
+//            }, 1000)
+//        })();
+//    });
 
 
 </script>
