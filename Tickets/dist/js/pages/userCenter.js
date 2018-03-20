@@ -283,6 +283,9 @@ var vm=new Vue({
                             $('#seat').val(order.seat);
                             $('#purchaseMethod').val(order.purchaseMethod);
                             $('#totalPrice').val(order.totalPrice);
+
+                            $('#backMoney').val(order.backMoney);
+
                             $('#vipDiscount').val(order.discount);
                             $('#ticketsAmount').val(order.ticketsAmount);
                             $('#orderState').val(order.orderState);
@@ -291,14 +294,24 @@ var vm=new Vue({
                             $('#showDate').val(this.show.showDate);
 
                             if(order.orderState=="待支付"){
+                                $('#backMoneyDiv').hide();
                                 $('#refundOrderBT').hide();
                                 $('#payOrderBT').show();
                                 $('#cancelOrderBT').show();
                             }else if(order.orderState=="已支付"){
+                                $('#backMoneyDiv').hide();
                                 $('#refundOrderBT').show();
                                 $('#payOrderBT').hide();
                                 $('#cancelOrderBT').hide();
-                            }else {
+                            }else if(order.orderState=="已退款"){
+                                $('#backMoneyDiv').show();
+
+                                $('#refundOrderBT').hide();
+                                $('#payOrderBT').hide();
+                                $('#cancelOrderBT').hide();
+                            }
+                            else {
+                                $('#backMoneyDiv').hide();
                                 $('#refundOrderBT').hide();
                                 $('#payOrderBT').hide();
                                 $('#cancelOrderBT').hide();
@@ -349,7 +362,26 @@ var vm=new Vue({
 
         refundOrder:function(){
 
-            var orderID = $('#orderID').val();
+            this.$http.get("http://localhost:8080/order/refundOrder",{
+                params:{
+                    userID:this.getCookieValue('userID'),
+                    orderID:$('#orderID').val()
+                }
+            }).then(function (response) {
+                if(response.data.errorCode==0) {
+                    alert("申请退款成功！返回金额"+response.data.data);
+                    $('#showConcreteOrderInfoModal').modal('hide');
+                    for(var i=0;i<this.userOrders.length;i++) {
+                        if(this.userOrders[i].orderID==$('#orderID').val()) {
+                            this.userOrders.splice(i, 1);
+                        }
+                    }
+                }else{
+                    alert("申请退款失败！");
+                }
+            }).catch(function (error) {
+                alert("获取信息失败，请刷新重试！");
+            });
 
         },
 

@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tickets</title>
+    <link rel="stylesheet" href="../dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../dist/css/bootstrap-select.css">
+    <link href="../dist/css/style.css" rel="stylesheet" type="text/css" media="all" />
+
+    <link href="../dist/css/memenu.css" rel="stylesheet" type="text/css"  />
+
+    <link rel="stylesheet" type="text/css" href="../dist/css/nav.css" />
+
+    <link rel="stylesheet" href="../dist/css/font-awesome.min.css" />
+
+    <link href="../dist/css/jquery.uls.css" rel="stylesheet"/>
+
+    <!-- for-mobile-apps -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="Resale Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template,
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony Ericsson, Motorola web design" />
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <!-- //for-mobile-apps -->
+    <!--fonts-->
+    <!--//fonts-->
+    <!-- js -->
+    <script type="text/javascript" src="../dist/js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript">
+
+        function AutoSize(Img, maxWidth, maxHeight) {
+            var image = new Image();
+            //原图片原始地址（用于获取原图片的真实宽高，当<img>标签指定了宽、高时不受影响）
+            image.src = Img.src;
+            // 当图片比图片框小时不做任何改变
+            if (image.width < maxWidth&& image.height < maxHeight) {
+                Img.width = image.width;
+                Img.height = image.height;
+            }
+            else //原图片宽高比例 大于 图片框宽高比例,则以框的宽为标准缩放，反之以框的高为标准缩放
+            {
+                if (maxWidth/ maxHeight  <= image.width / image.height) //原图片宽高比例 大于 图片框宽高比例
+                {
+                    Img.width = maxWidth;   //以框的宽度为标准
+                    Img.height = maxWidth* (image.height / image.width);
+                }
+                else {   //原图片宽高比例 小于 图片框宽高比例
+                    Img.width = maxHeight  * (image.width / image.height);
+                    Img.height = maxHeight  ;   //以框的高度为标准
+                }
+            }
+        }
+
+
+        function DrawImage(ImgD,width_s,height_s){
+            /*var width_s=139;
+            var height_s=104;
+            */
+            var image=new Image();
+            image.src=ImgD.src;
+            if(image.width>0 && image.height>0){
+                flag=true;
+                if(image.width/image.height>=width_s/height_s){
+                    if(image.width>width_s){
+                        ImgD.width=width_s;
+                        ImgD.height=(image.height*width_s)/image.width;
+                    }else{
+                        ImgD.width=image.width;
+                        ImgD.height=image.height;
+                    }
+                }
+                else{
+                    if(image.height>height_s){
+                        ImgD.height=height_s;
+                        ImgD.width=(image.width*height_s)/image.height;
+                    }else{
+                        ImgD.width=image.width;
+                        ImgD.height=image.height;
+                    }
+                }
+            }
+            /*else{
+            ImgD.src="";
+            ImgD.alt=""
+            }*/
+        }
+
+    </script>
+
+
+    <style>
+        .disabled {
+            pointer-events:none; //This makes it not clickable
+        opacity:0.6;         //This grays it out to look disabled
+        }
+    </style>
+
+</head>
+<body>
+
+<div id="container">
+
+    <!--<HR style="color:#000000;size:1px" width="100%" >-->
+
+    <div class="header">
+        <div class="container">
+            <div class="logo">
+                <a href="index.html"><span>My</span>Tickets</a>
+            </div>
+
+            <div class="pull-right" style="margin-top: 3%">
+                <ul class="nav nav-pills">
+                    <li class="active">
+                        <a id="loginBT" href="login.html" >登录</a>
+                    </li>
+                    <li>
+                        <a id="signUpBT" href="signUp.html">注册</a>
+                    </li>
+                    <li>
+                        <a id="logOutBT"  @click="logout()">退出</a>
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            服务中心 <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li id="userCenter"><a href="userCenter.html">个人中心</a></li>
+                            <li class="divider"></li>
+                            <li id="venueCenter"><a href="venueCenter.html">场馆中心</a></li>
+                            <li class="divider"></li>
+                            <li id="managerCenter"><a href="managerCenter.html">经理中心</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a v-text="welcomeWord" style="color: blueviolet"></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="h_menu4">
+        <ul class="memenu skyblue">
+            <li><a class="color1" href="#">戏剧</a>
+            </li>
+            <li><a class="color2" href="#">体育</a>
+            </li>
+            <li><a class="color8" href="#">亲子</a></li>
+            <li><a class="color8" href="#">摇滚</a></li>
+            <li><a class="color8" href="#">舞蹈古典</a></li>
+        </ul>
+    </div>
+
+    <br><br><br>
+    <!--<div class="">-->
+    <!--<ol class="breadcrumb" >-->
+    <!--<li><a href="#">MyTickets</a></li>-->
+    <!--<li><a href="#">{{show.city}}</a></li>-->
+    <!--<li><a href="#">{{show.category}}</a></li>-->
+    <!--<li class="active">{{show.showName}}</li>-->
+    <!--</ol>-->
+    <!--</div>-->
+
+    <div class="panel">
+
+        <div class="panel-heading">
+            <ol class="breadcrumb" >
+                <li><a href="index.html">MyTickets</a></li>
+                <li><a href="#">{{show.city}}</a></li>
+                <li><a href="#">{{show.category}}</a></li>
+                <li class="active">{{show.showName}}</li>
+            </ol>
+
+        </div>
+
+        <div class="panel-body">
+
+            <div class="">
+                <div class="row">
+                    <div class="col-md-offset-1 col-md-5">
+
+                        <h2><span>{{show.showName}}</span></h2>
+                        <br><br>
+
+                        <p class="text-primary" style="font-size: 22px;color: #2aabd2"><strong>{{show.showDate}}</strong></p>
+                        <br>
+
+                        <p class="text-primary" style="font-size: 22px;color: #2aabd2"><strong>{{show.venueName}}</strong></p>
+                        <br>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label style="font-size: 20px"><span>请选择票价：</span></label>
+                            </div>
+                            <div class="col-md-3">
+                                <select id="selectedPrice">
+                                    <option v-for="price in showPrice" v-text="price"></option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <br><br>
+
+                        <div class="row">
+                            <label style="font-size: 20px"><span>请选择购买票数量：</span></label>
+                        </div>
+                        <br>
+
+                        <div class="row">
+                            <div class="btn-group" data-toggle="buttons" id="ticketAmountDiv" >
+
+                                <label class="btn btn-primary" onclick="showTotalPrice('1')">
+                                    <input type="radio" name="options" id="option1" value="1">1
+                                </label>
+                                <label class="btn btn-primary" onclick="showTotalPrice('2')">
+                                    <input type="radio" name="options" id="option2" value="2">2
+                                </label>
+                                <label class="btn btn-primary" onclick="showTotalPrice(3)">
+                                    <input type="radio" name="options" id="option3" value="3">3
+                                </label>
+
+                                <label class="btn btn-primary" onclick="showTotalPrice(4)">
+                                    <input type="radio" name="options" id="option4" value="4">4
+                                </label>
+                                <label class="btn btn-primary" onclick="showTotalPrice('5')">
+                                    <input type="radio" name="options" id="option5" value="5">5
+                                </label>
+                                <label class="btn btn-primary" onclick="showTotalPrice('6')">
+                                    <input type="radio" name="options" id="option6" value="6">6
+                                </label>
+
+                                <label class="btn btn-primary" onclick="showTotalPrice('7')">
+                                    <input type="radio" name="options" id="option7" value="7">7
+                                </label>
+                                <label class="btn btn-primary" onclick="showTotalPrice('8')">
+                                    <input type="radio" name="options" id="option8" value="8">8
+                                </label>
+                                <label class="btn btn-primary" onclick="showTotalPrice('9')">
+                                    <input type="radio" name="options" id="option9" value="9">9
+                                </label>
+                                <label class="btn btn-primary" onclick="showTotalPrice('10')">
+                                    <input type="radio" name="options" id="option10" value="10">10
+                                </label>
+
+                                <br><br>
+
+                                <label class="btn btn-primary" onclick="showTotalPrice('11')">
+                                    <input type="radio" name="options" id="option11" value="11">11
+                                </label>
+                                <label class="btn btn-primary" onclick="showTotalPrice('12')">
+                                    <input type="radio" name="options" id="option12" value="12">12
+                                </label>
+                                <label class="btn btn-primary" onclick="showTotalPrice('13')">
+                                    <input type="radio" name="options" id="option13" value="13">13
+                                </label>
+
+                                <label class="btn btn-primary" onclick="showTotalPrice('14')">
+                                    <input type="radio" name="options" id="option14" value="14">14
+                                </label>
+                                <label class="btn btn-primary" onclick="showTotalPrice('15')">
+                                    <input type="radio" name="options" id="option15" value="15">15
+                                </label>
+                                <label class="btn btn-primary" onclick="showTotalPrice('16')">
+                                    <input type="radio" name="options" id="option16" value="16">16
+                                </label>
+
+                                <label class="btn btn-primary" onclick="showTotalPrice('17')">
+                                    <input type="radio" name="options" id="option17" value="17">17
+                                </label>
+                                <label class="btn btn-primary" onclick="showTotalPrice('18')">
+                                    <input type="radio" name="options" id="option18" value="18">18
+                                </label>
+                                <label class="btn btn-primary" onclick="showTotalPrice('19')">
+                                    <input type="radio" name="options" id="option19" value="19" >19
+                                </label>
+                                <label class="btn btn-primary" onclick="showTotalPrice('20')">
+                                    <input type="radio" name="options" id="option20" value="20">20
+                                </label>
+                            </div>
+                        </div>
+                        <br>
+
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label style="font-size: 20px"><span>订单总价：</span></label>
+                            </div>
+                            <div class="col-md-3">
+                                <label style="font-size: 20px" id="totalPriceLabel"></label>
+                            </div>
+                        </div>
+
+                        <br><br>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="btn btn-primary btn-large col-md-offset-6" @click="directPurchase()">立即购买</button>
+
+        </div>
+
+        <HR style="color:#000000;size:1px" width="100%" >
+
+
+        <div class="panel panel-primary">
+
+            <div class="panel-body">
+                <ul id="myShowTab" class="nav nav-tabs">
+                    <li class="active"><a href="#showInfo" data-toggle="tab">项目信息</a></li>
+                    <li><a href="#purchaseInfo" data-toggle="tab">购买说明</a></li>
+                    <li><a href="#payMethod" data-toggle="tab">付款方式</a></li>
+                </ul>
+
+                <div id="myShowTabContent" class="tab-content">
+                    <div class="tab-pane fade in active" id="showInfo">
+
+                        <table class="table table-bordered" style="text-align:center;font-size: 16px;">
+                            <caption>基本信息</caption>
+                            <thead>
+                            <tr>
+                                <th style="text-align:center;color: #3c3d41">项目时间</th>
+                                <th style="text-align:center;color: #3c3d41">{{show.showDate}}</th>
+                                <th style="text-align:center;color: #3c3d41">项目地点</th>
+                                <th style="text-align:center;color: #3c3d41">{{show.venueName}}</th>
+                            </tr>
+                            </thead>
+                            <tbody >
+                            <tr>
+                                <td style="color: #3c3d41">限购</td>
+                                <td style="color: #3c3d41">选座购买每单限6张</td>
+                                <td style="color: #3c3d41">儿童入场提示</td>
+                                <td style="color: #3c3d41">1.2米以下儿童谢绝入场（儿童项目除外），1.2米以上儿童需持票入场</td>
+                            </tr>
+                            <tr>
+                                <td style="color: #3c3d41">付款时效提醒</td>
+                                <td style="color: #3c3d41">购票下单成功后需在15分钟内完成支付，未支付成功的订单，将在下单15分钟后系统自动取消，所选价位将自动释放后重新点亮，大家可及时刷新购票页面进行购买。</td>
+                                <td style="color: #3c3d41">退换说明</td>
+                                <td style="color: #3c3d41">本项目为全国联网销售，与现场座位一一对应，具有时效性。任何退换票行为都将影响剧场方、项目主办方及其他观众的正当权益。如因个人特殊情况无法按时观看，还请自行处理，为观众带来不便，敬请谅解！</td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+
+                    </div>
+
+                    <div class="tab-pane fade" id="purchaseInfo">
+                        <br><br>
+                        <h4>售前提示</h4>
+                        <p>
+                            1.为避免快递配送不能及时送达，演出距开场时间少于3天时不提供【快递配送】服务，请您谅解！您可以选择电子票或在线支付后上门自取纸质票。 点击查看上门取票地址>>
+                        </p>
+                        <p>
+                            2.凡演出票类商品，开票时间一般为演出前二到四周，正式开票后会第一时间短信通知您，请注意接收。
+                        </p>
+                        <p>
+                            3.如您不是通过“选座购买”通道进行的票品购买，最终票品数量视项目主办方及场馆情况而定，正式开票后大麦网将根据用户付款先后顺序依次配票，可能存在票品不足不能为您配票的风险，如最终未能配票，大麦网承诺全额退款，但不承担其他损失。
+                        </p>
+
+
+                        <h4>支付方式</h4>
+                        <p>网上银行（招商银行等） 支付平台（支付宝等） 转账汇款(招商银行等)</p>
+
+                        <h4>退/换货说明</h4>
+                        <p>针对不可抗力和非不可抗力的退/换票情况和处理，请点击查阅退换货说明</p>
+                    </div>
+
+                    <div class="tab-pane fade" id="payMethod">
+                        <br>
+                        <h4>付款方式</h4>
+                        <button type="button" class="btn btn-primary">在线支付</button>
+                        <button type="button" class="btn btn-primary">线下支付</button>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+</body>
+
+
+
+<!--<script>-->
+    <!--$(document).ready(function () {-->
+        <!--var mySelect = $('#first-disabled2');-->
+
+        <!--$('#special').on('click', function () {-->
+            <!--mySelect.find('option:selected').prop('disabled', true);-->
+            <!--mySelect.selectpicker('refresh');-->
+        <!--});-->
+
+        <!--$('#special2').on('click', function () {-->
+            <!--mySelect.find('option:disabled').prop('disabled', false);-->
+            <!--mySelect.selectpicker('refresh');-->
+        <!--});-->
+
+        <!--$('#basic2').selectpicker({-->
+            <!--liveSearch: true,-->
+            <!--maxOptions: 1-->
+        <!--});-->
+    <!--});-->
+<!--</script>-->
+
+
+<script src="../resources/vue/vue.js"></script>
+<script src="../resources/vue-resource/vue-resource.js"></script>
+
+<script src="../dist/js/pages/directPurchase.js"></script>
+
+<script type="text/javascript" src="../dist/js/wwwnet.js"></script>
+<script type="text/javascript" src="../dist/js/memenu.js"></script>
+<!-- js -->
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="../dist/js/bootstrap.min.js"></script>
+<script src="../dist/js/bootstrap-select.js"></script>
+
+<script>
+    function showTotalPrice (ticketAmount) {
+
+        var ticketPrice = $('#selectedPrice option:selected').text();
+//        var ticketAmount = $('#ticketAmountDiv input:radio:checked').val();
+        // var ticketAmount=$('#ticketAmountDiv input[name="options"]:checked').val()
+//        var ticketAmount=$('#ticketAmountDiv').find(':radio:checked').val()
+        $("#totalPriceLabel").text(parseInt(ticketAmount) * parseFloat(ticketPrice));
+    }
+</script>
+
+
+</html>

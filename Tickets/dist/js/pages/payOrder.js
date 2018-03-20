@@ -157,7 +157,7 @@ var vm=new Vue({
                 this.unpayOrders = response.data.data;
                 if(this.unpayOrders.orderState=="已支付") {
                     alert("恭喜您！没有待支付的订单！");
-                    // window.location.href = "userCenter.html";
+                    window.location.href = "userCenter.html";
                 }else{
                     this.$http.get("http://localhost:8080/show/getShowPO",{
                         params:{

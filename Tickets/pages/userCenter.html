@@ -288,7 +288,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             <thead>
                             <tr>
                                 <th style="text-align:center;font-size: 16px;color: #3c3d41">项目名称</th>
-                                <th style="text-align:center;font-size: 16px;color: #3c3d41">票价</th>
                                 <th style="text-align:center;font-size: 16px;color: #3c3d41">数量</th>
                                 <th style="text-align:center;font-size: 16px;color: #3c3d41">订单金额</th>
                                 <th style="text-align:center;font-size: 16px;color: #3c3d41">交易状态</th>
@@ -299,7 +298,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             <tbody>
                             <tr v-for="recentOrder in recentOrders">
                                 <td v-text="recentOrder.showName"></td>
-                                <td v-text="recentOrder.unitPrice"></td>
                                 <td v-text="recentOrder.ticketsAmount"></td>
                                 <td v-text="recentOrder.totalPrice"></td>
                                 <td v-text="recentOrder.orderState"></td>
@@ -321,7 +319,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             <option>全部订单</option>
                             <option>待支付</option>
                             <option>已支付</option>
+                            <option>进行中</option>
                             <option>已完成</option>
+                            <option>已退款</option>
                             <option>已失效</option>
                         </select>
                     </div>
@@ -331,7 +331,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <thead>
                         <tr>
                             <th style="text-align:center;font-size: 16px;color: #3c3d41">项目名称</th>
-                            <th style="text-align:center;font-size: 16px;color: #3c3d41">票价</th>
                             <th style="text-align:center;font-size: 16px;color: #3c3d41">数量</th>
                             <th style="text-align:center;font-size: 16px;color: #3c3d41">订单金额</th>
                             <th style="text-align:center;font-size: 16px;color: #3c3d41">会员优惠</th>
@@ -344,7 +343,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <tbody id="myOrderPanelBody">
                         <tr v-for="order in userOrders">
                             <td v-text="order.showName"></td>
-                            <td v-text="order.unitPrice"></td>
                             <td v-text="order.ticketsAmount"></td>
                             <td v-text="order.totalPrice"></td>
                             <td v-text="order.discount"></td>
@@ -383,6 +381,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                     <th style="text-align:center;font-size: 16px;color: #3c3d41">名称</th>
                                     <th style="text-align:center;font-size: 16px;color: #3c3d41">优惠说明</th>
                                     <th style="text-align:center;font-size: 16px;color: #3c3d41">消耗积分</th>
+                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">优惠券价值</th>
                                     <th style="text-align:center;font-size: 16px;color: #3c3d41">优惠券状态</th>
                                     <th style="text-align:center;font-size: 16px;color: #3c3d41">有效期</th>
                                 </tr>
@@ -393,6 +392,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                     <td v-text="coupon.couponName"></td>
                                     <td v-text="coupon.description"></td>
                                     <td v-text="coupon.usedMemberPoint"></td>
+                                    <td v-text="coupon.value"></td>
                                     <td v-text="coupon.state"></td>
                                     <td v-text="coupon.lastTerm"></td>
                                 </tr>
@@ -409,17 +409,17 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                     <th style="text-align:center;font-size: 16px;color: #3c3d41">兑换时间</th>
                                     <th style="text-align:center;font-size: 16px;color: #3c3d41">使用时间</th>
                                     <th style="text-align:center;font-size: 16px;color: #3c3d41">订单编号</th>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">消费时间</th>
+                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">抵扣</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr v-for="couponRecord in couponRecords">
                                     <td v-text="couponRecord.couponID"></td>
                                     <td v-text="couponRecord.couponName"></td>
-                                    <td v-text="couponRecord.description"></td>
-                                    <td v-text="couponRecord.orderID"></td>
-                                    <td v-text="couponRecord.state"></td>
+                                    <td v-text="couponRecord.exchangeTime"></td>
                                     <td v-text="couponRecord.usedTime"></td>
+                                    <td v-text="couponRecord.orderID"></td>
+                                    <td v-text="couponRecord.value"></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -720,6 +720,14 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                         <input type="text" class="form-control" id="totalPrice" name="totalPrice" placeholder="" readonly="readonly">
                                     </div>
                                 </div>
+
+                                <div class="form-group" id="backMoneyDiv" >
+                                    <label  class="col-lg-4 control-label">退回金额</label>
+                                    <div class="col-lg-8">
+                                        <input type="text" class="form-control" id="backMoney" name="backMoney" placeholder="" readonly="readonly">
+                                    </div>
+                                </div>
+
                                 <div class="form-group">
                                     <label  class="col-lg-4 control-label">会员优惠</label>
                                     <div class="col-lg-8">

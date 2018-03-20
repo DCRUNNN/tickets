@@ -168,6 +168,26 @@ var vm=new Vue({
             $("#safeSetting").slideUp("fast");
         },
 
+        checkTicket:function () {
+
+            this.$http.get("http://localhost:8080/venue/checkTicket",{
+                params:{
+                    orderID:$('#inputOrderID').val(),
+                    venueID:this.venue.venueID
+                }
+            }).then(function (response) {
+                console.log(response);
+                if(response.data.errorCode==0) {
+                    alert(response.data.data);
+                }else{
+                    alert(response.data.data);
+                }
+            }).catch(function (error) {
+                console.log(error);
+                alert("获取检票登记信息失败，请刷新重试！");
+            });
+        },
+
         setCookie:function (cname,cvalue,exdays) {
             var d = new Date();
             d.setTime(d.getTime() + (exdays*24*60*60*1000));
@@ -235,6 +255,21 @@ var vm=new Vue({
         }).catch(function (error) {
             alert("获取信息失败，请刷新重试！");
         });
+
+        this.$http.get("http://localhost:8080/venue/getVenueRecentOrders",{
+            params:{
+                venueID:venueID
+            }
+        }).then(function (response) {
+            if(response.data.errorCode==0) {
+                this.recentOrders = response.data.data;
+            }else{
+                alert("get venue recent orders wrong");
+            }
+        }).catch(function (error) {
+            alert("获取信息失败，请刷新重试！");
+        });
+
 
     }
 

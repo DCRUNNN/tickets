@@ -130,7 +130,6 @@ var vm=new Vue({
 
             }
 
-
         },
 
         changeCityShowPanel:function (event) {
