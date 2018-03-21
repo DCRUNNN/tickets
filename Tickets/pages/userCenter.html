@@ -86,6 +86,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
     </script>
 
+    <script src="../dist/js/echarts.common.min.js"></script>
+
 
     <style>
         .panel-group{max-height:770px;overflow: auto;}
@@ -215,7 +217,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <ul class="list-group" id="accountCenterUL">
                             <li class="list-group-item" @click="getMenuItem($event)">
                                 <button class="menu-item-left">
-                                    <span class="glyphicon glyphicon-triangle-right"></span>收货地址
+                                    <span class="glyphicon glyphicon-triangle-right"></span>取消会员
                                 </button>
                             </li>
                             <li class="list-group-item" @click="getMenuItem($event)">
@@ -434,7 +436,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <button type="button" class="btn btn-primary" @click="setDataToGetCouponModal(user.memberPoints)" data-toggle="modal" href="#getCouponModal">兑换优惠券</button>
                     </div>
 
-                    <ul id="myMemberPointsTab" class="nav nav-tabs">
+                    <ul id="myMemberPointsTab" class="nav nav-tabs" @click="changeMemberPointsPanel($event)">
                         <li class="active">
                             <a href="#getCouponRecord" data-toggle="tab">获取记录</a>
                         </li>
@@ -445,48 +447,40 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <div class="tab-pane fade in active" id="getCouponRecord">
                             <table class="table table-bordered" style="text-align:center;font-size: 16px;color: #3c3d41">
                                 <thead>
-                                <tr>
                                     <th style="text-align:center;font-size: 16px;color: #3c3d41">购买项目</th>
                                     <th style="text-align:center;font-size: 16px;color: #3c3d41">购买日期</th>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">项目</th>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">来源</th>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">获取积分数</th>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">状态</th>
-                                </tr>
+                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">购买数量</th>
+                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">订单总价</th>
                                 </thead>
                                 <tbody>
-                                <tr v-for="recentOrder in recentOrders">
+                                <tr v-for="recentOrder in userOrders">
                                     <td v-text="recentOrder.showName"></td>
-                                    <td v-text="recentOrder.unitPrice"></td>
+                                    <td v-text="recentOrder.orderDate"></td>
                                     <td v-text="recentOrder.ticketsAmount"></td>
                                     <td v-text="recentOrder.totalPrice"></td>
-                                    <td v-text="recentOrder.orderState"></td>
-                                    <td v-text="recentOrder.totalPrice"></td>
-                                    <td v-text="recentOrder.orderState"></td>
                                 </tr>
 
                                 </tbody>
                             </table>
-
                         </div>
                         <div class="tab-pane fade" id="useCouponRecord">
                             <table class="table table-bordered" style="text-align:center;font-size: 16px;color: #3c3d41">
                                 <thead>
                                 <tr>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">交易号</th>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">日期</th>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">项目</th>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">类型</th>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">积分数</th>
+                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">优惠券名称</th>
+                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">优惠券描述</th>
+                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">使用积分</th>
+                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">优惠券价值</th>
+                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">兑换日期</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr v-for="recentOrder in recentOrders">
-                                    <td v-text="recentOrder.showName"></td>
-                                    <td v-text="recentOrder.unitPrice"></td>
-                                    <td v-text="recentOrder.ticketsAmount"></td>
-                                    <td v-text="recentOrder.totalPrice"></td>
-                                    <td v-text="recentOrder.orderState"></td>
+                                <tr v-for="coupon in usedCoupons">
+                                    <td v-text="coupon.couponName"></td>
+                                    <td v-text="coupon.description"></td>
+                                    <td v-text="coupon.usedMemberPoint"></td>
+                                    <td v-text="coupon.value"></td>
+                                    <td v-text="coupon.exchangeTime"></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -499,30 +493,60 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
                 <div id="myStatistics" class="" style="display: none">
 
-                    <p>这里是统计信息</p>
+                    <div class="panel panel-primary">
+
+                        <div class="panel-body">
+
+                            <div class="row">
+                                <div class="col-md-offset-1">
+                                    <div id="main" style="width: 600px;height:400px;">
+
+                                    </div>
+
+
+                                    <div id="main2" style="width: 600px;height:400px;">
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
                 </div>
 
-                <div id="receivingAddress" class="" style="display: none">
+                <div id="cancelVIPDiv" class="" style="display: none">
 
                     <div class="panel panel-success">
                         <div class="panel-body">
-                            <div class="row">
-                                <span v-text="user.username"></span>
-                            </div>
-                            <br>
-                            <div class="row">
-                                <span v-text="user.phoneNumber"></span>
-                            </div>
-                            <br>
-                            <div class="row">
-                                <span v-text="user.address"></span>
-                                <span v-text="user.email"></span>
-                            </div>
-                            <br>
-                            <div class="row">
-                                <button type="button" class="btn btn-default btn-sm">修改</button>
-                                <button type="button" class="btn btn-default btn-sm">删除</button>
-                            </div>
+                            <br><br>
+                            <form class="form-horizontal" role="form">
+                                <div class="form-group">
+                                    <label  class="col-lg-3 control-label">会员昵称</label>
+                                    <div class="col-lg-6">
+                                        <span class="form-control" v-text="user.username">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label  class="col-lg-3 control-label">会员邮箱</label>
+                                    <div class="col-lg-6">
+                                        <span class="form-control" v-text="user.email">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label  class="col-lg-3 control-label">联系电话</label>
+                                    <div class="col-lg-6">
+                                        <span class="form-control" v-text="user.phoneNumber">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-lg-offset-3 col-lg-9">
+                                        <button type="button" class="btn btn-success" data-toggle="modal" href="#showCancelVIPModal">取消会员</button>
+                                    </div>
+                                </div>
+                            </form>
 
                         </div>
                     </div>
@@ -757,6 +781,37 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
+
+    <div class="modal fade" id="showCancelVIPModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">取消会员</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <h3 style="text-align: center">是否确认取消会员？</h3>
+                        </div>
+                        <div class="panel-body">
+                            <form class="form-horizontal" role="form">
+                                <div class="form-group">
+                                    <div class="col-lg-12">
+                                        <button type="button" class="btn btn-danger btn-lg btn-block" @click="cancelVIP()">确认取消会员</button>
+                                        <button type="button" class="btn btn-default btn-lg btn-block" data-dismiss="modal">取消</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
+
 </div>
 
 
@@ -799,7 +854,64 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script src="../dist/js/bootstrap.min.js"></script>
 <script src="../dist/js/bootstrap-select.js"></script>
 
+<script type="text/javascript">
+
+    function initChart1(data){
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+
+        // 指定图表的配置项和数据
+        var option = {
+            title: {
+                text: '我的订单信息'
+            },
+            tooltip: {},
+            legend: {
+                data:['数量']
+            },
+            xAxis: {
+                data: ["待支付","已支付","进行中","已完成","已失效","已退订"]
+            },
+            yAxis: {},
+            series: [{
+                name: '数量',
+                type: 'bar',
+                data: data
+            }]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    }
+
+    function initCharts2(x,y){
+        var myChart = echarts.init(document.getElementById('main2'));
+
+        var option = {
+            title: {
+                text: '我的订单价格信息'
+            },
+            xAxis: {
+                type: 'category',
+                data: x
+            },
+            yAxis: {
+                type: 'value',
+            },
+            series: [{
+                data: y,
+                type: 'line'
+            }]
+        };
+        myChart.setOption(option);
+    }
+
+
+</script>
+
+
+
 <script>
+
     $(function(){
         $(".panel-heading").click(function(e){
             /*切换折叠指示图标*/
@@ -817,14 +929,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         $('#couponValue').val(parseFloat(inputMemberPoints)*0.01)
     }
 
-
-//    $("ul#bussinessCenterUL").on("click","li",function(){      //只需要找到你点击的是哪个ul里面的就行
-//        alert($(this).text());
-//    });
-//
-//    $("ul#accountCenterUL").on("click","li",function(){      //只需要找到你点击的是哪个ul里面的就行
-//        alert($(this).text());
-//    });
 </script>
 
 

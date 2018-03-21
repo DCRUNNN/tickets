@@ -18,29 +18,57 @@ var vm=new Vue({
 
             var couponID = $('#getCouponIDLabel').val();
 
-            this.$http.get("http://localhost:8080/user/confirmPayOrder",{
-                params:{
-                    userID:this.getCookieValue("userID"),
-                    orderID:orderID,
-                    couponID:couponID,
-                }
-            }).then(function (response) {
-                if(response.data.errorCode==0) {
-                    alert(response.data.data);
-                    // for(var i=0;i<this.unpayOrders.length;i++) {
-                    //     if(this.unpayOrders[i].orderID==orderID) {
-                    //         this.unpayOrders.splice(i, 1);
-                    //     }
-                    // }
-                    $('#showCouponDialog').modal('hide');
-                    window.location.href = "userCenter.html";
 
-                }else{
-                    alert(response.data.data);
-                }
-            }).catch(function (error) {
-                alert("获取信息失败，请刷新重试！");
-            });
+            var userID = this.getCookieValue("userID");
+
+            if(userID=="现场购票用户"){
+                this.$http.get("http://localhost:8080/user/confirmSpotPayOrder",{
+                    params:{
+                        userID:this.getCookieValue("userID"),
+                        orderID:orderID,
+                    }
+                }).then(function (response) {
+                    if(response.data.errorCode==0) {
+                        alert(response.data.data);
+                        // for(var i=0;i<this.unpayOrders.length;i++) {
+                        //     if(this.unpayOrders[i].orderID==orderID) {
+                        //         this.unpayOrders.splice(i, 1);
+                        //     }
+                        // }
+                        $('#showCouponDialog').modal('hide');
+                        window.location.href = "venueCenter.html";
+
+                    }else{
+                        alert(response.data.data);
+                    }
+                }).catch(function (error) {
+                    alert("获取信息失败，请刷新重试！");
+                });
+            }else{
+                this.$http.get("http://localhost:8080/user/confirmPayOrder",{
+                    params:{
+                        userID:this.getCookieValue("userID"),
+                        orderID:orderID,
+                        couponID:couponID,
+                    }
+                }).then(function (response) {
+                    if(response.data.errorCode==0) {
+                        alert(response.data.data);
+                        // for(var i=0;i<this.unpayOrders.length;i++) {
+                        //     if(this.unpayOrders[i].orderID==orderID) {
+                        //         this.unpayOrders.splice(i, 1);
+                        //     }
+                        // }
+                        $('#showCouponDialog').modal('hide');
+                        window.location.href = "userCenter.html";
+
+                    }else{
+                        alert(response.data.data);
+                    }
+                }).catch(function (error) {
+                    alert("获取信息失败，请刷新重试！");
+                });
+            }
 
         },
 
@@ -67,8 +95,8 @@ var vm=new Vue({
             $('#orderID').val(orderID);
             $('#totalPrice').val(totalPrice);
             $('#vipDiscount').val(discount);
-            var afterDiscountPrice = parseFloat(totalPrice) * parseFloat(discount);
-            $('#afterDiscount').val(parseFloat(afterDiscountPrice.toFixed(2)));
+            // var afterDiscountPrice = parseFloat(totalPrice) * parseFloat(discount);
+            // $('#afterDiscount').val(parseFloat(afterDiscountPrice.toFixed(2)));
 
             this.$http.get("http://localhost:8080/coupon/getCouponPOByState",{
                 params:{

@@ -93,39 +93,74 @@ var vm=new Vue({
                 seatInfo.push(y.text());
             });
 
-            this.$http.post("http://localhost:8080/order/createOrder",{
-                discount: 0,
-                orderDate: '',
-                orderID: '',
-                orderState: '待支付',
-                purchaseMethod: "选座购买",
-                seat: seatInfo.join(","),
-                showID: this.show.showID,
-                showName: this.show.showName,
-                ticketsAmount: document.getElementsByClassName('mySelectSeat').length,
-                totalPrice: document.getElementById("tempTotalPrice").innerText,
-                unitPrice: 0,
-                userID: this.user.userID,
-                username: this.user.username,
-                venueID: this.show.venueID
-            }).then(function (response) {
-                if(response.data.errorCode==0) {
-                    alert("创建订单成功！请在15分钟之内完成支付！");
+            var userID = this.getCookieValue("userID");
 
-                    this.setCookie("unpayOrderID", response.data.data, 1);
+            if(userID=="现场购票用户"){
+                this.$http.post("http://localhost:8080/order/createSpotPurchaseOrder",{
+                    discount: 0,
+                    orderDate: '',
+                    orderID: '',
+                    orderState: '待支付',
+                    purchaseMethod: "选座购买",
+                    seat: seatInfo.join(","),
+                    showID: this.show.showID,
+                    showName: this.show.showName,
+                    ticketsAmount: document.getElementsByClassName('mySelectSeat').length,
+                    totalPrice: document.getElementById("tempTotalPrice").innerText,
+                    unitPrice: 0,
+                    userID: this.getCookieValue("userID"),
+                    username: this.getCookieValue("username"),
+                    venueID: this.show.venueID
+                }).then(function (response) {
+                    if(response.data.errorCode==0) {
+                        alert("创建订单成功！请在15分钟之内完成支付！");
 
-                    window.location.href = "payOrder.html";
-                }else{
-                    alert(response.data.data);
-                }
-            }).catch(function (error) {
-                console.log(error);
-                alert("获取信息失败，请刷新重试！");
-            });
+                        this.setCookie("unpayOrderID", response.data.data, 1);
+
+                        window.location.href = "payOrder.html";
+                    }else{
+                        alert(response.data.data);
+                    }
+                }).catch(function (error) {
+                    console.log(error);
+                    alert("获取信息失败，请刷新重试！");
+                });
+            }else{
+                this.$http.post("http://localhost:8080/order/createOrder",{
+                    discount: 0,
+                    orderDate: '',
+                    orderID: '',
+                    orderState: '待支付',
+                    purchaseMethod: "选座购买",
+                    seat: seatInfo.join(","),
+                    showID: this.show.showID,
+                    showName: this.show.showName,
+                    ticketsAmount: document.getElementsByClassName('mySelectSeat').length,
+                    totalPrice: document.getElementById("tempTotalPrice").innerText,
+                    unitPrice: 0,
+                    userID: this.getCookieValue("userID"),
+                    username: this.getCookieValue("username"),
+                    venueID: this.show.venueID
+                }).then(function (response) {
+                    if(response.data.errorCode==0) {
+                        alert("创建订单成功！请在15分钟之内完成支付！");
+
+                        this.setCookie("unpayOrderID", response.data.data, 1);
+
+                        window.location.href = "payOrder.html";
+                    }else{
+                        alert(response.data.data);
+                    }
+                }).catch(function (error) {
+                    console.log(error);
+                    alert("获取信息失败，请刷新重试！");
+                });
+            }
 
         },
 
         logout:function () {
+            this.deleteCookie('userID');
             this.deleteCookie('username');
             this.deleteCookie('venueName');
             this.deleteCookie('managerName')

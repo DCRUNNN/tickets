@@ -13,6 +13,10 @@ var vm=new Vue({
         modifyVenueAddress:'',
         modifyUserDescription:'',
 
+        venueShow:[],
+        onsaleShow:[],
+        needToArrangeShow:[],
+
 
     },
     methods:{
@@ -123,15 +127,24 @@ var vm=new Vue({
                 $("#venueInfo").slideDown("slow");
             }else if(selectedItem=="现场购票"){
                 this.allPanelUp();
+                this.getShowPOByVenueID();
                 $("#spotPurchase").show();
                 $("#spotPurchase").slideDown("slow");
+            }else if(selectedItem=="开票配票"){
+                this.allPanelUp();
+                this.getNeedToArrangeShow();
+                $("#arrangeTicket").show();
+                $("#arrangeTicket").slideDown("slow");
 
-            }else if(selectedItem=="检票登记"){
+            } else if(selectedItem=="检票登记"){
                 this.allPanelUp();
                 $("#checkAndRegister").show();
                 $("#checkAndRegister").slideDown("slow");
             }else if(selectedItem=="统计信息"){
                 this.allPanelUp();
+
+                this.getCharts1Data();
+                this.getChartsData2();
 
                 $("#venueStatistics").show();
                 $("#venueStatistics").slideDown("slow");
@@ -164,6 +177,7 @@ var vm=new Vue({
             $("#checkAndRegister").slideUp("fast");
             $("#venueStatistics").slideUp("fast");
             $("#modifyVenueInfo").slideUp("fast");
+            $("#arrangeTicket").slideUp("fast");
             $("#operationStatistics").slideUp("fast");
             $("#safeSetting").slideUp("fast");
         },
@@ -176,15 +190,136 @@ var vm=new Vue({
                     venueID:this.venue.venueID
                 }
             }).then(function (response) {
-                console.log(response);
                 if(response.data.errorCode==0) {
                     alert(response.data.data);
                 }else{
                     alert(response.data.data);
                 }
             }).catch(function (error) {
-                console.log(error);
                 alert("获取检票登记信息失败，请刷新重试！");
+            });
+        },
+
+        getCharts1Data:function () {
+
+            this.$http.get("http://localhost:8080/venue/getHotShows",{
+                params:{
+                    venueID:this.venue.venueID
+                }
+            }).then(function (response) {
+                if(response.data.errorCode==0) {
+                    var showNames = response.data.data[0];
+                    var nums = response.data.data[1];
+
+                    var data2 = [];
+                    for(var i=0;i<nums.length;i++) {
+                        var obj={
+                            value:nums[i],
+                            name:showNames[i]
+                        }
+                        data2.push(obj);
+                    }
+
+                    console.log(data2);
+                    initChart1(response.data.data[0], data2);
+
+                }else{
+                    alert(response.data.data);
+                }
+            }).catch(function (error) {
+                alert("获取检票登记信息失败，请刷新重试！");
+            });
+
+        },
+
+        getChartsData2:function () {
+            this.$http.get("http://localhost:8080/venue/getUserPurchaseMethod",{
+                params:{
+                    venueID:this.venue.venueID
+                }
+            }).then(function (response) {
+                if(response.data.errorCode==0) {
+                    initChart2(response.data.data);
+                }else{
+                    alert("get user coupons wrong");
+                }
+            }).catch(function (error) {
+                alert("获取信息失败，请刷新重试！");
+            });
+        },
+
+        setDataToChooseSeatModal:function (showID) {
+            $('#inputShowID').val(showID);
+            $('#showChooseSeatModal').modal('show');
+        },
+
+        fastArrangeTicket:function (showID) {
+            this.$http.get("http://localhost:8080/venue/arrangeTicket",{
+                params:{
+                    showID:showID
+                }
+            }).then(function (response) {
+                if(response.data.errorCode==0) {
+                    alert("配票成功！");
+                    for(var i=0;i<this.needToArrangeShow.length;i++) {
+                        if(this.needToArrangeShow[i].showID==showID) {
+                            this.needToArrangeShow.splice(i, 1);
+                        }
+                    }
+                }else{
+                    alert(response.data.data);
+                }
+            }).catch(function (error) {
+                alert("获取场馆演出信息失败，请刷新重试！");
+            });
+        },
+
+        chooseSeatPurchase:function() {
+
+            var userID = $('#inputVipID').val();
+
+            if(userID==""){
+                this.setCookie('username', "现场购票用户", 1);
+                this.setCookie('userID', "现场购票用户", 1);
+            }else{
+                this.setCookie('userID', userID, 1);
+            }
+
+            this.setCookie('concreteShowInfoID',$('#inputShowID').val(),1);
+
+            window.location.href = "chooseSeatPurchase.html";
+        },
+
+        getShowPOByVenueID:function () {
+
+            this.$http.get("http://localhost:8080/show/getVenueOnSaleShow",{
+                params:{
+                    venueID:this.venue.venueID
+                }
+            }).then(function (response) {
+                if(response.data.errorCode==0) {
+                    this.onsaleShow = response.data.data;
+                }else{
+                    alert(response.data.data);
+                }
+            }).catch(function (error) {
+                alert("获取场馆演出信息失败，请刷新重试！");
+            });
+        },
+
+        getNeedToArrangeShow:function () {
+            this.$http.get("http://localhost:8080/show/getVenueNeedToArrangeShow",{
+                params:{
+                    venueID:this.venue.venueID
+                }
+            }).then(function (response) {
+                if(response.data.errorCode==0) {
+                    this.needToArrangeShow = response.data.data;
+                }else{
+                    alert(response.data.data);
+                }
+            }).catch(function (error) {
+                alert("获取场馆待分配座位演出信息失败，请刷新重试！");
             });
         },
 
