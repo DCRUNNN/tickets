@@ -197,7 +197,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             </li>
                             <li class="list-group-item" @click="getMenuItem($event)">
                                 <button class="menu-item-left">
-                                    <span class="glyphicon glyphicon-triangle-right"></span>现场购票
+                                    <span class="glyphicon glyphicon-triangle-right"></span>场馆演出
                                 </button>
                             </li>
                             <li class="list-group-item" @click="getMenuItem($event)">
@@ -315,47 +315,54 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 
                 <div id="releasePlan" class="" style="display: none;">
+
                     <form class="col-sm-offset-3 col-sm-4 form-horizontal" id="showReleaseForm" role="form">
                         <fieldset>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label" for="releaseShowCategory">项目类型</label>
-                                <div class="col-sm-9">
+                                <label class="col-sm-4 control-label" for="releaseShowCategory">项目类型</label>
+                                <div class="col-sm-8">
                                     <input type="text" v-model="releaseShow.category" class="form-control" id="releaseShowCategory" name="releaseShowCategory" placeholder="项目类型" required>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-3 control-label" for="releaseShowName">项目名称</label>
-                                <div class="col-sm-9">
+                                <label class="col-sm-4 control-label" for="releaseShowName">项目名称</label>
+                                <div class="col-sm-8">
                                     <input type="text" v-model="releaseShow.showName" class="form-control" id="releaseShowName" name="releaseShowName" placeholder="项目名称" required>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-3 control-label" for="releaseShowPerformer">演出者</label>
-                                <div class="col-sm-9">
+                                <label class="col-sm-4 control-label" for="releaseShowPerformer">演出者</label>
+                                <div class="col-sm-8">
                                     <input type="text" v-model="releaseShow.performer" class="form-control" id="releaseShowPerformer" name="releaseShowPerformer" placeholder="演出者" required>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-3 control-label" for="releaseShowPhoto" >项目图片</label>
-                                <div class="col-sm-9">
+                                <label class="col-sm-4 control-label" for="releaseShowPhoto" >项目图片</label>
+                                <div class="col-sm-8">
                                     <input type="text" v-model="releaseShow.photoSrc" class="form-control" id="releaseShowPhoto" name="releaseShowPhoto" placeholder="项目图片" required>
                                     <!--<input type="file" class="form-control" id="releaseShowPhoto" name="releaseShowPhoto" placeholder="项目图片" required>-->
+                                    <span class="help-block">
+                                            提示：输入格式如 ../dist/images/show/cba广东vs新疆.jpg
+                                    </span>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-3 control-label" for="releaseShowDate">项目日期</label>
-                                <div class="col-sm-9">
+                                <label class="col-sm-4 control-label" for="releaseShowDate">项目日期</label>
+                                <div class="col-sm-8">
                                     <input type="text" v-model="releaseShow.showDate" class="form-control" id="releaseShowDate" name="releaseShowDate" placeholder="项目日期" required>
+                                    <span class="help-block">
+                                            提示：输入格式如 2018-03-19 星期六 19:35
+                                    </span>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-3 control-label" for="releaseShowPrice">项目价格</label>
-                                <div class="col-sm-9">
+                                <label class="col-sm-4 control-label" for="releaseShowPrice">项目价格</label>
+                                <div class="col-sm-8">
                                     <input type="text" v-model="releaseShow.price" class="form-control" id="releaseShowPrice" name="releaseShowPrice" placeholder="项目价格" required>
                                     <span class="help-block">
                                             提示：如票价有380,580,880三种，请填写380/580/880
@@ -364,15 +371,15 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-3 control-label" for="releaseShowDescription">项目描述</label>
-                                <div class="col-sm-9">
+                                <label class="col-sm-4 control-label" for="releaseShowDescription">项目描述</label>
+                                <div class="col-sm-8">
                                     <input type="text" v-model="releaseShow.description" class="form-control" id="releaseShowDescription" name="releaseShowDescription" placeholder="项目描述" required>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-3 control-label" for="releaseShowArea">场馆区域</label>
-                                <div class="col-sm-9">
+                                <label class="col-sm-4 control-label" for="releaseShowArea">场馆区域</label>
+                                <div class="col-sm-8">
                                     <input type="text" v-model="releaseShowArea" class="form-control" id="releaseShowArea" name="releaseShowArea" placeholder="场馆区域" required>
                                     <span class="help-block">
                                             提示：如有A、B、C三个区域，每个区域各自有3,3,4,排，请填写A-3/B-3/C-4
@@ -381,8 +388,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-3 control-label" for="releaseShowRow">最大排数</label>
-                                <div class="col-sm-9">
+                                <label class="col-sm-4 control-label" for="releaseShowRow">最大排数</label>
+                                <div class="col-sm-8">
                                     <input type="text" v-model="releaseShowRow" class="form-control" id="releaseShowRow" name="releaseShowRow" placeholder="最大排数" required>
                                     <span class="help-block">
                                             提示：一共有多少排，请填写数字
@@ -391,8 +398,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-3 control-label" for="releaseShowSeat">每排各有多少个座位</label>
-                                <div class="col-sm-9">
+                                <label class="col-sm-4 control-label" for="releaseShowSeat">每排各有多少个座位</label>
+                                <div class="col-sm-8">
                                     <input type="text" v-model="releaseShowSeat" class="form-control" id="releaseShowSeat" name="releaseShowSeat" placeholder="每排座位数，以/隔开" required>
                                     <span class="help-block">
                                             提示：如共3排，从低到高每排各有10,20,30个座位，请填写10/20/30
@@ -530,7 +537,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
                         <div class="panel-body">
                             <table class="table table-bordered" style="text-align:center;font-size: 16px;color: #3c3d41">
-                                <caption>场馆在售演出</caption>
+                                <caption>场馆演出</caption>
                                 <thead>
                                 <tr>
                                     <th style="text-align:center;font-size: 16px;color: #3c3d41">项目名称</th>
@@ -538,7 +545,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                     <th style="text-align:center;font-size: 16px;color: #3c3d41">演出者</th>
                                     <th style="text-align:center;font-size: 16px;color: #3c3d41">演出日期</th>
                                     <th style="text-align:center;font-size: 16px;color: #3c3d41">演出价格</th>
-                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">操作</th>
+                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">演出状态</th>
+                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">现场购票</th>
+                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">更新状态</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -548,7 +557,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                     <td v-text="show.performer"></td>
                                     <td v-text="show.showDate"></td>
                                     <td v-text="show.price"></td>
-                                    <td><button class="btn btn-success" @click="setDataToChooseSeatModal(show.showID)"><i class="fa fa-edit">选座购票</i></button></td>
+                                    <td v-text="show.state"></td>
+                                    <td><button class="btn btn-success" @click="setDataToChooseSeatModal(show.showID,show.state)"><i class="fa fa-edit">选座购票</i></button></td>
+                                    <td><button class="btn btn-primary" @click="setDataToUpdateShowStateModal(show.showID,show.showName)"><i class="fa fa-edit">更新状态</i></button></td>
+
                                 </tr>
 
                                 </tbody>
@@ -607,6 +619,42 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                     <div id="main2" style="width: 600px;height:400px;">
 
                                     </div>
+
+                                    <div id="main3" style="width: 600px;height:400px;">
+
+                                    </div>
+
+                                    <div id="main4" style="width: 600px;height:400px;">
+
+                                    </div>
+
+                                    <div>
+                                        <table class="table table-bordered" style="text-align:center;font-size: 16px;color: #3c3d41">
+                                            <caption>经理支付账单</caption>
+                                            <thead>
+                                            <tr>
+                                                <th style="text-align:center;font-size: 16px;color: #3c3d41">项目编号</th>
+                                                <th style="text-align:center;font-size: 16px;color: #3c3d41">演出总收入</th>
+                                                <th style="text-align:center;font-size: 16px;color: #3c3d41">场馆收入</th>
+                                                <th style="text-align:center;font-size: 16px;color: #3c3d41">经理收入</th>
+                                                <th style="text-align:center;font-size: 16px;color: #3c3d41">支付比率</th>
+                                                <th style="text-align:center;font-size: 16px;color: #3c3d41">支付时间</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr v-for="finance in ticketFinance">
+                                                <td v-text="finance.financialID"></td>
+                                                <td v-text="finance.totalIncome"></td>
+                                                <td v-text="finance.venueIncome"></td>
+                                                <td v-text="finance.ticketsIncome"></td>
+                                                <td v-text="finance.paymentRatio"></td>
+                                                <td v-text="finance.date"></td>
+                                            </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
                                 </div>
                             </div>
 
@@ -658,6 +706,45 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
                 <div id="operationStatistics" class="" style="display: none">
 
+                    <div class="panel panel-primary">
+
+                        <div class="panel-heading">
+                            <h3>操作统计</h3>
+                        </div>
+
+                        <div class="panel-body">
+                            <table class="table table-bordered" style="text-align:center;font-size: 16px;color: #3c3d41">
+                                <caption>修改统计</caption>
+                                <thead>
+                                <tr>
+                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">原场馆名称</th>
+                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">现场馆名称</th>
+                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">原场馆地址</th>
+                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">现场馆地址</th>
+                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">原场馆简介</th>
+                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">现场馆简介</th>
+                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">状态</th>
+                                    <th style="text-align:center;font-size: 16px;color: #3c3d41">申请时间</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="modify in modifyPOs">
+                                    <td v-text="modify.preVenuePO.venueName"></td>
+                                    <td v-text="modify.postVenuePO.venueName"></td>
+                                    <td v-text="modify.preVenuePO.address"></td>
+                                    <td v-text="modify.postVenuePO.address"></td>
+                                    <td v-text="modify.preVenuePO.venueInfo"></td>
+                                    <td v-text="modify.postVenuePO.venueInfo"></td>
+                                    <td v-text="modify.state"></td>
+                                    <td v-text="modify.applicationTime"></td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                    </div>
 
                 </div>
 
@@ -728,6 +815,53 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 <div class="form-group">
                                     <div class="col-lg-12">
                                         <button type="button" class="btn btn-primary btn-lg btn-block" @click="chooseSeatPurchase()">去选座</button>
+                                        <button type="button" class="btn btn-default btn-lg btn-block" data-dismiss="modal">取消</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div class="modal fade" id="showUpdateShowStateModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h6 class="modal-title">更新演出状态</h6>
+                </div>
+                <div class="modal-body">
+                    <div class="panel">
+                        <div class="panel-body">
+                            <form class="form-horizontal" role="form">
+                                <div class="form-group">
+                                    <label  class="col-lg-2 control-label">演出编号</label>
+                                    <div class="col-lg-10">
+                                        <input type="text" class="form-control" id="inputUpdateShowID" name="inputUpdateShowID" placeholder="">
+                                    </div>
+                                </div>
+                                <div class="form-group" >
+                                    <label  class="col-lg-2 control-label">演出名称</label>
+                                    <div class="col-lg-10">
+                                        <input type="text" class="form-control" id="inputUpdateShowName" name="inputUpdateShowName" placeholder="">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label  class="col-lg-2 control-label">演出状态</label>
+                                    <div class="col-lg-10">
+                                        <select id="citySelect">
+                                            <option>进行中</option>
+                                            <option>已结束</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-lg-12">
+                                        <button type="button" class="btn btn-primary btn-lg btn-block" @click="updateShowState()">更新</button>
                                         <button type="button" class="btn btn-default btn-lg btn-block" data-dismiss="modal">取消</button>
                                     </div>
                                 </div>
@@ -860,6 +994,89 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
     }
+
+    function initChart3(x,y){
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main3'));
+
+        // 指定图表的配置项和数据
+        option = {
+            title: {
+                text: '场馆演出票房'
+            },
+            color: ['#3398DB'],
+            tooltip : {
+                trigger: 'axis',
+                axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                    type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                }
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis : [
+                {
+                    type : 'category',
+                    data : x,
+                    axisTick: {
+                        alignWithLabel: true
+                    }
+                }
+            ],
+            yAxis : [
+                {
+                    type : 'value'
+                }
+            ],
+            series : [
+                {
+                    name:'总票房',
+                    type:'bar',
+                    barWidth: '60%',
+                    data:y
+                }
+            ]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    }
+
+
+    function initChart4(data){
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main4'));
+
+        // 指定图表的配置项和数据
+        var option = {
+            title: {
+                text: '场馆订单信息'
+            },
+            tooltip: {},
+            legend: {
+                data:['数量']
+            },
+            xAxis: {
+                data: ["待支付","已支付","进行中","已完成","已失效","已退订"]
+            },
+            yAxis: {},
+            series: [{
+                name: '数量',
+                type: 'bar',
+                data: data
+            }]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    }
+
+
 
 
 </script>

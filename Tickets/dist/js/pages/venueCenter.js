@@ -17,6 +17,9 @@ var vm=new Vue({
         onsaleShow:[],
         needToArrangeShow:[],
 
+        ticketFinance:[],
+        modifyPOs:[],
+
 
     },
     methods:{
@@ -125,7 +128,7 @@ var vm=new Vue({
                 this.allPanelUp();
                 $("#venueInfo").show();
                 $("#venueInfo").slideDown("slow");
-            }else if(selectedItem=="现场购票"){
+            }else if(selectedItem=="场馆演出"){
                 this.allPanelUp();
                 this.getShowPOByVenueID();
                 $("#spotPurchase").show();
@@ -145,6 +148,9 @@ var vm=new Vue({
 
                 this.getCharts1Data();
                 this.getChartsData2();
+                this.getChartsData3();
+                this.getChartsData4();
+                this.getFinanceData();
 
                 $("#venueStatistics").show();
                 $("#venueStatistics").slideDown("slow");
@@ -161,12 +167,55 @@ var vm=new Vue({
 
             }else if(selectedItem=="操作统计"){
                 this.allPanelUp();
+
+                this.getModifyPOData();
                 $("#operationStatistics").show();
                 $("#operationStatistics").slideDown("slow");
             }else if(selectedItem=="安全中心"){
                 this.allPanelUp();
                 $("#safeSetting").show();
                 $("#safeSetting").slideDown("slow");
+            }
+        },
+
+        setDataToUpdateShowStateModal:function (showID,showName) {
+            $('#inputUpdateShowID').val(showID);
+            $('#inputUpdateShowName').val(showName);
+            $('#showUpdateShowStateModal').modal('show');
+        },
+
+        updateShowState:function () {
+            var state = $('#citySelect').val();
+            if(state=="进行中"){
+                this.$http.get("http://localhost:8080/venue/setShowGoing",{
+                    params:{
+                        showID:$('#inputUpdateShowID').val()
+                    }
+                }).then(function (response) {
+                    if(response.data.errorCode==0) {
+                        alert("修改演出状态成功！")
+                        window.location.href = "venueCenter.html";
+                    }else{
+                        alert("get user coupons wrong");
+                    }
+                }).catch(function (error) {
+                    alert("获取信息失败，请刷新重试！");
+                });
+            }else if(state=="已结束"){
+                this.$http.get("http://localhost:8080/venue/setShowDone",{
+                    params:{
+                        showID:$('#inputUpdateShowID').val()
+                    }
+                }).then(function (response) {
+                    if(response.data.errorCode==0) {
+                        alert("修改演出状态成功！")
+                        window.location.href = "venueCenter.html";
+                    }else{
+                        alert("get user coupons wrong");
+                    }
+                }).catch(function (error) {
+                    alert("获取信息失败，请刷新重试！");
+                });
             }
         },
 
@@ -219,8 +268,6 @@ var vm=new Vue({
                         }
                         data2.push(obj);
                     }
-
-                    console.log(data2);
                     initChart1(response.data.data[0], data2);
 
                 }else{
@@ -248,9 +295,112 @@ var vm=new Vue({
             });
         },
 
-        setDataToChooseSeatModal:function (showID) {
-            $('#inputShowID').val(showID);
-            $('#showChooseSeatModal').modal('show');
+        getChartsData3:function () {
+            this.$http.get("http://localhost:8080/venue/getShowsIncomeInfo",{
+                params:{
+                    venueID:this.venue.venueID
+                }
+            }).then(function (response) {
+                if(response.data.errorCode==0) {
+                    initChart3(response.data.data[0],response.data.data[1]);
+                }else{
+                    alert("get user coupons wrong");
+                }
+            }).catch(function (error) {
+                alert("获取信息失败，请刷新重试！");
+            });
+
+        },
+
+        getChartsData4:function () {
+            this.$http.get("http://localhost:8080/venue/getVenueOrdersStateInfo",{
+                params:{
+                    venueID:this.venue.venueID
+                }
+            }).then(function (response) {
+                if(response.data.errorCode==0) {
+                    initChart4(response.data.data);
+
+                }else{
+                    alert("get user coupons wrong");
+                }
+            }).catch(function (error) {
+                alert("获取信息失败，请刷新重试！");
+            });
+
+        },
+
+
+        modifyVenuePassword:function (venueID) {
+            var previousPassword = $('#previous_password').val();
+            var newPassword = $('#modify_password').val();
+            var confirmNewPassword = $('#modify_confirm_password').val();
+            if(newPassword!=confirmNewPassword) {
+                alert("新密码两次输入不一致！");
+                return;
+            }else{
+                this.$http.get("http://localhost:8080/venue/modifyVenuePassword",{
+                    params:{
+                        venueID:venueID,
+                        previousPassword:previousPassword,
+                        newPassword:confirmNewPassword
+                    }
+                }).then(function (response) {
+                    if(response.data.errorCode==0) {
+                        alert("修改密码成功！")
+                        window.location.reload();
+                    }else if(response.data.errorCode==-1){
+                        alert("当前密码输入不正确！");
+                    }else{
+                        alert("修改密码失败!");
+                    }
+                }).catch(function (error) {
+                    alert("修改密码失败，请刷新重试！");
+                });
+            }
+        },
+
+        getModifyPOData:function () {
+            this.$http.get("http://localhost:8080/manager/getVenueModifyApps",{
+                params:{
+                    venueID:this.venue.venueID
+                }
+            }).then(function (response) {
+                if(response.data.errorCode==0) {
+                    this.modifyPOs = response.data.data;
+                }else{
+                    alert("get Venue modify applications Info wrong");
+                }
+            }).catch(function (error) {
+                alert("获取信息失败，请刷新重试！");
+            });
+        },
+
+        getFinanceData:function () {
+            this.$http.get("http://localhost:8080/venue/getVenueFinanceInfo",{
+                params:{
+                    venueID:this.venue.venueID
+                }
+            }).then(function (response) {
+                if(response.data.errorCode==0) {
+                    this.ticketFinance = response.data.data;
+                }else{
+                    alert("get finance info wrong");
+                }
+            }).catch(function (error) {
+                alert("获取信息失败，请刷新重试！");
+            });
+
+        },
+
+        setDataToChooseSeatModal:function (showID,showState) {
+            if(showState!="售票中"){
+                alert("该演出已不可购票！");
+                return;
+            }else{
+                $('#inputShowID').val(showID);
+                $('#showChooseSeatModal').modal('show');
+            }
         },
 
         fastArrangeTicket:function (showID) {
@@ -292,7 +442,7 @@ var vm=new Vue({
 
         getShowPOByVenueID:function () {
 
-            this.$http.get("http://localhost:8080/show/getVenueOnSaleShow",{
+            this.$http.get("http://localhost:8080/show/getShowPOByVenueID",{
                 params:{
                     venueID:this.venue.venueID
                 }

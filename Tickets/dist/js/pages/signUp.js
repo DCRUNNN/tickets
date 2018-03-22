@@ -33,6 +33,14 @@ var vm=new Vue({
     },
     methods:{
         signUp:function () {
+
+            var password=  $('#password').val();
+            var confirmPassword = $('#confirmUserPassword').val();
+            if(password!=confirmPassword) {
+                alert("密码输入不一致！");
+                return;
+            }
+
             const self = this;
             this.$http.post("http://localhost:8080/user/addUser",{
                 username:this.user.username,
@@ -59,7 +67,10 @@ var vm=new Vue({
         confirmActive:function () {
             const self = this;
 
-            this.$http.get("http://localhost:8080/user/getUserPO/"+self.user.username, {
+            this.$http.get("http://localhost:8080/user/getUserPO", {
+                params:{
+                    username:self.user.username
+                }
             }).then(function (response) {
                 if (response.data.errorCode === 0) {
                     if (response.data.data.state == '未激活') {
@@ -69,10 +80,11 @@ var vm=new Vue({
 
                         //设置cookie
 
-                        window.location.href = "../pages/index.html";
+                        window.location.href = "../pages/login.html";
                     }
                 }
             }).catch(function (error) {
+                console.log(error);
                 alert("发生了未知的错误");
             });
         },

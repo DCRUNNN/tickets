@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tickets</title>
+    <link rel="stylesheet" href="../dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../dist/css/bootstrap-select.css">
+
+    <link href="../dist/css/style.css" rel="stylesheet" type="text/css" media="all" />
+
+    <link href="../dist/css/memenu.css" rel="stylesheet" type="text/css"  />
+
+    <link rel="stylesheet" type="text/css" href="../dist/css/nav.css" />
+
+    <link rel="stylesheet" href="../dist/css/font-awesome.min.css" />
+
+    <link rel="stylesheet" type="text/css" href="../dist/css/jq22.css" />
+
+    <link rel="stylesheet" type="text/css" href="../dist/css/mySeat.css" />
+
+    <link href="../dist/css/jquery.uls.css" rel="stylesheet"/>
+
+    <!-- for-mobile-apps -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="Resale Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template,
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony Ericsson, Motorola web design" />
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <!-- //for-mobile-apps -->
+    <!--fonts-->
+    <!--//fonts-->
+    <!-- js -->
+    <script type="text/javascript" src="../dist/js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript">
+
+        function AutoSize(Img, maxWidth, maxHeight) {
+            var image = new Image();
+            //原图片原始地址（用于获取原图片的真实宽高，当<img>标签指定了宽、高时不受影响）
+            image.src = Img.src;
+            // 当图片比图片框小时不做任何改变
+            if (image.width < maxWidth&& image.height < maxHeight) {
+                Img.width = image.width;
+                Img.height = image.height;
+            }
+            else //原图片宽高比例 大于 图片框宽高比例,则以框的宽为标准缩放，反之以框的高为标准缩放
+            {
+                if (maxWidth/ maxHeight  <= image.width / image.height) //原图片宽高比例 大于 图片框宽高比例
+                {
+                    Img.width = maxWidth;   //以框的宽度为标准
+                    Img.height = maxWidth* (image.height / image.width);
+                }
+                else {   //原图片宽高比例 小于 图片框宽高比例
+                    Img.width = maxHeight  * (image.width / image.height);
+                    Img.height = maxHeight  ;   //以框的高度为标准
+                }
+            }
+        }
+
+
+        function DrawImage(ImgD,width_s,height_s){
+            /*var width_s=139;
+            var height_s=104;
+            */
+            var image=new Image();
+            image.src=ImgD.src;
+            if(image.width>0 && image.height>0){
+                flag=true;
+                if(image.width/image.height>=width_s/height_s){
+                    if(image.width>width_s){
+                        ImgD.width=width_s;
+                        ImgD.height=(image.height*width_s)/image.width;
+                    }else{
+                        ImgD.width=image.width;
+                        ImgD.height=image.height;
+                    }
+                }
+                else{
+                    if(image.height>height_s){
+                        ImgD.height=height_s;
+                        ImgD.width=(image.width*height_s)/image.height;
+                    }else{
+                        ImgD.width=image.width;
+                        ImgD.height=image.height;
+                    }
+                }
+            }
+            /*else{
+            ImgD.src="";
+            ImgD.alt=""
+            }*/
+        }
+
+    </script>
+
+
+    <style>
+        .disabled {
+            pointer-events:none; //This makes it not clickable
+        opacity:0.6;         //This grays it out to look disabled
+        }
+    </style>
+
+</head>
+<body>
+
+<div id="container">
+
+    <div class="header">
+        <div class="container">
+            <div class="logo">
+                <a href="index.html"><span>My</span>Tickets</a>
+            </div>
+
+            <div class="pull-right" style="margin-top: 3%">
+                <ul class="nav nav-pills">
+                    <li class="active">
+                        <a id="loginBT" href="login.html" >登录</a>
+                    </li>
+                    <li>
+                        <a id="signUpBT" href="signUp.html">注册</a>
+                    </li>
+                    <li>
+                        <a id="logOutBT"  @click="logout()">退出</a>
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            服务中心 <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li id="userCenter"><a href="userCenter.html">个人中心</a></li>
+                            <li class="divider"></li>
+                            <li id="venueCenter"><a href="venueCenter.html">场馆中心</a></li>
+                            <li class="divider"></li>
+                            <li id="managerCenter"><a href="managerCenter.html">经理中心</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a v-text="welcomeWord" style="color: blueviolet"></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="h_menu4">
+        <ul class="memenu skyblue">
+            <li><a class="color1" href="#">戏剧</a>
+            </li>
+            <li><a class="color2" href="#">体育</a>
+            </li>
+            <li><a class="color8" href="#">亲子</a></li>
+            <li><a class="color8" href="#">摇滚</a></li>
+            <li><a class="color8" href="#">舞蹈古典</a></li>
+        </ul>
+    </div>
+
+    <br><br><br>
+
+    <div class="panel panel-primay">
+
+        <div class="panel-heading">
+            <ol class="breadcrumb" >
+                <li><a href="index.html">MyTickets</a></li>
+                <li><a href="#">{{show.city}}</a></li>
+                <li><a href="#">{{show.category}}</a></li>
+                <li class="active">{{show.showName}}</li>
+            </ol>
+        </div>
+
+        <div class="panel-body">
+
+            <div class="demo clearfix" id="mySeatPanel">
+                <!---左边座位列表----->
+                <!--<div id="seat_area">-->
+                    <!--<div class="front">屏幕</div>-->
+                <!--</div>-->
+
+                <!--<div id="seat_area1" style="display: none">-->
+                    <!--<div class="front">屏幕</div>-->
+                <!--</div>-->
+
+                <!--<div id="seat_area2" style="display: none">-->
+                    <!--<div class="front">屏幕</div>-->
+                <!--</div>-->
+                <!---右边选座信息----->
+
+                <div>
+                    <span>选择价位：</span>
+                    <select id="priceSelect" @change="changePrice">
+                        <option v-for="price in showPrice" v-text="price">0</option>
+                    </select>
+                </div>
+
+                <div class="booking_area">
+                    <p>项目：<span v-text="show.showName"></span></p>
+                    <p>时间：<span v-text="show.showDate"></span></p>
+                    <p>座位：</p>
+                    <div class="well" style="width: 400px">
+                        <ul id="seats_chose" style="width: 350px"></ul>
+                    </div>
+                    <p>票数：<span id="tickects_num">0</span></p>
+                    <p>总价：<b>￥<span id="total_price">0</span></b></p>
+                    <button type="button" class="btn btn-primary" @click="purchaseTicket()">确定购买</button>
+                    <p id="tempTotalPrice" style="display: none"></p>
+                    <!--<div id="legend"></div>-->
+                </div>
+            </div>
+        </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+</body>
+
+
+
+<script>
+    $(document).ready(function () {
+        var mySelect = $('#first-disabled2');
+
+        $('#special').on('click', function () {
+            mySelect.find('option:selected').prop('disabled', true);
+            mySelect.selectpicker('refresh');
+        });
+
+        $('#special2').on('click', function () {
+            mySelect.find('option:disabled').prop('disabled', false);
+            mySelect.selectpicker('refresh');
+        });
+
+        $('#basic2').selectpicker({
+            liveSearch: true,
+            maxOptions: 1
+        });
+    });
+</script>
+
+
+<script src="../resources/vue/vue.js"></script>
+<script src="../resources/vue-resource/vue-resource.js"></script>
+
+<script src="../dist/js/pages/chooseSeatPurchase.js"></script>
+
+<script src="../dist/js/jquery.min.js"></script>
+<script type="text/javascript" src="../dist/js/jquery.seat-charts.min.js"></script>
+
+
+<script type="text/javascript" src="../dist/js/wwwnet.js"></script>
+<script type="text/javascript" src="../dist/js/memenu.js"></script>
+<!-- js -->
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="../dist/js/bootstrap.min.js"></script>
+<script src="../dist/js/bootstrap-select.js"></script>
+
+<script>
+
+    function find(str,cha,num){
+            var x=str.indexOf(cha);
+            for(var i=0;i<num;i++){
+                x=str.indexOf(cha,x+1);
+            }
+            return x;
+    }
+
+    function getMax(seat) {
+        var arr = seat.split('/');
+        return Math.max.apply(null,arr);
+    }
+
+    function drawMap(row,seat){
+        //座位结构图 a 代表座位; 下划线 "_" 代表过道
+        var result = [];
+        var max = getMax(seat);
+        for(var i=0;i<row;i++) {
+            var aRow='';
+            for(var j=0;j<parseInt(seat.split('/')[i]);j++){
+                aRow += 'c';
+            }
+            for(var k=0;k<max-parseInt(seat.split('/')[i]);k++){
+                aRow += '_';
+            }
+            result.push(aRow);
+        }
+        return result;
+    }
+
+    function initMap(price,row,seat,area,soldSeat){
+//        $(document).ready(function() {
+            var $cart = $('#seats_chose'), //座位区
+                $tickects_num = $('#tickects_num'), //票数
+                $total_price = $('#total_price'); //票价总额
+
+            var sc = $('#'+area).seatCharts({
+                map: drawMap(row,seat),
+                naming: {//设置行列等信息
+                    top: false, //不显示顶部横坐标（行）
+                    getLabel: function(character, row, column) { //返回座位信息
+                        return column;
+                    }
+                },
+                legend: {//定义图例
+                    node: $('#legend'),
+                    items: [
+                        ['c', 'available', '可选座'],
+                        ['c', 'unavailable', '已售出']
+                    ]
+                },
+                click: function() {
+                    if (this.status() == 'available') { //若为可选座状态，添加座位
+                        $('<li style="width: 100px" class="mySelectSeat">' + price+"-" + (this.settings.row + 1) + '排' + this.settings.label + '座</li>')
+                            .attr('id', 'cart-item-' + this.settings.id)
+                            .data('seatId', this.settings.id)
+                            .appendTo($cart);
+                        $tickects_num.text(document.getElementsByClassName('mySelectSeat').length);//统计选票数量
+                        getTotalPrice(price,"+");
+                        $total_price.text(document.getElementById("tempTotalPrice").innerText); //计算票价总金额
+                        return 'selected';
+                    } else if (this.status() == 'selected') { //若为选中状态
+                        $('#cart-item-' + this.settings.id).remove();//删除已预订座位
+                        $tickects_num.text(document.getElementsByClassName('mySelectSeat').length);//统计选票数量
+                        getTotalPrice(price,"-");
+                        $total_price.text(document.getElementById("tempTotalPrice").innerText);//更新票价总金额
+                        return 'available';
+                    } else if (this.status() == 'unavailable') { //若为已售出状态
+                        return 'unavailable';
+                    } else {
+                        return this.style();
+                    }
+                }
+            });
+            //设置已售出的座位
+            sc.get(soldSeat).status('unavailable');
+//        });
+        function getTotalPrice(price,operation) { //计算票价总额
+            var temp = document.getElementById("tempTotalPrice").innerText;
+            var total = 0;
+            if(temp==''){
+                document.getElementById("tempTotalPrice").innerText = price;
+            }else{
+                temp=parseFloat(temp);
+                if(operation=="+"){
+                    total = temp + price;
+                }else if(operation=="-"){
+                    total = temp - price;
+                }
+                document.getElementById("tempTotalPrice").innerText = total;
+            }
+        }
+
+    }
+
+
+</script>
+
+
+
+</html>

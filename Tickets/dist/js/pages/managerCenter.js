@@ -10,6 +10,8 @@ var vm=new Vue({
         modifyApplications:[],
         unpayShows:[],
 
+        ticketFinance:[],
+
     },
     methods:{
 
@@ -90,10 +92,16 @@ var vm=new Vue({
 
             }else if(selectedItem=="场馆信息统计"){
                 this.allPanelUp();
+
+                this.getChart1Data();
+
                 $("#venueInfoStatistics").show();
                 $("#venueInfoStatistics").slideDown("slow");
             }else if(selectedItem=="会员信息统计"){
                 this.allPanelUp();
+
+                this.getChart2Data();
+                this.getChart3Data();
 
                 $("#vipInfoStatistics").show();
                 $("#vipInfoStatistics").slideDown("slow");
@@ -101,6 +109,9 @@ var vm=new Vue({
             }else if(selectedItem=="Tickets财务情况"){
 
                 this.allPanelUp();
+
+                this.getFinanceData();
+                
                 $("#ticketsFinancial").show();
                 $("#ticketsFinancial").slideDown("slow");
             }
@@ -141,6 +152,71 @@ var vm=new Vue({
             }).catch(function (error) {
                 alert("获取信息失败，请刷新重试！");
             });
+        },
+
+        getChart1Data:function () {
+            this.$http.get("http://localhost:8080/manager/getVenuesIncomeInfo").then(function (response) {
+                if(response.data.errorCode==0) {
+                    console.log(response.data.data)
+                    initChart1(response.data.data[0],response.data.data[1]);
+                }else{
+                    alert("get user coupons wrong");
+                }
+            }).catch(function (error) {
+                console.log(error);
+                alert("获取信息失败，请刷新重试！");
+            });
+        },
+
+        getChart2Data:function () {
+            this.$http.get("http://localhost:8080/manager/getVIPTypeInfo").then(function (response) {
+                if(response.data.errorCode==0) {
+
+                    var vipType = response.data.data[0];
+                    var nums = response.data.data[1];
+
+                    var data2 = [];
+                    for(var i=0;i<nums.length;i++) {
+                        var obj={
+                            value:nums[i],
+                            name:vipType[i]
+                        }
+                        data2.push(obj);
+                    }
+                    initChart2(response.data.data[0], data2);
+                }else{
+                    alert("get user coupons wrong");
+                }
+            }).catch(function (error) {
+                console.log(error);
+                alert("获取信息失败，请刷新重试！");
+            });
+        },
+
+        getChart3Data:function () {
+            this.$http.get("http://localhost:8080/manager/getVIPLevelInfo").then(function (response) {
+                if(response.data.errorCode==0) {
+                    initChart3(response.data.data);
+                }else{
+                    alert("get user coupons wrong");
+                }
+            }).catch(function (error) {
+                console.log(error);
+                alert("获取信息失败，请刷新重试！");
+            });
+        },
+
+        getFinanceData:function () {
+            this.$http.get("http://localhost:8080/manager/getTicketFinances").then(function (response) {
+                if(response.data.errorCode==0) {
+                    this.ticketFinance = response.data.data;
+                }else{
+                    alert("get finance info wrong");
+                }
+            }).catch(function (error) {
+                alert("获取信息失败，请刷新重试！");
+            });
+
         },
 
         setDataToRegAppDialog:function(venueID,venueName,address,area,row,seat,venueInfo){

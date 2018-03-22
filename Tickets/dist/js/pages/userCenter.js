@@ -269,6 +269,8 @@ var vm=new Vue({
                 if(response.data.errorCode==0) {
                     this.user = response.data.data;
                     this.setCookie('username', username, 1);
+                    this.setCookie('welcomeWord', "欢迎您！"+this.user.username, 1);
+                    self.welcomeWord = "欢迎您！" + username;
                     alert("修改成功！")
                     window.location.reload();
                 }else{

@@ -57,7 +57,7 @@ var vm=new Vue({
                     this.setCookie('venueID', self.venue.venueID, 1);
                     this.setCookie('welcomeWord', "欢迎您！"+self.venue.venueName, 1);
                     self.welcomeWord = "欢迎您！" + venueName;
-                    window.location.href = "../pages/index.html";
+                    window.location.href = "../pages/venueCenter.html";
                 } else if(response.data.errorCode==-1) {
                     alert("账户不存在！");
                 }else if(response.data.errorCode == 2){
@@ -83,7 +83,7 @@ var vm=new Vue({
                     this.setCookie('managerEmail', self.manager.email, 1);
                     this.setCookie('welcomeWord', "欢迎您！"+self.manager.name, 1);
                     self.welcomeWord = "欢迎您！" + managerName;
-                    window.location.href = "../pages/index.html";
+                    window.location.href = "../pages/managerCenter.html";
                 } else if(response.data.errorCode==-1) {
                     alert("账户不存在！");
                 }else if(response.data.errorCode == 2){

@@ -93,6 +93,12 @@ var vm=new Vue({
                 seatInfo.push(y.text());
             });
 
+            var ticketAmount = document.getElementsByClassName('mySelectSeat').length;
+            if(ticketAmount>6){
+                alert("您最多只可购买6张票！");
+                return;
+            }
+
             var userID = this.getCookieValue("userID");
 
             if(userID=="现场购票用户"){
